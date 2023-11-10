@@ -9,25 +9,31 @@
 /* Begin PBXBuildFile section */
 		F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70959F82AFE191900F0218B /* AppDelegate.swift */; };
 		F70959FB2AFE191900F0218B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70959FA2AFE191900F0218B /* SceneDelegate.swift */; };
-		F70959FD2AFE191900F0218B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70959FC2AFE191900F0218B /* ViewController.swift */; };
-		F7095A002AFE191900F0218B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F70959FE2AFE191900F0218B /* Main.storyboard */; };
+		F70959FD2AFE191900F0218B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70959FC2AFE191900F0218B /* LoginViewController.swift */; };
 		F7095A022AFE191A00F0218B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7095A012AFE191A00F0218B /* Assets.xcassets */; };
 		F7095A052AFE191A00F0218B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7095A032AFE191A00F0218B /* LaunchScreen.storyboard */; };
 		F7095A0E2AFE1A0A00F0218B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F7095A0D2AFE1A0A00F0218B /* .gitignore */; };
 		F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A0F2AFE1A6600F0218B /* APIKey.swift */; };
+		F7095A142AFE374D00F0218B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A132AFE374D00F0218B /* LoginView.swift */; };
+		F7095A172AFE37B200F0218B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A162AFE37B200F0218B /* SnapKit */; };
+		F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A192AFE3B0700F0218B /* JoinButton.swift */; };
+		F7095A1D2AFE3B3900F0218B /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A1C2AFE3B3900F0218B /* RxCocoa */; };
+		F7095A1F2AFE3B3900F0218B /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A1E2AFE3B3900F0218B /* RxSwift */; };
+		F7095A212AFE3B3900F0218B /* RxTest-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A202AFE3B3900F0218B /* RxTest-Dynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F70959F52AFE191900F0218B /* PictureFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PictureFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F70959F82AFE191900F0218B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F70959FA2AFE191900F0218B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F70959FC2AFE191900F0218B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F70959FF2AFE191900F0218B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F70959FC2AFE191900F0218B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F7095A012AFE191A00F0218B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7095A042AFE191A00F0218B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F7095A062AFE191A00F0218B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7095A0D2AFE1A0A00F0218B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F7095A0F2AFE1A6600F0218B /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		F7095A132AFE374D00F0218B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		F7095A192AFE3B0700F0218B /* JoinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +41,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7095A1F2AFE3B3900F0218B /* RxSwift in Frameworks */,
+				F7095A1D2AFE3B3900F0218B /* RxCocoa in Frameworks */,
+				F7095A212AFE3B3900F0218B /* RxTest-Dynamic in Frameworks */,
+				F7095A172AFE37B200F0218B /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,11 +70,11 @@
 		F70959F72AFE191900F0218B /* PictureFlow */ = {
 			isa = PBXGroup;
 			children = (
-				F7095A0C2AFE19E300F0218B /* Network */,
 				F70959F82AFE191900F0218B /* AppDelegate.swift */,
 				F70959FA2AFE191900F0218B /* SceneDelegate.swift */,
-				F70959FC2AFE191900F0218B /* ViewController.swift */,
-				F70959FE2AFE191900F0218B /* Main.storyboard */,
+				F7095A122AFE372100F0218B /* Views */,
+				F7095A112AFE1D2B00F0218B /* Controllers */,
+				F7095A0C2AFE19E300F0218B /* Network */,
 				F7095A012AFE191A00F0218B /* Assets.xcassets */,
 				F7095A032AFE191A00F0218B /* LaunchScreen.storyboard */,
 				F7095A062AFE191A00F0218B /* Info.plist */,
@@ -79,6 +89,31 @@
 				F7095A0F2AFE1A6600F0218B /* APIKey.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		F7095A112AFE1D2B00F0218B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F70959FC2AFE191900F0218B /* LoginViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		F7095A122AFE372100F0218B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A182AFE381300F0218B /* CustomView */,
+				F7095A132AFE374D00F0218B /* LoginView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F7095A182AFE381300F0218B /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A192AFE3B0700F0218B /* JoinButton.swift */,
+			);
+			path = CustomView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,6 +132,12 @@
 			dependencies = (
 			);
 			name = PictureFlow;
+			packageProductDependencies = (
+				F7095A162AFE37B200F0218B /* SnapKit */,
+				F7095A1C2AFE3B3900F0218B /* RxCocoa */,
+				F7095A1E2AFE3B3900F0218B /* RxSwift */,
+				F7095A202AFE3B3900F0218B /* RxTest-Dynamic */,
+			);
 			productName = PictureFlow;
 			productReference = F70959F52AFE191900F0218B /* PictureFlow.app */;
 			productType = "com.apple.product-type.application";
@@ -125,6 +166,10 @@
 				Base,
 			);
 			mainGroup = F70959EC2AFE191900F0218B;
+			packageReferences = (
+				F7095A152AFE37B200F0218B /* XCRemoteSwiftPackageReference "SnapKit" */,
+				F7095A1B2AFE3B3900F0218B /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			productRefGroup = F70959F62AFE191900F0218B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -142,7 +187,6 @@
 				F7095A0E2AFE1A0A00F0218B /* .gitignore in Resources */,
 				F7095A052AFE191A00F0218B /* LaunchScreen.storyboard in Resources */,
 				F7095A022AFE191A00F0218B /* Assets.xcassets in Resources */,
-				F7095A002AFE191900F0218B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,9 +197,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F70959FD2AFE191900F0218B /* ViewController.swift in Sources */,
+				F70959FD2AFE191900F0218B /* LoginViewController.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
+				F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */,
+				F7095A142AFE374D00F0218B /* LoginView.swift in Sources */,
 				F70959FB2AFE191900F0218B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,14 +209,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F70959FE2AFE191900F0218B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F70959FF2AFE191900F0218B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F7095A032AFE191A00F0218B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -313,7 +351,8 @@
 				INFOPLIST_FILE = PictureFlow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -345,7 +384,8 @@
 				INFOPLIST_FILE = PictureFlow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -387,6 +427,48 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F7095A152AFE37B200F0218B /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.0;
+			};
+		};
+		F7095A1B2AFE3B3900F0218B /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7095A162AFE37B200F0218B /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7095A152AFE37B200F0218B /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		F7095A1C2AFE3B3900F0218B /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7095A1B2AFE3B3900F0218B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		F7095A1E2AFE3B3900F0218B /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7095A1B2AFE3B3900F0218B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		F7095A202AFE3B3900F0218B /* RxTest-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7095A1B2AFE3B3900F0218B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = "RxTest-Dynamic";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F70959ED2AFE191900F0218B /* Project object */;
 }

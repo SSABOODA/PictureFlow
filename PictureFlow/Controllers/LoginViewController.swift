@@ -7,13 +7,17 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class JoinViewController: UIViewController {
+    
+    let mainView = JoinView()
+    
+    override func loadView() {
+        view = mainView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
     }
-
-
 }
 
