@@ -13,21 +13,21 @@ final class JoinView: UIView {
     let signUpButton = {
         let button = JoinButton()
         button.setTitle("회원가입", for: .normal)
-        button.backgroundColor = .systemRed
+        button.backgroundColor = .systemBlue
         return button
     }()
     
     let signInButton = {
         let button = JoinButton()
         button.setTitle("로그인", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
-        button.backgroundColor = .white
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.backgroundColor = .lightGray
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .black
+        backgroundColor = .white
         configureHierarchy()
     }
     
