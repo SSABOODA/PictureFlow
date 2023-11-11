@@ -30,6 +30,10 @@
 		F7095A3C2AFF713800F0218B /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A3B2AFF713800F0218B /* IQKeyboardManagerSwift */; };
 		F7095A3F2AFF7D4B00F0218B /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A3E2AFF7D4B00F0218B /* SignInViewModel.swift */; };
 		F7095A422AFF7D9600F0218B /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A412AFF7D9600F0218B /* ViewModelType.swift */; };
+		F7095A452AFF887100F0218B /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A442AFF887100F0218B /* Kingfisher */; };
+		F7095A482AFF887C00F0218B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A472AFF887C00F0218B /* Alamofire */; };
+		F7095A4A2AFF89A600F0218B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A492AFF89A600F0218B /* Network.swift */; };
+		F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4B2AFF8A9F00F0218B /* Router.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +58,8 @@
 		F7095A382AFF6FB700F0218B /* Extension+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+String.swift"; sourceTree = "<group>"; };
 		F7095A3E2AFF7D4B00F0218B /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		F7095A412AFF7D9600F0218B /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		F7095A492AFF89A600F0218B /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		F7095A4B2AFF8A9F00F0218B /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +70,9 @@
 				F7095A2F2AFE3EAC00F0218B /* RxSwift in Frameworks */,
 				F7095A3C2AFF713800F0218B /* IQKeyboardManagerSwift in Frameworks */,
 				F7095A2D2AFE3EAC00F0218B /* RxCocoa in Frameworks */,
+				F7095A482AFF887C00F0218B /* Alamofire in Frameworks */,
 				F7095A172AFE37B200F0218B /* SnapKit in Frameworks */,
+				F7095A452AFF887100F0218B /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +117,8 @@
 			isa = PBXGroup;
 			children = (
 				F7095A0F2AFE1A6600F0218B /* APIKey.swift */,
+				F7095A492AFF89A600F0218B /* Network.swift */,
+				F7095A4B2AFF8A9F00F0218B /* Router.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -207,6 +217,8 @@
 				F7095A2C2AFE3EAC00F0218B /* RxCocoa */,
 				F7095A2E2AFE3EAC00F0218B /* RxSwift */,
 				F7095A3B2AFF713800F0218B /* IQKeyboardManagerSwift */,
+				F7095A442AFF887100F0218B /* Kingfisher */,
+				F7095A472AFF887C00F0218B /* Alamofire */,
 			);
 			productName = PictureFlow;
 			productReference = F70959F52AFE191900F0218B /* PictureFlow.app */;
@@ -240,6 +252,8 @@
 				F7095A152AFE37B200F0218B /* XCRemoteSwiftPackageReference "SnapKit" */,
 				F7095A2B2AFE3EAC00F0218B /* XCRemoteSwiftPackageReference "RxSwift" */,
 				F7095A3A2AFF713800F0218B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				F7095A432AFF887100F0218B /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				F7095A462AFF887B00F0218B /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = F70959F62AFE191900F0218B /* Products */;
 			projectDirPath = "";
@@ -272,12 +286,14 @@
 				F70959FD2AFE191900F0218B /* JoinViewController.swift in Sources */,
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
+				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
 				F7095A2A2AFE3DE600F0218B /* Extension+UIViewController.swift in Sources */,
 				F7095A312AFE513A00F0218B /* SignUpView.swift in Sources */,
 				F7095A392AFF6FB700F0218B /* Extension+String.swift in Sources */,
 				F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */,
+				F7095A4A2AFF89A600F0218B /* Network.swift in Sources */,
 				F7095A142AFE374D00F0218B /* JoinView.swift in Sources */,
 				F7095A332AFE514300F0218B /* SignInView.swift in Sources */,
 				F7095A422AFF7D9600F0218B /* ViewModelType.swift in Sources */,
@@ -534,6 +550,22 @@
 				minimumVersion = 6.5.16;
 			};
 		};
+		F7095A432AFF887100F0218B /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.10.0;
+			};
+		};
+		F7095A462AFF887B00F0218B /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -556,6 +588,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F7095A3A2AFF713800F0218B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
 			productName = IQKeyboardManagerSwift;
+		};
+		F7095A442AFF887100F0218B /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7095A432AFF887100F0218B /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		F7095A472AFF887C00F0218B /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7095A462AFF887B00F0218B /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

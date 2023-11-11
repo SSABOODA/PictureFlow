@@ -9,6 +9,13 @@ import UIKit
 
 final class SignInView: UIView {
     
+    let loginTitleLabel = {
+        let label = UILabel()
+        label.text = "로그인"
+        label.font = .boldSystemFont(ofSize: 35)
+        return label
+    }()
+    
     let emailView = {
         let view = LoginInputView()
         return view
@@ -57,6 +64,7 @@ final class SignInView: UIView {
     }
     
     private func configureHierarchy() {
+        addSubview(loginTitleLabel)
         addSubview(emailView)
         emailView.addSubview(emailTextField)
         addSubview(passwordView)
@@ -64,9 +72,16 @@ final class SignInView: UIView {
         passwordView.addSubview(passwordSecureButton)
         addSubview(loginButton)
         
-        emailView.snp.makeConstraints { make in
+        loginTitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-100)
+            make.centerY.equalToSuperview().offset(-150)
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.height.equalToSuperview().multipliedBy(0.07)
+        }
+        
+        emailView.snp.makeConstraints { make in
+            make.top.equalTo(loginTitleLabel.snp.bottom).offset(15)
+            make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalToSuperview().multipliedBy(0.06)
         }

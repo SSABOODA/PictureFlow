@@ -44,7 +44,12 @@ final class JoinViewController: UIViewController {
 
 extension JoinViewController {
     private func setNavigationBar() {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        let backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: nil
+        )
         backBarButtonItem.tintColor = .black
         self.navigationItem.backBarButtonItem = backBarButtonItem
     }
