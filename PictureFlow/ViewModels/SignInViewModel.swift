@@ -19,22 +19,20 @@ final class SignInViewModel: ViewModelType {
     
     struct Output {
         let validation: Observable<Bool>
+        let loginSuccess: BehaviorRelay<Bool>
     }
     
     var disposeBag = DisposeBag()
     
-    var email = BehaviorSubject(value: "")
-    var password = BehaviorSubject(value: "")
-    
     func transform(input: Input) -> Output {
+        let loginSuccess = BehaviorRelay(value: false)
+
         let validation = Observable
-            .combineLatest(input.email, input.password) { [weak self] emailText, passwordText in
-                self?.email.onNext(emailText)
-                self?.password.onNext(passwordText)
+            .combineLatest(input.email, input.password) { emailText, passwordText in
                 return emailText.validateEmail() && passwordText.validatePassword()
             }
-        
-        let loginText = Observable.zip(email, password).map { $0 }
+
+        let loginText = Observable.zip(input.email, input.password).map { $0 }
         
         input.loginButtonTap
             .withLatestFrom(loginText, resultSelector: { _, text in
@@ -48,6 +46,7 @@ final class SignInViewModel: ViewModelType {
                     case .success(let success):
                         print(success.token)
                         print(success.refreshToken)
+                        loginSuccess.accept(true)
                     case .failure(let failure):
                         print(failure.localizedDescription)
                     }
@@ -55,7 +54,10 @@ final class SignInViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
             
-        return Output(validation: validation)
+        return Output(
+            validation: validation,
+            loginSuccess: loginSuccess
+        )
     }
 }
 

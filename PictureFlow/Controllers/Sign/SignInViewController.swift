@@ -45,6 +45,16 @@ final class SignInViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.loginSuccess
+            .asDriver()
+            .map {
+                return $0 == true
+            }
+            .drive(with: self) { owner, value in
+                print("Login Succeed")
+            }
+            .disposed(by: disposeBag)
+        
         mainView.passwordSecureButton.rx.tap
             .bind(with: self) { owner, _ in
                 owner.mainView.passwordTextField.isSecureTextEntry.toggle()

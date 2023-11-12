@@ -10,13 +10,16 @@ import Foundation
 /*
  회원가입
  */
-struct JoinReqeust: Encodable {
+struct SignUpReqeust: Encodable {
     let email: String
     let password: String
+    let nickname: String
+    let phoneNumber: String?
+    let birthday: String?
 }
 
-struct JoinResponse: Decodable {
-//    let _id: String
+struct SignUpResponse: Decodable {
+    let _id: String
     let email: String
     let nick: String
 }

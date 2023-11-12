@@ -130,8 +130,8 @@ final class SignUpView: UIView {
         }
         
         passwordTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
             make.verticalEdges.equalToSuperview().inset(10)
+            make.horizontalEdges.equalToSuperview().inset(20)
         }
         
         nicknameView.snp.makeConstraints { make in
@@ -142,8 +142,8 @@ final class SignUpView: UIView {
         }
         
         nicknameTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
             make.verticalEdges.equalToSuperview().inset(10)
+            make.horizontalEdges.equalToSuperview().inset(20)
         }
         
         phoneNumberView.snp.makeConstraints { make in
@@ -154,8 +154,8 @@ final class SignUpView: UIView {
         }
         
         phoneNumberTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
             make.verticalEdges.equalToSuperview().inset(10)
+            make.horizontalEdges.equalToSuperview().inset(20)
         }
         
         birthdayView.snp.makeConstraints { make in
@@ -166,8 +166,8 @@ final class SignUpView: UIView {
         }
         
         birthdayTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
             make.verticalEdges.equalToSuperview().inset(10)
+            make.horizontalEdges.equalToSuperview().inset(20)
         }
         
         signUpButton.snp.makeConstraints { make in
