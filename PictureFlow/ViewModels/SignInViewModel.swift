@@ -46,7 +46,13 @@ final class SignInViewModel: ViewModelType {
                     case .success(let success):
                         print(success.token)
                         print(success.refreshToken)
+                        
+                        // save token in KeyChain
+                        KeyChain.create(key: "accessToken", token: success.token)
+                        KeyChain.create(key: "refreshToken", token: success.refreshToken)
+                        
                         loginSuccess.accept(true)
+                        
                     case .failure(let failure):
                         print(failure.localizedDescription)
                     }

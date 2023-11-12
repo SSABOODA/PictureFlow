@@ -34,8 +34,14 @@
 		F7095A482AFF887C00F0218B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A472AFF887C00F0218B /* Alamofire */; };
 		F7095A4A2AFF89A600F0218B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A492AFF89A600F0218B /* Network.swift */; };
 		F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4B2AFF8A9F00F0218B /* Router.swift */; };
-		F7095A4E2AFFB82300F0218B /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4D2AFFB82300F0218B /* APIModel.swift */; };
 		F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */; };
+		F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A512B00BBA400F0218B /* AuthManager.swift */; };
+		F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A542B00BC3C00F0218B /* UserDefaultsManager.swift */; };
+		F7095A5B2B00C12800F0218B /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A5A2B00C12800F0218B /* SignUp.swift */; };
+		F7095A5D2B00C14200F0218B /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A5C2B00C14200F0218B /* SignIn.swift */; };
+		F7095A602B00C41000F0218B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A5F2B00C41000F0218B /* KeyChain.swift */; };
+		F7095A622B00F5F400F0218B /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A612B00F5F400F0218B /* Token.swift */; };
+		F7095A662B00F82200F0218B /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A652B00F82200F0218B /* APIConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,8 +68,14 @@
 		F7095A412AFF7D9600F0218B /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		F7095A492AFF89A600F0218B /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F7095A4B2AFF8A9F00F0218B /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		F7095A4D2AFFB82300F0218B /* APIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		F7095A512B00BBA400F0218B /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		F7095A542B00BC3C00F0218B /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		F7095A5A2B00C12800F0218B /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
+		F7095A5C2B00C14200F0218B /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
+		F7095A5F2B00C41000F0218B /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
+		F7095A612B00F5F400F0218B /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		F7095A652B00F82200F0218B /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +116,8 @@
 			children = (
 				F70959F82AFE191900F0218B /* AppDelegate.swift */,
 				F70959FA2AFE191900F0218B /* SceneDelegate.swift */,
+				F7095A5E2B00C15A00F0218B /* KeyChain */,
+				F7095A562B00C10000F0218B /* Domain */,
 				F7095A0C2AFE19E300F0218B /* Network */,
 				F7095A272AFE3D7400F0218B /* Helper */,
 				F7095A122AFE372100F0218B /* Views */,
@@ -123,7 +137,7 @@
 				F7095A0F2AFE1A6600F0218B /* APIKey.swift */,
 				F7095A492AFF89A600F0218B /* Network.swift */,
 				F7095A4B2AFF8A9F00F0218B /* Router.swift */,
-				F7095A4D2AFFB82300F0218B /* APIModel.swift */,
+				F7095A512B00BBA400F0218B /* AuthManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -170,6 +184,8 @@
 		F7095A272AFE3D7400F0218B /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				F7095A632B00F7FF00F0218B /* Constants */,
+				F7095A532B00BC2D00F0218B /* Repository */,
 				F7095A402AFF7D8D00F0218B /* Protocol */,
 				F7095A282AFE3DD800F0218B /* Extension */,
 			);
@@ -200,6 +216,48 @@
 				F7095A412AFF7D9600F0218B /* ViewModelType.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		F7095A532B00BC2D00F0218B /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A542B00BC3C00F0218B /* UserDefaultsManager.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		F7095A562B00C10000F0218B /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A592B00C11C00F0218B /* Models */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		F7095A592B00C11C00F0218B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A5A2B00C12800F0218B /* SignUp.swift */,
+				F7095A5C2B00C14200F0218B /* SignIn.swift */,
+				F7095A612B00F5F400F0218B /* Token.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F7095A5E2B00C15A00F0218B /* KeyChain */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A5F2B00C41000F0218B /* KeyChain.swift */,
+			);
+			path = KeyChain;
+			sourceTree = "<group>";
+		};
+		F7095A632B00F7FF00F0218B /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A652B00F82200F0218B /* APIConstants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,16 +347,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7095A232AFE3CC100F0218B /* SignInViewController.swift in Sources */,
+				F7095A622B00F5F400F0218B /* Token.swift in Sources */,
+				F7095A662B00F82200F0218B /* APIConstants.swift in Sources */,
+				F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */,
 				F70959FD2AFE191900F0218B /* JoinViewController.swift in Sources */,
 				F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */,
+				F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */,
+				F7095A602B00C41000F0218B /* KeyChain.swift in Sources */,
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
+				F7095A5D2B00C14200F0218B /* SignIn.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
 				F7095A2A2AFE3DE600F0218B /* Extension+UIViewController.swift in Sources */,
 				F7095A312AFE513A00F0218B /* SignUpView.swift in Sources */,
 				F7095A392AFF6FB700F0218B /* Extension+String.swift in Sources */,
+				F7095A5B2B00C12800F0218B /* SignUp.swift in Sources */,
 				F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */,
 				F7095A4A2AFF89A600F0218B /* Network.swift in Sources */,
 				F7095A142AFE374D00F0218B /* JoinView.swift in Sources */,
@@ -306,7 +371,6 @@
 				F7095A422AFF7D9600F0218B /* ViewModelType.swift in Sources */,
 				F70959FB2AFE191900F0218B /* SceneDelegate.swift in Sources */,
 				F7095A352AFE662E00F0218B /* LoginInputView.swift in Sources */,
-				F7095A4E2AFFB82300F0218B /* APIModel.swift in Sources */,
 				F7095A3F2AFF7D4B00F0218B /* SignInViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

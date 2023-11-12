@@ -14,7 +14,7 @@ enum Router: URLRequestConvertible {
     case join // 회원가입
     case validation // 이메일 유효성 검증
     case login(model: LoginRequest) // 로그인
-    case refresh // 리프레쉬 토큰
+    case refresh(accessToken: String, refreshToken: String) // 리프레쉬 토큰
     case withdraw // 회원탈퇴
     
     private var baseURL: URL {
@@ -32,7 +32,23 @@ enum Router: URLRequestConvertible {
     }
     
     private var header: HTTPHeaders {
-        return ["SesacKey": "\(Router.key)"]
+        switch self {
+        case .join:
+            return []
+        case .validation:
+            return []
+        case .login(let model):
+            print(model)
+            return []
+        case .refresh(let accessToken, let refreshToken):
+            return [
+                "SesacKey": "\(Router.key)",
+                "Authorization": accessToken,
+                "Refresh": refreshToken,
+            ]
+        case .withdraw:
+            return []
+        }
     }
     
     private var method: HTTPMethod {
