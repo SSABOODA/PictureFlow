@@ -27,3 +27,29 @@ enum NetworkError: Int, Error, LocalizedError {
         }
     }
 }
+
+typealias NetworkCompletion<T> = (Result<T, NetworkError>) -> Void
+
+final class Network {
+    static let shared = Network()
+    private init() {}
+    
+    func requestConvertible<T: Decodable>(
+        type: T.Type? = nil,
+        router: Router,
+        completion: @escaping NetworkCompletion<T>
+    ) {
+        
+        AF.request(router).responseDecodable(of: T.self) { response in
+            switch response.result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(_):
+                let statusCode = response.response?.statusCode ?? 500
+                guard let error = NetworkError(rawValue: statusCode) else { return }
+                completion(.failure(error))
+            }
+        }
+    }
+    
+}

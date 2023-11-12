@@ -29,7 +29,8 @@ final class SignInViewController: UIViewController {
         let isSecure = BehaviorRelay(value: true)
         let input = SignInViewModel.Input(
             email: mainView.emailTextField.rx.text.orEmpty,
-            password: mainView.passwordTextField.rx.text.orEmpty
+            password: mainView.passwordTextField.rx.text.orEmpty,
+            loginButtonTap: mainView.loginButton.rx.tap
         )
         
         let output = viewModel.transform(input: input)
@@ -41,12 +42,6 @@ final class SignInViewController: UIViewController {
         output.validation
             .subscribe(with: self) { owner, value in
                 owner.mainView.loginButton.backgroundColor = value ? UIColor.systemBlue : UIColor.lightGray
-            }
-            .disposed(by: disposeBag)
-        
-        mainView.loginButton.rx.tap
-            .bind(with: self) { owner, _ in
-                print("next VC")
             }
             .disposed(by: disposeBag)
         
