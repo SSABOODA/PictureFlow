@@ -29,12 +29,8 @@ final class SignInViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let validation = Observable
             .combineLatest(input.email, input.password) { [weak self] emailText, passwordText in
-//                print(emailText, emailText.validateEmail())
-//                print(passwordText, passwordText.validatePassword())
-                
                 self?.email.onNext(emailText)
                 self?.password.onNext(passwordText)
-                
                 return emailText.validateEmail() && passwordText.validatePassword()
             }
         
@@ -45,6 +41,7 @@ final class SignInViewModel: ViewModelType {
                 return text
             })
             .subscribe(with: self) { owner, loginText in
+                print("tap", loginText)
                 let model = LoginRequest(email: loginText.0, password: loginText.1)
                 owner.loginRequest(model: model) { response in
                     switch response {
@@ -55,7 +52,6 @@ final class SignInViewModel: ViewModelType {
                         print(failure.localizedDescription)
                     }
                 }
-
             }
             .disposed(by: disposeBag)
             

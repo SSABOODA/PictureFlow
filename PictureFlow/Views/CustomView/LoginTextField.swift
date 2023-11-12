@@ -18,6 +18,10 @@ final class LoginTextField: UITextField {
         textColor = .black
         clearButtonMode = .whileEditing
         
+        autocorrectionType = .no
+        autocapitalizationType = .none
+        spellCheckingType = .no
+        
     }
     
     @available(*, unavailable)

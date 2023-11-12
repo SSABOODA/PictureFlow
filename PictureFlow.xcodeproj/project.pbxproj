@@ -35,6 +35,7 @@
 		F7095A4A2AFF89A600F0218B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A492AFF89A600F0218B /* Network.swift */; };
 		F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4B2AFF8A9F00F0218B /* Router.swift */; };
 		F7095A4E2AFFB82300F0218B /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4D2AFFB82300F0218B /* APIModel.swift */; };
+		F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		F7095A492AFF89A600F0218B /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F7095A4B2AFF8A9F00F0218B /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		F7095A4D2AFFB82300F0218B /* APIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
+		F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 		F7095A3D2AFF7D1800F0218B /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */,
 				F7095A3E2AFF7D4B00F0218B /* SignInViewModel.swift */,
 			);
 			path = ViewModels;
@@ -287,6 +290,7 @@
 			files = (
 				F7095A232AFE3CC100F0218B /* SignInViewController.swift in Sources */,
 				F70959FD2AFE191900F0218B /* JoinViewController.swift in Sources */,
+				F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */,
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
