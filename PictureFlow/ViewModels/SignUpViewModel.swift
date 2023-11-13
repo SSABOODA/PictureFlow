@@ -10,12 +10,13 @@ import RxSwift
 import RxCocoa
 
 final class SignUpViewModel: ViewModelType {
+    
     struct Input {
         var email: ControlProperty<String>
         var password: ControlProperty<String>
         var nickname: ControlProperty<String>
         var phoneNumber: ControlProperty<String>
-        var birthday: ControlProperty<String>
+        var birthday: Observable<String>
         var signUpButtonTap: ControlEvent<Void>
     }
     
@@ -29,18 +30,45 @@ final class SignUpViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let signUpSuccess = BehaviorRelay(value: false)
         
+        let email = BehaviorSubject(value: "")
+        let password = BehaviorSubject(value: "")
+        let nickname = BehaviorSubject(value: "")
+        let phoneNumber = BehaviorSubject(value: "")
+        let birthday = BehaviorSubject(value: "")
+        
         let validation = Observable
-            .combineLatest(input.email, input.password, input.nickname) { email, password, nickname in
-                return email.validateEmail() && password.validatePassword() && nickname.count > 0
+            .combineLatest(
+                input.email,
+                input.password,
+                input.nickname,
+                input.phoneNumber,
+                input.birthday
+            ) { email, password, nickname, phoneNumber, birthday in
+                let result =
+                email.validateEmail() &&
+                password.validatePassword() &&
+                nickname.count > 0 &&
+                phoneNumber.validatePhoneNumber()
+                return result
             }
         
-        let signUpText = Observable.zip(
+        let signUpText = Observable.combineLatest(
             input.email,
             input.password,
             input.nickname,
             input.phoneNumber,
             input.birthday
-        ).map { $0 }
+        )
+        
+        signUpText
+            .subscribe(with: self) { owner, text in
+                email.onNext(text.0)
+                password.onNext(text.1)
+                nickname.onNext(text.2)
+                phoneNumber.onNext(text.3)
+                birthday.onNext(text.4)
+            }
+            .disposed(by: disposeBag)
         
         input.signUpButtonTap
             .withLatestFrom(signUpText, resultSelector: { _, text in
@@ -56,18 +84,21 @@ final class SignUpViewModel: ViewModelType {
                 )
             }
             .subscribe(with: self) { owner, model in
+                print("ㅎㅎ 눌렀당")
+                print("model: \(model)")
+                
                 owner.signUpRequest(model: model) { response in
                     switch response {
                     case .success(let success):
-                        print(success._id)
-                        print(success.email)
-                        print(success.nick)
+                        print("_id:", success._id)
+                        print("email:", success.email)
+                        print("nick:", success.nick)
                         signUpSuccess.accept(true)
-                    case .failure(let failure):
-                        print(failure.localizedDescription)
+                    case .failure(let error):
+                        print(error.errorDescription, error)
                     }
-
                 }
+                
             }
             .disposed(by: disposeBag)
         
@@ -87,7 +118,7 @@ extension SignUpViewModel {
     ) {
         Network.shared.requestConvertible(
             type: SignUpResponse.self,
-            router: .join
+            router: .join(model: model)
         ) { response in
             switch response {
             case .success(let data):

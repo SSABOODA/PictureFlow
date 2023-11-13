@@ -11,14 +11,14 @@ import Alamofire
 enum Router: URLRequestConvertible {
     private static let key = APIKey.sesacAPIKey
     
-    case join // 회원가입
+    case join(model: SignUpReqeust) // 회원가입
     case validation // 이메일 유효성 검증
     case login(model: LoginRequest) // 로그인
     case refresh(accessToken: String, refreshToken: String) // 리프레쉬 토큰
-    case withdraw // 회원탈퇴
+    case withdraw(accessToken: String) // 회원탈퇴
     
     private var baseURL: URL {
-        return URL(string: APIKey.baseURL)!
+        return URL(string: BaseURL.baseURL)!
     }
     
     private var path: String {
@@ -34,20 +34,28 @@ enum Router: URLRequestConvertible {
     private var header: HTTPHeaders {
         switch self {
         case .join:
-            return []
+            return [
+                "SesacKey": "\(Router.key)",
+            ]
         case .validation:
-            return []
-        case .login(let model):
-            print(model)
-            return []
+            return [
+                "SesacKey": "\(Router.key)",
+            ]
+        case .login(_):
+            return [
+                "SesacKey": "\(Router.key)",
+            ]
         case .refresh(let accessToken, let refreshToken):
             return [
                 "SesacKey": "\(Router.key)",
                 "Authorization": accessToken,
                 "Refresh": refreshToken,
             ]
-        case .withdraw:
-            return []
+        case .withdraw(let accessToken):
+            return [
+                "SesacKey": "\(Router.key)",
+                "Authorization": accessToken,
+            ]
         }
     }
     
@@ -63,15 +71,17 @@ enum Router: URLRequestConvertible {
     
     private var parameters: Parameters? {
         switch self {
-        case .join:
+        case .join(let model):
             return [
-                "email": "",
-                "password": ""
+                "email": model.email,
+                "password": model.password,
+                "nick": model.nickname,
+                "phoneNum": model.phoneNumber ?? "",
+                "birthDay": model.birthday ?? ""
             ]
         case .validation:
             return [
-                "email": "",
-                "password": ""
+                "email": ""
             ]
         case .login(let model):
             return [
@@ -79,26 +89,19 @@ enum Router: URLRequestConvertible {
                 "password": model.password
             ]
         case .refresh:
-            return [
-                "email": "",
-                "password": ""
-            ]
+            return nil
         case .withdraw:
-            return [
-                "email": "",
-                "password": ""
-            ]
+            return nil
         }
-        
     }
     
-    private var query: [String: String] {
+    private var query: [String: String]? {
         switch self {
-        case .join: return ["": ""]
-        case .validation: return ["": ""]
-        case .login: return ["": ""]
-        case .refresh: return ["": ""]
-        case .withdraw: return ["": ""]
+        case .join: return nil
+        case .validation: return nil
+        case .login: return nil
+        case .refresh: return nil
+        case .withdraw: return nil
         }
     }
     
@@ -108,9 +111,9 @@ enum Router: URLRequestConvertible {
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
-        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
         
-        return request
-//        return try URLEncoding.default.encode(request, with: parameters)
+//        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
+//        return request
+        return try URLEncoding.default.encode(request, with: parameters)
     }
 }

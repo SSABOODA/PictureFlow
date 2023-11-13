@@ -42,6 +42,8 @@
 		F7095A602B00C41000F0218B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A5F2B00C41000F0218B /* KeyChain.swift */; };
 		F7095A622B00F5F400F0218B /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A612B00F5F400F0218B /* Token.swift */; };
 		F7095A662B00F82200F0218B /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A652B00F82200F0218B /* APIConstants.swift */; };
+		F7095A882B02340600F0218B /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A872B02340600F0218B /* Extension+Date.swift */; };
+		F7095A8B2B0239B000F0218B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A8A2B0239B000F0218B /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +78,8 @@
 		F7095A5F2B00C41000F0218B /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		F7095A612B00F5F400F0218B /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		F7095A652B00F82200F0218B /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		F7095A872B02340600F0218B /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
+		F7095A8A2B0239B000F0218B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,7 @@
 		F7095A112AFE1D2B00F0218B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F7095A892B0239A600F0218B /* Home */,
 				F7095A262AFE3D2600F0218B /* Sign */,
 			);
 			path = Controllers;
@@ -197,6 +202,7 @@
 			children = (
 				F7095A292AFE3DE600F0218B /* Extension+UIViewController.swift */,
 				F7095A382AFF6FB700F0218B /* Extension+String.swift */,
+				F7095A872B02340600F0218B /* Extension+Date.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -258,6 +264,14 @@
 				F7095A652B00F82200F0218B /* APIConstants.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		F7095A892B0239A600F0218B /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A8A2B0239B000F0218B /* HomeViewController.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,12 +372,14 @@
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
 				F7095A5D2B00C14200F0218B /* SignIn.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
+				F7095A882B02340600F0218B /* Extension+Date.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
 				F7095A2A2AFE3DE600F0218B /* Extension+UIViewController.swift in Sources */,
 				F7095A312AFE513A00F0218B /* SignUpView.swift in Sources */,
 				F7095A392AFF6FB700F0218B /* Extension+String.swift in Sources */,
 				F7095A5B2B00C12800F0218B /* SignUp.swift in Sources */,
+				F7095A8B2B0239B000F0218B /* HomeViewController.swift in Sources */,
 				F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */,
 				F7095A4A2AFF89A600F0218B /* Network.swift in Sources */,
 				F7095A142AFE374D00F0218B /* JoinView.swift in Sources */,

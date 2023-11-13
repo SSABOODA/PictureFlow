@@ -12,7 +12,6 @@ import RxCocoa
 final class JoinViewController: UIViewController {
     
     let mainView = JoinView()
-    
     let disposeBag = DisposeBag()
     
     override func loadView() {
@@ -23,6 +22,34 @@ final class JoinViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         bind()
+        
+        
+        // TODO: api Test
+        mainView.testButton.addTarget(self, action: #selector(testButtonTapped), for: .touchUpInside)
+    }
+    
+    // TODO: api test
+    @objc func testButtonTapped() {
+        let data = LoginRequest(email: "qwer12364@naver.com", password: "123456")
+        Network.shared.requestConvertible(type: LoginResponse.self, router: .login(model: data)) { response in
+            print(response)
+            switch response {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error.errorDescription, error)
+                switch error {
+                case .missingRequireParameter:
+                    let alert = UIAlertController(title: "\(error.errorDescription)", message: nil, preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "확인", style: .destructive) { _ in }
+                    alert.addAction(ok)
+                    self.present(alert, animated: true)
+                default:
+                    print(456)
+                    
+                }
+            }
+        }
     }
     
     private func bind() {

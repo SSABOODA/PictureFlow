@@ -7,6 +7,9 @@
 
 import UIKit
 
+/*
+ 화면 전환
+ */
 extension UIViewController {
     enum TransitionStyle {
         case present
@@ -31,4 +34,52 @@ extension UIViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
     }
+}
+
+/*
+ alert
+ */
+extension UIViewController {
+    func showAlertAction1(
+        preferredStyle: UIAlertController.Style = .alert,
+        title: String = "",
+        message: String = "",
+        completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil) {
+            
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+                
+                let completeAction = UIAlertAction(title: completeTitle, style: .default) { action in
+                    completeHandler?()
+                }
+                
+                alert.addAction(completeAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    
+    
+    func showAlertAction2(
+        preferredStyle: UIAlertController.Style = .alert,
+        title: String = "",
+        message: String = "",
+        cancelTitle: String = "취소",
+        completeTitle: String = "확인",  _ cancelHandler: (() -> Void)? = nil, _ completeHandler: (() -> Void)? = nil) {
+            
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+                
+                let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { action in
+                    cancelHandler?()
+                }
+                
+                let completeAction = UIAlertAction(title: completeTitle, style: .destructive) { action in
+                    completeHandler?()
+                }
+                
+                alert.addAction(cancelAction)
+                alert.addAction(completeAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
 }

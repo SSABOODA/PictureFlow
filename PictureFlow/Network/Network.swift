@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 enum NetworkError: Int, Error, LocalizedError {
+    case missingRequireParameter = 400
     case missingParameter = 420
     case doesNotExistUser = 401
     case existUserInfo = 409
@@ -19,6 +20,7 @@ enum NetworkError: Int, Error, LocalizedError {
     
     var errorDescription: String {
         switch self {
+        case .missingRequireParameter: return "필수값이 없거나, 비밀번호가 일치하지 않습니다."
         case .missingParameter: return "해당 키값을 다시확인하거나, 잘못된 요청입니다."
         case .doesNotExistUser: return "존재하지 않는 유저입니다."
         case .existUserInfo: return "이미 가입한 유저의 이메일입니다."
@@ -44,12 +46,14 @@ final class Network {
         AF.request(router)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: T.self) { response in
+            print(response.result)
             switch response.result {
             case .success(let data):
                 completion(.success(data))
             case .failure(_):
                 let statusCode = response.response?.statusCode ?? 500
                 guard let error = NetworkError(rawValue: statusCode) else { return }
+                print("error: \(error)", "statusCode: \(statusCode)")
                 completion(.failure(error))
             }
         }

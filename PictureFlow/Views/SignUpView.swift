@@ -10,14 +10,14 @@ import SnapKit
 
 final class SignUpView: UIView {
     
-    let signUpTitleLabel = {
+    private let signUpTitleLabel = {
         let label = UILabel()
         label.text = "회원가입"
         label.font = .boldSystemFont(ofSize: 35)
         return label
     }()
     
-    let emailView = {
+    private let emailView = {
         let view = LoginInputView()
         return view
     }()
@@ -27,7 +27,7 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    let passwordView = {
+    private let passwordView = {
         let view = LoginInputView()
         return view
     }()
@@ -38,7 +38,7 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    let nicknameView = {
+    private let nicknameView = {
         let view = LoginInputView()
         return view
     }()
@@ -48,7 +48,7 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    let phoneNumberView = {
+    private let phoneNumberView = {
         let view = LoginInputView()
         return view
     }()
@@ -58,9 +58,16 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    let birthdayView = {
+    private let birthdayView = {
         let view = LoginInputView()
         return view
+    }()
+    
+    let datePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .wheels
+        return picker
     }()
     
     let birthdayTextField = {
@@ -82,11 +89,16 @@ final class SignUpView: UIView {
         super.init(frame: frame)
         backgroundColor = .white
         configureHierarchy()
+        configureDatePicker()
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureDatePicker() {
+        self.birthdayTextField.inputView = self.datePicker
     }
     
     private func configureHierarchy() {
