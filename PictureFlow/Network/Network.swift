@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import RxSwift
 
 enum NetworkError: Int, Error, LocalizedError {
     case missingRequireParameter = 400
@@ -44,7 +45,7 @@ final class Network {
         completion: @escaping NetworkCompletion<T>
     ) {
         AF.request(router)
-            .validate(statusCode: 200..<500)
+            .validate()
             .responseDecodable(of: T.self) { response in
             print(response.result)
             switch response.result {
@@ -56,6 +57,27 @@ final class Network {
                 print("error: \(error)", "statusCode: \(statusCode)")
                 completion(.failure(error))
             }
+        }
+    }
+    
+    func requestObservableConvertible<T: Decodable>(
+        type: T.Type,
+        router: Router
+    ) -> Observable<T> {
+        return Observable.create { [weak self] emitter in
+            
+            self?.requestConvertible(type: T.self, router: router) { result in
+                switch result {
+                case .success(let data):
+                    emitter.onNext(data)
+                    emitter.onCompleted()
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            
+            return Disposables.create()
+            
         }
     }
 }

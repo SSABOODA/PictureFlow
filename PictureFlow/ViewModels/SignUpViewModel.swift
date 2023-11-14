@@ -23,18 +23,21 @@ final class SignUpViewModel: ViewModelType {
     struct Output {
         let validation: Observable<Bool>
         var signUpSuccess: BehaviorRelay<Bool>
+        var errorMessage: PublishSubject<String>
     }
     
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
         let signUpSuccess = BehaviorRelay(value: false)
-        
-        let email = BehaviorSubject(value: "")
-        let password = BehaviorSubject(value: "")
-        let nickname = BehaviorSubject(value: "")
-        let phoneNumber = BehaviorSubject(value: "")
-        let birthday = BehaviorSubject(value: "")
+        let model = SignUpReqeust(
+            email: "",
+            password: "",
+            nickname: "",
+            phoneNumber: "",
+            birthday: "")
+        let signUpModelObservable = BehaviorRelay<SignUpReqeust>(value: model)
+        let errorMessage = PublishSubject<String>()
         
         let validation = Observable
             .combineLatest(
@@ -52,80 +55,56 @@ final class SignUpViewModel: ViewModelType {
                 return result
             }
         
-        let signUpText = Observable.combineLatest(
+        Observable.combineLatest(
             input.email,
             input.password,
             input.nickname,
             input.phoneNumber,
             input.birthday
         )
-        
-        signUpText
-            .subscribe(with: self) { owner, text in
-                email.onNext(text.0)
-                password.onNext(text.1)
-                nickname.onNext(text.2)
-                phoneNumber.onNext(text.3)
-                birthday.onNext(text.4)
-            }
-            .disposed(by: disposeBag)
-        
+        .subscribe(with: self) { owner, text in
+            let model = SignUpReqeust(
+                email: text.0,
+                password: text.1,
+                nickname: text.2,
+                phoneNumber: text.3,
+                birthday: text.4
+            )
+            signUpModelObservable.accept(model)
+        }
+        .disposed(by: disposeBag)
+
         input.signUpButtonTap
-            .withLatestFrom(signUpText, resultSelector: { _, text in
-                return text
-            })
-            .map {
-                return SignUpReqeust(
-                    email: $0.0,
-                    password: $0.1,
-                    nickname: $0.2,
-                    phoneNumber: $0.3,
-                    birthday: $0.4
+            .take(1)
+            .withLatestFrom(signUpModelObservable)
+            .flatMap {
+                Network.shared.requestObservableConvertible(
+                    type: SignUpResponse.self,
+                    router: .join(model: $0)
                 )
             }
-            .subscribe(with: self) { owner, model in
-                print("ㅎㅎ 눌렀당")
-                print("model: \(model)")
-                
-                owner.signUpRequest(model: model) { response in
-                    switch response {
-                    case .success(let success):
-                        print("_id:", success._id)
-                        print("email:", success.email)
-                        print("nick:", success.nick)
-                        signUpSuccess.accept(true)
-                    case .failure(let error):
-                        print(error.errorDescription, error)
-                    }
+            .catch { error in
+                print("error: \(error)")
+                if let error = error as? NetworkError {
+                    let message = error.errorDescription
+                    errorMessage.onNext(message)
                 }
                 
+                return Observable.empty()
+            }
+            .subscribe(with: self) { owner, response in
+                print(response._id)
+                print(response.email)
+                print(response.nick)
+                signUpSuccess.accept(true)
             }
             .disposed(by: disposeBag)
-        
+
         return Output(
             validation: validation,
-            signUpSuccess: signUpSuccess
+            signUpSuccess: signUpSuccess,
+            errorMessage: errorMessage
         )
     }
     
-}
-
-// fetch API
-extension SignUpViewModel {
-    private func signUpRequest(
-        model: SignUpReqeust,
-        completion: @escaping (Result<SignUpResponse, NetworkError>) -> Void
-    ) {
-        Network.shared.requestConvertible(
-            type: SignUpResponse.self,
-            router: .join(model: model)
-        ) { response in
-            switch response {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
 }

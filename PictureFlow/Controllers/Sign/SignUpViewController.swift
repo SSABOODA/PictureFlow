@@ -67,13 +67,19 @@ final class SignUpViewController: UIViewController {
             .drive(with: self) { owner, value in
                 print("signUpSuccess next VC", value)
                 if value {
-                    owner.showAlertAction1(title: "회원가입에 성공하셨습니다.😃")
                     owner.showAlertAction1(title: "회원가입에 성공하셨습니다.😃") {
-                        let vc = HomeViewController()
-                        owner.transition(viewController: vc, style: .push)
+                        owner.navigationController?.popViewController(animated: true)
                     }
                 }
             }
             .disposed(by: disposeBag)
+        
+        output.errorMessage
+            .subscribe(with: self) { owner, message in
+                print("===message: \(message)")
+            }
+            .disposed(by: disposeBag)
+        
+        
     }
 }
