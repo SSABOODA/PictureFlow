@@ -23,7 +23,7 @@ final class SignUpViewModel: ViewModelType {
     struct Output {
         let validation: Observable<Bool>
         var signUpSuccess: BehaviorRelay<Bool>
-        var errorMessage: PublishSubject<String>
+        var errorSubject: PublishSubject<NetworkError>
     }
     
     var disposeBag = DisposeBag()
@@ -35,9 +35,10 @@ final class SignUpViewModel: ViewModelType {
             password: "",
             nickname: "",
             phoneNumber: "",
-            birthday: "")
-        let signUpModelObservable = BehaviorRelay<SignUpReqeust>(value: model)
-        let errorMessage = PublishSubject<String>()
+            birthday: ""
+        )
+        let signUpModelObservable = BehaviorSubject<SignUpReqeust>(value: model)
+        let errorSubject = PublishSubject<NetworkError>()
         
         let validation = Observable
             .combineLatest(
@@ -70,12 +71,17 @@ final class SignUpViewModel: ViewModelType {
                 phoneNumber: text.3,
                 birthday: text.4
             )
-            signUpModelObservable.accept(model)
+            signUpModelObservable.onNext(model)
         }
         .disposed(by: disposeBag)
 
+        errorSubject
+            .bind(with: self) { owner, error in
+                print(error)
+            }
+            .disposed(by: disposeBag)
+        
         input.signUpButtonTap
-            .take(1)
             .withLatestFrom(signUpModelObservable)
             .flatMap {
                 Network.shared.requestObservableConvertible(
@@ -83,27 +89,27 @@ final class SignUpViewModel: ViewModelType {
                     router: .join(model: $0)
                 )
             }
-            .catch { error in
-                print("error: \(error)")
-                if let error = error as? NetworkError {
-                    let message = error.errorDescription
-                    errorMessage.onNext(message)
+            .debug("signUpButtonTap")
+            .subscribe(with: self) { owner, result in // drive, bind로 바꿔도 될 듯
+                switch result {
+                case .success(let succes):
+                    print(succes._id)
+                    print(succes.email)
+                    print(succes.nick)
+                    signUpSuccess.accept(true)
+                case .failure(let error):
+                    print("나오면 억까 \(error)")
+                    errorSubject.onNext(error)
                 }
-                
-                return Observable.empty()
-            }
-            .subscribe(with: self) { owner, response in
-                print(response._id)
-                print(response.email)
-                print(response.nick)
-                signUpSuccess.accept(true)
+            } onDisposed: { owner in
+                print("onDisposed")
             }
             .disposed(by: disposeBag)
 
         return Output(
             validation: validation,
             signUpSuccess: signUpSuccess,
-            errorMessage: errorMessage
+            errorSubject: errorSubject
         )
     }
     

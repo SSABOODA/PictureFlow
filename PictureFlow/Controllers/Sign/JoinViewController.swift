@@ -25,7 +25,18 @@ final class JoinViewController: UIViewController {
         
         
         // TODO: api Test
-        mainView.testButton.addTarget(self, action: #selector(testButtonTapped), for: .touchUpInside)
+//        mainView.testButton.addTarget(self, action: #selector(testButtonTapped), for: .touchUpInside)
+        
+        
+        mainView.testButton.rx.tap
+            .subscribe(with: self) { owner, _ in
+                print("clicked")
+            } onError: { owner, error in
+                print("onError")
+            } onCompleted: { owner in
+                print("onCompleted")
+            }
+            .disposed(by: disposeBag)
     }
     
     // TODO: api test

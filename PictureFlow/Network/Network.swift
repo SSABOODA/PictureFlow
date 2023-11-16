@@ -47,38 +47,56 @@ final class Network {
         AF.request(router)
             .validate()
             .responseDecodable(of: T.self) { response in
-            print(response.result)
-            switch response.result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(_):
-                let statusCode = response.response?.statusCode ?? 500
-                guard let error = NetworkError(rawValue: statusCode) else { return }
-                print("error: \(error)", "statusCode: \(statusCode)")
-                completion(.failure(error))
+                print(response.result)
+                switch response.result {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(_):
+                    let statusCode = response.response?.statusCode ?? 500
+                    guard let error = NetworkError(rawValue: statusCode) else { return }
+                    print("error: \(error)", "statusCode: \(statusCode)")
+                    completion(.failure(error))
+                }
             }
-        }
     }
     
     func requestObservableConvertible<T: Decodable>(
         type: T.Type,
         router: Router
-    ) -> Observable<T> {
+    ) -> Observable<Result<T, NetworkError>> {
         return Observable.create { [weak self] emitter in
             
             self?.requestConvertible(type: T.self, router: router) { result in
                 switch result {
-                case .success(let data):
-                    emitter.onNext(data)
-                    emitter.onCompleted()
+                case .success(let success):
+                    emitter.onNext(.success(success))
                 case .failure(let error):
-                    emitter.onError(error)
+                    emitter.onNext(.failure(error))
                 }
             }
             
             return Disposables.create()
-            
         }
     }
+    
+    func requestObservableConvertible2<T: Decodable>(
+        type: T.Type,
+        router: Router
+    ) -> Observable<Result<T, NetworkError>> {
+        return Observable.create { [weak self] emitter in
+            
+            self?.requestConvertible(type: T.self, router: router) { result in
+                switch result {
+                case .success(let success):
+                    emitter.onNext(.success(success))
+                case .failure(let error):
+                    emitter.onNext(.failure(error))
+                }
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
+    
 }
-

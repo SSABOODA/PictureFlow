@@ -63,7 +63,8 @@ final class SignUpViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.signUpSuccess
-            .asDriver()
+            .observe(on: MainScheduler.asyncInstance)
+            .asDriver(onErrorJustReturn: false)
             .drive(with: self) { owner, value in
                 print("signUpSuccess next VC", value)
                 if value {
@@ -74,9 +75,16 @@ final class SignUpViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.errorMessage
-            .subscribe(with: self) { owner, message in
-                print("===message: \(message)")
+        output.errorSubject
+            .subscribe(with: self) { owner, networkError in
+                switch networkError {
+                case .missingRequireParameter:
+                    print(123)
+                case .existUserInfo:
+                    print("에러 여기다.!!!!!")
+                default:
+                    break
+                }
             }
             .disposed(by: disposeBag)
         
