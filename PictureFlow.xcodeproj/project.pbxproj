@@ -43,6 +43,11 @@
 		F7095A8B2B0239B000F0218B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A8A2B0239B000F0218B /* HomeViewController.swift */; };
 		F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */; };
 		F7B409412B075730006CD373 /* UserVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409402B075730006CD373 /* UserVerification.swift */; };
+		F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409432B076F9D006CD373 /* UITabbarController.swift */; };
+		F7B409472B07713B006CD373 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409462B07713B006CD373 /* SearchViewController.swift */; };
+		F7B409492B077146006CD373 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409482B077146006CD373 /* PostViewController.swift */; };
+		F7B4094B2B07714F006CD373 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4094A2B07714F006CD373 /* LikeViewController.swift */; };
+		F7B4094D2B07715A006CD373 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4094C2B07715A006CD373 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +83,11 @@
 		F7095A8A2B0239B000F0218B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		F7B409402B075730006CD373 /* UserVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVerification.swift; sourceTree = "<group>"; };
+		F7B409432B076F9D006CD373 /* UITabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabbarController.swift; sourceTree = "<group>"; };
+		F7B409462B07713B006CD373 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		F7B409482B077146006CD373 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		F7B4094A2B07714F006CD373 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
+		F7B4094C2B07715A006CD373 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +157,7 @@
 		F7095A112AFE1D2B00F0218B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F7B409422B075A84006CD373 /* CustomController */,
 				F7095A892B0239A600F0218B /* Home */,
 				F7095A262AFE3D2600F0218B /* Sign */,
 			);
@@ -208,8 +219,7 @@
 		F7095A3D2AFF7D1800F0218B /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */,
-				F7095A3E2AFF7D4B00F0218B /* SignInViewModel.swift */,
+				F7B409452B077091006CD373 /* Sign */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -267,8 +277,29 @@
 			isa = PBXGroup;
 			children = (
 				F7095A8A2B0239B000F0218B /* HomeViewController.swift */,
+				F7B409462B07713B006CD373 /* SearchViewController.swift */,
+				F7B409482B077146006CD373 /* PostViewController.swift */,
+				F7B4094A2B07714F006CD373 /* LikeViewController.swift */,
+				F7B4094C2B07715A006CD373 /* ProfileViewController.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		F7B409422B075A84006CD373 /* CustomController */ = {
+			isa = PBXGroup;
+			children = (
+				F7B409432B076F9D006CD373 /* UITabbarController.swift */,
+			);
+			path = CustomController;
+			sourceTree = "<group>";
+		};
+		F7B409452B077091006CD373 /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */,
+				F7095A3E2AFF7D4B00F0218B /* SignInViewModel.swift */,
+			);
+			path = Sign;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,14 +389,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7095A232AFE3CC100F0218B /* SignInViewController.swift in Sources */,
+				F7B4094B2B07714F006CD373 /* LikeViewController.swift in Sources */,
 				F7095A662B00F82200F0218B /* APIConstants.swift in Sources */,
 				F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */,
 				F70959FD2AFE191900F0218B /* JoinViewController.swift in Sources */,
 				F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */,
+				F7B4094D2B07715A006CD373 /* ProfileViewController.swift in Sources */,
 				F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */,
 				F7095A602B00C41000F0218B /* KeyChain.swift in Sources */,
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
+				F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
 				F7095A882B02340600F0218B /* Extension+Date.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
@@ -380,10 +414,12 @@
 				F7095A4A2AFF89A600F0218B /* Network.swift in Sources */,
 				F7095A142AFE374D00F0218B /* JoinView.swift in Sources */,
 				F7095A332AFE514300F0218B /* SignInView.swift in Sources */,
+				F7B409492B077146006CD373 /* PostViewController.swift in Sources */,
 				F7095A422AFF7D9600F0218B /* ViewModelType.swift in Sources */,
 				F70959FB2AFE191900F0218B /* SceneDelegate.swift in Sources */,
 				F7095A352AFE662E00F0218B /* LoginInputView.swift in Sources */,
 				F7095A3F2AFF7D4B00F0218B /* SignInViewModel.swift in Sources */,
+				F7B409472B07713B006CD373 /* SearchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

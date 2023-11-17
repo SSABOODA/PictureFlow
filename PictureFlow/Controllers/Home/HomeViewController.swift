@@ -12,8 +12,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
-        
-        view.backgroundColor = .purple
+        view.backgroundColor = .white
         
         
         let a = KeyChain.read(key: "accessToken")

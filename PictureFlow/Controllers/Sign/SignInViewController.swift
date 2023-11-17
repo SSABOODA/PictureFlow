@@ -84,8 +84,7 @@ final class SignInViewController: UIViewController {
                 if isSuccess {
                     owner.showAlertAction1(title: "로그인에 성공하셨습니다.😃") {
                         print("login succeed")
-                        let vc = HomeViewController()
-                        owner.navigationController?.pushViewController(vc, animated: true)
+                        owner.changeRootViewController(viewController: HomeViewController())
                     }
                 }
             }

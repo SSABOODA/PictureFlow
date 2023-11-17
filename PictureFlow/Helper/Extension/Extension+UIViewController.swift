@@ -11,6 +11,7 @@ import UIKit
  화면 전환
  */
 extension UIViewController {
+    // 화면전환 메서드
     enum TransitionStyle {
         case present
         case presentNavigation
@@ -33,6 +34,16 @@ extension UIViewController {
         case .push:
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    
+    // Root ViewController
+    func changeRootViewController<T: UIViewController>(viewController: T) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+        let sceneDelegate = windowScene.delegate as? SceneDelegate
+        let vc = viewController
+        let nav = UINavigationController(rootViewController: vc)
+        sceneDelegate?.window?.rootViewController = nav
+        sceneDelegate?.window?.makeKey()
     }
 }
 
@@ -82,4 +93,6 @@ extension UIViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
+    
+    
 }

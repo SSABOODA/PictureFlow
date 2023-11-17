@@ -14,25 +14,15 @@ final class UserDefaultsHelper {
     let userDefaults = UserDefaults.standard
     
     enum Key: String {
-        case accessToken
-        case refreshToken
+        case isLoggedIn
     }
     
-    var accessToken: String? {
+    var isLoggedIn: Bool {
         get {
-            return userDefaults.string(forKey: Key.accessToken.rawValue)
+            return userDefaults.bool(forKey: Key.isLoggedIn.rawValue)
         }
         set {
-            userDefaults.set(newValue, forKey: Key.accessToken.rawValue)
-        }
-    }
-    
-    var refreshToken: String? {
-        get {
-            return userDefaults.string(forKey: Key.refreshToken.rawValue)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Key.refreshToken.rawValue)
+            userDefaults.set(newValue, forKey: Key.isLoggedIn.rawValue)
         }
     }
 }
