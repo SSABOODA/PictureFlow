@@ -71,7 +71,23 @@ final class SignInViewController: UIViewController {
                 owner.mainView.passwordSecureButton.tintColor = color
             }
             .disposed(by: disposeBag)
-
+        
+        output.loginSuccess
+            .bind(with: self) { owner, isSuccess in
+                if isSuccess {
+                    owner.showAlertAction1(title: "로그인에 성공하셨습니다.😃") {
+                        print("login succeed")
+                        let vc = HomeViewController()
+                        owner.navigationController?.pushViewController(vc, animated: true)
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        output.errorResponse
+            .subscribe(with: self) { owner, error in
+                print("message: \(error.message)")
+            }
+            .disposed(by: disposeBag)
     }
-    
 }

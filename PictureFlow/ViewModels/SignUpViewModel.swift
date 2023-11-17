@@ -23,22 +23,30 @@ final class SignUpViewModel: ViewModelType {
     struct Output {
         let validation: Observable<Bool>
         var signUpSuccess: BehaviorRelay<Bool>
-        var errorSubject: PublishSubject<NetworkError>
+        var errorResponse: PublishRelay<ErrorResponse>
     }
     
     var disposeBag = DisposeBag()
+    let model = SignUpReqeust(
+        email: "",
+        password: "",
+        nickname: "",
+        phoneNumber: "",
+        birthday: ""
+    )
+    let validationModel = ValidationRequest(
+        email: ""
+    )
     
     func transform(input: Input) -> Output {
         let signUpSuccess = BehaviorRelay(value: false)
-        let model = SignUpReqeust(
-            email: "",
-            password: "",
-            nickname: "",
-            phoneNumber: "",
-            birthday: ""
-        )
-        let signUpModelObservable = BehaviorSubject<SignUpReqeust>(value: model)
         let errorSubject = PublishSubject<NetworkError>()
+        let errorResponse = PublishRelay<ErrorResponse>()
+        
+        let signUpModelObservable = BehaviorSubject<SignUpReqeust>(value: model)
+        let validationModelObservable = BehaviorSubject<ValidationRequest>(value: validationModel)
+        
+        let emailValidation = BehaviorRelay(value: false)
         
         let validation = Observable
             .combineLatest(
@@ -72,25 +80,45 @@ final class SignUpViewModel: ViewModelType {
                 birthday: text.4
             )
             signUpModelObservable.onNext(model)
+            
+            let validationModel = ValidationRequest(email: text.0)
+            validationModelObservable.onNext(validationModel)
         }
         .disposed(by: disposeBag)
-
-        errorSubject
-            .bind(with: self) { owner, error in
-                print(error)
+        
+        input.signUpButtonTap
+            .withLatestFrom(validationModelObservable)
+            .flatMap {
+                Network.shared.requestObservableConvertible2(
+                    type: ValidationResponse.self,
+                    router: .validation(model: $0)
+                )
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let success):
+                    print(success.message)
+                    emailValidation.accept(true)
+                case .failure(let error):
+                    print("\(error)")
+                    errorResponse.accept(error)
+                }
+            } onDisposed: { owner in
+                print("onDisposed")
             }
             .disposed(by: disposeBag)
         
-        input.signUpButtonTap
+        emailValidation
+            .filter { $0 == true }
             .withLatestFrom(signUpModelObservable)
             .flatMap {
-                Network.shared.requestObservableConvertible(
+                Network.shared.requestObservableConvertible2(
                     type: SignUpResponse.self,
                     router: .join(model: $0)
                 )
             }
             .debug("signUpButtonTap")
-            .subscribe(with: self) { owner, result in // drive, bind로 바꿔도 될 듯
+            .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let succes):
                     print(succes._id)
@@ -98,8 +126,8 @@ final class SignUpViewModel: ViewModelType {
                     print(succes.nick)
                     signUpSuccess.accept(true)
                 case .failure(let error):
-                    print("나오면 억까 \(error)")
-                    errorSubject.onNext(error)
+                    print("subscribe \(error)")
+                    errorResponse.accept(error)
                 }
             } onDisposed: { owner in
                 print("onDisposed")
@@ -109,7 +137,7 @@ final class SignUpViewModel: ViewModelType {
         return Output(
             validation: validation,
             signUpSuccess: signUpSuccess,
-            errorSubject: errorSubject
+            errorResponse: errorResponse
         )
     }
     

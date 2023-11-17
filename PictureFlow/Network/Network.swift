@@ -47,7 +47,7 @@ final class Network {
         AF.request(router)
             .validate()
             .responseDecodable(of: T.self) { response in
-                print(response.result)
+                print()
                 switch response.result {
                 case .success(let data):
                     completion(.success(data))
@@ -66,10 +66,12 @@ final class Network {
     ) -> Observable<Result<T, NetworkError>> {
         return Observable.create { [weak self] emitter in
             
+            // onNext + onCompleted => Single
             self?.requestConvertible(type: T.self, router: router) { result in
                 switch result {
                 case .success(let success):
                     emitter.onNext(.success(success))
+                    emitter.onCompleted() // onNext 쌓이면 안됨
                 case .failure(let error):
                     emitter.onNext(.failure(error))
                 }
@@ -77,26 +79,65 @@ final class Network {
             
             return Disposables.create()
         }
+    }
+    
+    /*
+     Single
+     */
+    
+    typealias NetworkCompletion2<T> = (Result<T, ErrorResponse>) -> Void
+    func requestConvertible2<T: Decodable>(
+        type: T.Type? = nil,
+        router: Router,
+        completion: @escaping NetworkCompletion2<T>
+    ) {
+        AF.request(router)
+            .validate()
+            .responseDecodable(of: T.self) { response in
+                
+                switch response.result {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(_):
+                    let statusCode = response.response?.statusCode ?? 500
+//                    guard let error = NetworkError(rawValue: statusCode) else { return }
+//                    print("error: \(error)", "statusCode: \(statusCode)")
+//                    completion(.failure(error))
+                    
+                    guard let data = response.data else { return }
+                    print(data)
+                    
+                    do {
+                        let serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                        print("decoding error value: \(serverError)")
+                        completion(.failure(serverError))
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
+            }
     }
     
     func requestObservableConvertible2<T: Decodable>(
         type: T.Type,
         router: Router
-    ) -> Observable<Result<T, NetworkError>> {
-        return Observable.create { [weak self] emitter in
+    ) -> Single<Result<T, ErrorResponse>> {
+        return Single.create { [weak self] single in
             
-            self?.requestConvertible(type: T.self, router: router) { result in
+            self?.requestConvertible2(type: T.self, router: router) { result in
                 switch result {
                 case .success(let success):
-                    emitter.onNext(.success(success))
+                    single(.success(.success(success)))
                 case .failure(let error):
-                    emitter.onNext(.failure(error))
-                }
+                    single(.success(.failure(error)))
             }
+        }
             
             return Disposables.create()
         }
     }
     
     
+        
 }

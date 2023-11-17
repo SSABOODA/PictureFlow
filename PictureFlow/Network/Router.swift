@@ -12,7 +12,7 @@ enum Router: URLRequestConvertible {
     private static let key = APIKey.sesacAPIKey
     
     case join(model: SignUpReqeust) // 회원가입
-    case validation // 이메일 유효성 검증
+    case validation(model: ValidationRequest) // 이메일 유효성 검증
     case login(model: LoginRequest) // 로그인
     case refresh(accessToken: String, refreshToken: String) // 리프레쉬 토큰
     case withdraw(accessToken: String) // 회원탈퇴
@@ -79,9 +79,9 @@ enum Router: URLRequestConvertible {
                 "phoneNum": model.phoneNumber ?? "",
                 "birthDay": model.birthday ?? ""
             ]
-        case .validation:
+        case .validation(let model):
             return [
-                "email": ""
+                "email": model.email
             ]
         case .login(let model):
             return [
@@ -107,13 +107,11 @@ enum Router: URLRequestConvertible {
     
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appendingPathComponent(path)
-        print("url: \(url)")
+        print("url: \(url)", "\(self.parameters)")
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
-        
-//        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
-//        return request
+
         return try URLEncoding.default.encode(request, with: parameters)
     }
 }

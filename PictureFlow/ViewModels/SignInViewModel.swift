@@ -20,69 +20,66 @@ final class SignInViewModel: ViewModelType {
     struct Output {
         let validation: Observable<Bool>
         let loginSuccess: BehaviorRelay<Bool>
+        let errorResponse: PublishRelay<ErrorResponse>
     }
     
     var disposeBag = DisposeBag()
+    let loginModel = LoginRequest(email: "", password: "")
+    
     
     func transform(input: Input) -> Output {
         let loginSuccess = BehaviorRelay(value: false)
-
+        let errorSubject = PublishSubject<NetworkError>()
+        let errorResponse = PublishRelay<ErrorResponse>()
+        let loginModelObservable = BehaviorSubject<LoginRequest>(value: loginModel)
+        
         let validation = Observable
             .combineLatest(input.email, input.password) { emailText, passwordText in
                 return emailText.validateEmail() && passwordText.validatePassword()
             }
-
-        let loginText = Observable.zip(input.email, input.password).map { $0 }
+        
+        Observable.combineLatest(
+            input.email,
+            input.password
+        )
+        .subscribe(with: self) { owner, inputText in
+            let model = LoginRequest(
+                email: inputText.0,
+                password: inputText.1
+            )
+            loginModelObservable.onNext(model)
+        }
+        .disposed(by: disposeBag)
         
         input.loginButtonTap
-            .withLatestFrom(loginText, resultSelector: { _, text in
-                return text
-            })
-            .subscribe(with: self) { owner, loginText in
-                print("tap", loginText)
-                let model = LoginRequest(email: loginText.0, password: loginText.1)
-                owner.loginRequest(model: model) { response in
-                    switch response {
-                    case .success(let success):
-                        print(success.token)
-                        print(success.refreshToken)
-                        
-                        // save token in KeyChain
-                        KeyChain.create(key: "accessToken", token: success.token)
-                        KeyChain.create(key: "refreshToken", token: success.refreshToken)
-                        
-                        loginSuccess.accept(true)
-                        
-                    case .failure(let failure):
-                        print(failure.localizedDescription)
-                    }
+            .withLatestFrom(loginModelObservable)
+            .flatMap {
+                Network.shared.requestObservableConvertible2(
+                    type: LoginResponse.self,
+                    router: .login(model: $0)
+                )
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let success):
+                    print("token==", success.token)
+                    print("refreshToken==", success.refreshToken)
+                    KeyChain.create(key: APIConstants.accessToken, token: success.token)
+                    KeyChain.create(key: APIConstants.refreshToken, token: success.refreshToken)
+                    loginSuccess.accept(true)
+                case .failure(let error):
+                    print("subscribe errorResponse: \(error)")
+                    errorResponse.accept(error)
                 }
+            } onDisposed: { owner in
+                print("onDisposed")
             }
             .disposed(by: disposeBag)
-            
+        
         return Output(
             validation: validation,
-            loginSuccess: loginSuccess
+            loginSuccess: loginSuccess,
+            errorResponse: errorResponse
         )
-    }
-}
-
-// fetch API
-extension SignInViewModel {
-    private func loginRequest(
-        model: LoginRequest,
-        completion: @escaping (Result<LoginResponse, NetworkError>) -> Void
-    ) {
-        Network.shared.requestConvertible(
-            type: LoginResponse.self,
-            router: .login(model: model)
-        ) { response in
-            switch response {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
     }
 }

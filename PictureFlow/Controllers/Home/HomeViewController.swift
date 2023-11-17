@@ -8,8 +8,19 @@
 import UIKit
 
 final class HomeViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .green
+        print(#function)
+        
+        view.backgroundColor = .purple
+        
+        
+        let a = KeyChain.read(key: "accessToken")
+        let r = KeyChain.read(key: "refreshToken")
+        
+        print("accessToken: \(a)")
+        print("refreshToken: \(r)")
+        
     }
 }

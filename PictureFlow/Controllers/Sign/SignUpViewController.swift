@@ -75,19 +75,10 @@ final class SignUpViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.errorSubject
-            .subscribe(with: self) { owner, networkError in
-                switch networkError {
-                case .missingRequireParameter:
-                    print(123)
-                case .existUserInfo:
-                    print("에러 여기다.!!!!!")
-                default:
-                    break
-                }
+        output.errorResponse
+            .subscribe(with: self) { owner, errorResponse in
+                print("errorResponse: \(errorResponse)")
             }
             .disposed(by: disposeBag)
-        
-        
     }
 }
