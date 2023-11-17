@@ -37,15 +37,12 @@
 		F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */; };
 		F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A512B00BBA400F0218B /* AuthManager.swift */; };
 		F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A542B00BC3C00F0218B /* UserDefaultsManager.swift */; };
-		F7095A5B2B00C12800F0218B /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A5A2B00C12800F0218B /* SignUp.swift */; };
-		F7095A5D2B00C14200F0218B /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A5C2B00C14200F0218B /* SignIn.swift */; };
 		F7095A602B00C41000F0218B /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A5F2B00C41000F0218B /* KeyChain.swift */; };
-		F7095A622B00F5F400F0218B /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A612B00F5F400F0218B /* Token.swift */; };
 		F7095A662B00F82200F0218B /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A652B00F82200F0218B /* APIConstants.swift */; };
 		F7095A882B02340600F0218B /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A872B02340600F0218B /* Extension+Date.swift */; };
 		F7095A8B2B0239B000F0218B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A8A2B0239B000F0218B /* HomeViewController.swift */; };
-		F7B409392B062505006CD373 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409382B062505006CD373 /* Validation.swift */; };
 		F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */; };
+		F7B409412B075730006CD373 /* UserVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409402B075730006CD373 /* UserVerification.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,15 +72,12 @@
 		F7095A4F2B00A47600F0218B /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		F7095A512B00BBA400F0218B /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F7095A542B00BC3C00F0218B /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
-		F7095A5A2B00C12800F0218B /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
-		F7095A5C2B00C14200F0218B /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
 		F7095A5F2B00C41000F0218B /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
-		F7095A612B00F5F400F0218B /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		F7095A652B00F82200F0218B /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		F7095A872B02340600F0218B /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
 		F7095A8A2B0239B000F0218B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		F7B409382B062505006CD373 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		F7B409402B075730006CD373 /* UserVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVerification.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,10 +241,7 @@
 		F7095A592B00C11C00F0218B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F7095A5A2B00C12800F0218B /* SignUp.swift */,
-				F7095A5C2B00C14200F0218B /* SignIn.swift */,
-				F7095A612B00F5F400F0218B /* Token.swift */,
-				F7B409382B062505006CD373 /* Validation.swift */,
+				F7B409402B075730006CD373 /* UserVerification.swift */,
 				F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */,
 			);
 			path = Models;
@@ -367,7 +358,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7095A232AFE3CC100F0218B /* SignInViewController.swift in Sources */,
-				F7095A622B00F5F400F0218B /* Token.swift in Sources */,
 				F7095A662B00F82200F0218B /* APIConstants.swift in Sources */,
 				F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */,
 				F70959FD2AFE191900F0218B /* JoinViewController.swift in Sources */,
@@ -376,18 +366,16 @@
 				F7095A602B00C41000F0218B /* KeyChain.swift in Sources */,
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
-				F7095A5D2B00C14200F0218B /* SignIn.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
 				F7095A882B02340600F0218B /* Extension+Date.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
-				F7B409392B062505006CD373 /* Validation.swift in Sources */,
 				F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
 				F7095A2A2AFE3DE600F0218B /* Extension+UIViewController.swift in Sources */,
 				F7095A312AFE513A00F0218B /* SignUpView.swift in Sources */,
 				F7095A392AFF6FB700F0218B /* Extension+String.swift in Sources */,
-				F7095A5B2B00C12800F0218B /* SignUp.swift in Sources */,
 				F7095A8B2B0239B000F0218B /* HomeViewController.swift in Sources */,
+				F7B409412B075730006CD373 /* UserVerification.swift in Sources */,
 				F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */,
 				F7095A4A2AFF89A600F0218B /* Network.swift in Sources */,
 				F7095A142AFE374D00F0218B /* JoinView.swift in Sources */,

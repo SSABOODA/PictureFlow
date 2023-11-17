@@ -29,7 +29,6 @@ final class SignInViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let loginSuccess = BehaviorRelay(value: false)
-        let errorSubject = PublishSubject<NetworkError>()
         let errorResponse = PublishRelay<ErrorResponse>()
         let loginModelObservable = BehaviorSubject<LoginRequest>(value: loginModel)
         

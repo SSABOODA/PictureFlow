@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+// @deprecated
 final class JoinView: UIView {
     
     let signUpButton = {
@@ -22,14 +23,6 @@ final class JoinView: UIView {
         button.setTitle("로그인", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = .lightGray
-        return button
-    }()
-    
-    let testButton = {
-        let button = JoinButton()
-        button.setTitle("API TEST", for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = .systemPink
         return button
     }()
     
@@ -60,13 +53,6 @@ final class JoinView: UIView {
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalToSuperview().multipliedBy(0.06)
-        }
-        
-        addSubview(testButton)
-        testButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.horizontalEdges.equalToSuperview().inset(15)
-            make.bottom.equalTo(safeAreaLayoutGuide).inset(30)
         }
     }
     

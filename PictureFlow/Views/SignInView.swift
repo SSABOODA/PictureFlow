@@ -22,7 +22,7 @@ final class SignInView: UIView {
     }()
     
     let emailTextField = {
-        let tf = LoginTextField(placeholderText: "이메일 주소")
+        let tf = LoginTextField(placeholderText: "이메일")
         return tf
     }()
     
@@ -52,6 +52,14 @@ final class SignInView: UIView {
         return button
     }()
     
+    let signUpButton = {
+        let button = UIButton()
+        button.setTitle("계정이 없으세요? 가입하러 가기", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        button.setTitleColor(.black, for: .normal)
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -71,10 +79,11 @@ final class SignInView: UIView {
         passwordView.addSubview(passwordTextField)
         passwordView.addSubview(passwordSecureButton)
         addSubview(loginButton)
+        addSubview(signUpButton)
         
         loginTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-150)
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalToSuperview().multipliedBy(0.07)
         }
@@ -115,6 +124,12 @@ final class SignInView: UIView {
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalToSuperview().multipliedBy(0.06)
+        }
+        
+        signUpButton.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(15)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.6)
         }
         
     }

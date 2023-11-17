@@ -23,7 +23,7 @@ final class SignUpView: UIView {
     }()
     
     let emailTextField = {
-        let tf = LoginTextField(placeholderText: "이메일 주소")
+        let tf = LoginTextField(placeholderText: "이메일")
         return tf
     }()
     

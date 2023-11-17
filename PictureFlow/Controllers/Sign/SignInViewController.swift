@@ -21,11 +21,18 @@ final class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNavigationBar()
         bind()
+    
+    }
+    
+    private func setNavigationBar() {
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .black
+        self.navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     private func bind() {
-        
         let isSecure = BehaviorRelay(value: true)
         let input = SignInViewModel.Input(
             email: mainView.emailTextField.rx.text.orEmpty,
@@ -87,6 +94,15 @@ final class SignInViewController: UIViewController {
         output.errorResponse
             .subscribe(with: self) { owner, error in
                 print("message: \(error.message)")
+            }
+            .disposed(by: disposeBag)
+        
+        
+        // SignUpButton
+        mainView.signUpButton.rx.tap
+            .bind(with: self) { owner, _ in
+                let vc = SignUpViewController()
+                owner.transition(viewController: vc, style: .push)
             }
             .disposed(by: disposeBag)
     }
