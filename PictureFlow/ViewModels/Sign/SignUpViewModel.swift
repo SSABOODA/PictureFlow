@@ -23,7 +23,7 @@ final class SignUpViewModel: ViewModelType {
     struct Output {
         let validation: Observable<Bool>
         var signUpSuccess: BehaviorRelay<Bool>
-        var errorResponse: PublishRelay<ErrorResponse>
+        var errorResponse: PublishRelay<CustomErrorResponse>
     }
     
     var disposeBag = DisposeBag()
@@ -40,8 +40,7 @@ final class SignUpViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let signUpSuccess = BehaviorRelay(value: false)
-        let errorSubject = PublishSubject<NetworkError>()
-        let errorResponse = PublishRelay<ErrorResponse>()
+        let errorResponse = PublishRelay<CustomErrorResponse>()
         
         let signUpModelObservable = BehaviorSubject<SignUpReqeust>(value: model)
         let validationModelObservable = BehaviorSubject<ValidationRequest>(value: validationModel)
@@ -89,7 +88,7 @@ final class SignUpViewModel: ViewModelType {
         input.signUpButtonTap
             .withLatestFrom(validationModelObservable)
             .flatMap {
-                Network.shared.requestObservableConvertible2(
+                Network.shared.requestObservableConvertible(
                     type: ValidationResponse.self,
                     router: .validation(model: $0)
                 )
@@ -112,7 +111,7 @@ final class SignUpViewModel: ViewModelType {
             .filter { $0 == true }
             .withLatestFrom(signUpModelObservable)
             .flatMap {
-                Network.shared.requestObservableConvertible2(
+                Network.shared.requestObservableConvertible(
                     type: SignUpResponse.self,
                     router: .join(model: $0)
                 )

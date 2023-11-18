@@ -21,17 +21,11 @@ final class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
+        setNavigationBarBackButtonItem(color: .black)
         bind()
     
     }
-    
-    private func setNavigationBar() {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        backBarButtonItem.tintColor = .black
-        self.navigationItem.backBarButtonItem = backBarButtonItem
-    }
-    
+
     private func bind() {
         let isSecure = BehaviorRelay(value: true)
         let input = SignInViewModel.Input(
@@ -84,7 +78,7 @@ final class SignInViewController: UIViewController {
                 if isSuccess {
                     owner.showAlertAction1(title: "로그인에 성공하셨습니다.😃") {
                         print("login succeed")
-                        owner.changeRootViewController(viewController: HomeViewController())
+                        owner.changeRootViewController(viewController: PostListViewController())
                     }
                 }
             }

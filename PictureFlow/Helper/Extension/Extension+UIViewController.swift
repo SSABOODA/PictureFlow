@@ -96,3 +96,21 @@ extension UIViewController {
     
     
 }
+
+
+/*
+ BackButtonItem
+ */
+
+extension UIViewController {
+    func setNavigationBarBackButtonItem(title: String = "", color: UIColor) {
+        let backBarButtonItem = UIBarButtonItem(
+            title: title,
+            style: .plain,
+            target: self,
+            action: nil
+        )
+        backBarButtonItem.tintColor = color
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+    }
+}

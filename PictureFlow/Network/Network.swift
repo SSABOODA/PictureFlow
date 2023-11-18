@@ -37,8 +37,11 @@ final class Network {
     static let shared = Network()
     private init() {}
     
-    typealias NetworkCompletion<T> = (Result<T, NetworkError>) -> Void
+    /*
+     Single
+     */
     
+    typealias NetworkCompletion<T> = (Result<T, CustomErrorResponse>) -> Void
     func requestConvertible<T: Decodable>(
         type: T.Type? = nil,
         router: Router,
@@ -47,70 +50,23 @@ final class Network {
         AF.request(router)
             .validate()
             .responseDecodable(of: T.self) { response in
-                print()
                 switch response.result {
                 case .success(let data):
                     completion(.success(data))
                 case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
-                    guard let error = NetworkError(rawValue: statusCode) else { return }
-                    print("error: \(error)", "statusCode: \(statusCode)")
-                    completion(.failure(error))
-                }
-            }
-    }
-    
-    func requestObservableConvertible<T: Decodable>(
-        type: T.Type,
-        router: Router
-    ) -> Observable<Result<T, NetworkError>> {
-        return Observable.create { [weak self] emitter in
-            
-            // onNext + onCompleted => Single
-            self?.requestConvertible(type: T.self, router: router) { result in
-                switch result {
-                case .success(let success):
-                    emitter.onNext(.success(success))
-                    emitter.onCompleted() // onNext 쌓이면 안됨
-                case .failure(let error):
-                    emitter.onNext(.failure(error))
-                }
-            }
-            
-            return Disposables.create()
-        }
-    }
-    
-    /*
-     Single
-     */
-    
-    typealias NetworkCompletion2<T> = (Result<T, ErrorResponse>) -> Void
-    func requestConvertible2<T: Decodable>(
-        type: T.Type? = nil,
-        router: Router,
-        completion: @escaping NetworkCompletion2<T>
-    ) {
-        AF.request(router)
-            .validate()
-            .responseDecodable(of: T.self) { response in
-                
-                switch response.result {
-                case .success(let data):
-                    completion(.success(data))
-                case .failure(_):
-                    let statusCode = response.response?.statusCode ?? 500
-//                    guard let error = NetworkError(rawValue: statusCode) else { return }
-//                    print("error: \(error)", "statusCode: \(statusCode)")
-//                    completion(.failure(error))
-                    
                     guard let data = response.data else { return }
-                    print(data)
-                    
                     do {
-                        let serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                        var serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
                         print("decoding error value: \(serverError)")
-                        completion(.failure(serverError))
+                        
+                        
+                        let customErrorResponse = CustomErrorResponse(
+                            statusCode: statusCode,
+                            message: serverError.message
+                        )
+                        
+                        completion(.failure(customErrorResponse))
                     }
                     catch {
                         print(error)
@@ -119,25 +75,21 @@ final class Network {
             }
     }
     
-    func requestObservableConvertible2<T: Decodable>(
+    func requestObservableConvertible<T: Decodable>(
         type: T.Type,
         router: Router
-    ) -> Single<Result<T, ErrorResponse>> {
+    ) -> Single<Result<T, CustomErrorResponse>> {
         return Single.create { [weak self] single in
             
-            self?.requestConvertible2(type: T.self, router: router) { result in
+            self?.requestConvertible(type: T.self, router: router) { result in
                 switch result {
                 case .success(let success):
                     single(.success(.success(success)))
                 case .failure(let error):
                     single(.success(.failure(error)))
+                }
             }
-        }
-            
             return Disposables.create()
         }
     }
-    
-    
-        
 }

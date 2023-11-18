@@ -13,7 +13,6 @@ final class CustomTabBarController: UITabBarController {
         super.viewDidLoad()
         configureViewController()
         configureTabBarLayout()
-        configureTabBar()
     }
     
     override func viewWillLayoutSubviews() {
@@ -43,16 +42,15 @@ final class CustomTabBarController: UITabBarController {
     }
     
     private func configureViewController() {
-        let HomeVC = UINavigationController(rootViewController: HomeViewController())
+        let PostListVC = UINavigationController(rootViewController: PostListViewController())
         let SearchVC = UINavigationController(rootViewController: SearchViewController())
         let PostVC = UINavigationController(rootViewController: PostViewController())
         let LikeVC = UINavigationController(rootViewController: PostViewController())
         let ProfileVC = UINavigationController(rootViewController: PostViewController())
         
-        
         setViewControllers(
             [
-                HomeVC,
+                PostListVC,
                 SearchVC,
                 PostVC,
                 LikeVC,
@@ -61,7 +59,7 @@ final class CustomTabBarController: UITabBarController {
         )
 
         createTabBarItem(
-            viewContoller: HomeVC,
+            viewContoller: PostListVC,
             imageString: "house",
             selectedImageString: "house.fill"
         )
@@ -91,11 +89,6 @@ final class CustomTabBarController: UITabBarController {
     }
     
     private func configureTabBarLayout() {}
-    
-    private func configureTabBar() {
-//        self.selectedIndex = Constant.TabBarSetting.selectedIndex
-    }
-    
 }
 
 extension UITabBarController {

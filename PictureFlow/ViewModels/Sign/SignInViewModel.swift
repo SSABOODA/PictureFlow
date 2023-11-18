@@ -20,7 +20,7 @@ final class SignInViewModel: ViewModelType {
     struct Output {
         let validation: Observable<Bool>
         let loginSuccess: BehaviorRelay<Bool>
-        let errorResponse: PublishRelay<ErrorResponse>
+        let errorResponse: PublishRelay<CustomErrorResponse>
     }
     
     var disposeBag = DisposeBag()
@@ -29,7 +29,7 @@ final class SignInViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let loginSuccess = BehaviorRelay(value: false)
-        let errorResponse = PublishRelay<ErrorResponse>()
+        let errorResponse = PublishRelay<CustomErrorResponse>()
         let loginModelObservable = BehaviorSubject<LoginRequest>(value: loginModel)
         
         let validation = Observable
@@ -53,7 +53,7 @@ final class SignInViewModel: ViewModelType {
         input.loginButtonTap
             .withLatestFrom(loginModelObservable)
             .flatMap {
-                Network.shared.requestObservableConvertible2(
+                Network.shared.requestObservableConvertible(
                     type: LoginResponse.self,
                     router: .login(model: $0)
                 )

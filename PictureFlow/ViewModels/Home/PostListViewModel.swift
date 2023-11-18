@@ -1,0 +1,62 @@
+//
+//  PostListViewModel.swift
+//  PictureFlow
+//
+//  Created by 한성봉 on 11/17/23.
+//
+
+import Foundation
+import RxSwift
+
+final class PostListViewModel: ViewModelType {
+    struct Input {
+    }
+    
+    struct Output {
+        let postListItem: PublishSubject<PostListResponse>
+        let errorResponse: PublishSubject<CustomErrorResponse>
+    }
+    
+    var disposeBag = DisposeBag()
+
+    func transform(input: Input) -> Output {
+        print(#function)
+        let postListItem = PublishSubject<PostListResponse>()
+        let errorResponse = PublishSubject<CustomErrorResponse>()
+        let tokenObservable = BehaviorSubject<String>(value: "")
+        
+        if let token = KeyChain.read(key: APIConstants.accessToken) {
+            tokenObservable.onNext(token)
+        }
+        
+        tokenObservable
+            .flatMap {
+                Network.shared.requestObservableConvertible(
+                    type: PostListResponse.self,
+                    router: .postList(accessToken: $0, next: nil, limit: nil, product_id: nil)
+                )
+            }
+            .subscribe(with: self) { owner, result in
+                print("tokenObservable subscribe")
+                switch result {
+                case .success(let data):
+                    print(data)
+                    postListItem.onNext(data)
+                case .failure(let error):
+                    print("error.statusCode: \(error.statusCode)")
+                    errorResponse.onNext(error)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        return Output(
+            postListItem: postListItem,
+            errorResponse: errorResponse
+        )
+    }
+    
+    func fetchPostList() {
+        
+        
+    }
+}

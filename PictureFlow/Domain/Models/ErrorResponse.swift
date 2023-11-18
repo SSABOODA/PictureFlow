@@ -10,3 +10,8 @@ import Foundation
 struct ErrorResponse: Error, Decodable {
     var message: String
 }
+
+struct CustomErrorResponse: Error {
+    var statusCode: Int
+    var message: String
+}
