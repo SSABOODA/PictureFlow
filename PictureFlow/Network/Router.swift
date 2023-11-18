@@ -20,7 +20,7 @@ enum Router: URLRequestConvertible {
     
     // Post
     case post(accessToken: String, model: PostRequest) // 게시글 작성
-    case postList(accessToken: String, next: String?, limit: String?, product_id: String?) // 게시글 조회
+    case postList(accessToken: String, next: String? = "", limit: String? = "", product_id: String? = "") // 게시글 조회
     
     private var baseURL: URL {
         return URL(string: BaseURL.baseURL)!
@@ -133,9 +133,9 @@ enum Router: URLRequestConvertible {
             ]
         case .postList(_, let next, let limit, let product_id):
             return [
-                "next": next,
-                "limit": limit,
-                "product_id": product_id
+                "next": next ?? "",
+                "limit": limit ?? "",
+                "product_id": product_id ?? ""
             ]
         }
     }
@@ -152,11 +152,13 @@ enum Router: URLRequestConvertible {
     
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appendingPathComponent(path)
-        print("url: \(url)", "\(self.parameters)")
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
-
+        
+        let re = try URLEncoding.default.encode(request, with: parameters)
+//        print("method: \(re.httpMethod)")
+//        print("header: \(re.headers)")
         return try URLEncoding.default.encode(request, with: parameters)
     }
 }

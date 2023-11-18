@@ -25,13 +25,15 @@ final class PostListViewController: UIViewController {
         print(#function)
         view.backgroundColor = .white
         
+        
+        
 //        let accessToken = KeyChain.read(key: "accessToken")!
 //        let refreshToken = KeyChain.read(key: "refreshToken")!
-        
 //        print("accessToken: \(accessToken)")
 //        print("refreshToken: \(refreshToken)")
-        
-        bind()
+//        print("===============================")
+//        bind()
+        apiTest()
     }
     
     private func bind() {
@@ -56,13 +58,14 @@ final class PostListViewController: UIViewController {
         guard let token = KeyChain.read(key: "accessToken") else { return }
         Network.shared.requestConvertible(
             type: PostListResponse.self,
-            router: .postList(accessToken: token, next: nil, limit: nil, product_id: nil)
+            router: .postList(accessToken: token)
         ) { response in
             switch response {
             case .success(let success):
-                print(success)
+                print("apiTest")
+                dump(success)
             case .failure(let error):
-                print(error)
+                print("apiTest", error)
             }
         }
     }

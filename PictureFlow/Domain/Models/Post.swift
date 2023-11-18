@@ -24,6 +24,10 @@ struct PostRequest: Encodable {
     var content5: String?
 }
 
+struct PostResponse: Decodable {
+    
+}
+
 /*
  게시글 조회(post)
  /post
@@ -36,22 +40,26 @@ struct PostListRequest: Encodable {
 }
 
 struct PostListResponse: Decodable {
-    var likes: [String]
-    var image: [String]
-    var hashTags: [String]
-    let comments: [Comment]
+    let data: [PostList]
+    let nextCursor: String
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+        case nextCursor = "next_cursor"
+    }
+}
+
+struct PostList: Decodable {
     let _id: String
-    let creator: Creator
-    let time, title: String
-    let content, content1, content2: String
-    let product_id: String
-}
-
-struct Comment: Decodable {
-    let id, content, time: String
-    let creator: Creator
-}
-
-struct Creator: Decodable {
-    let id, nick: String
+    let likes: [String]
+    let image: [String]
+    let title: String?
+    let content: String?
+    let time: String
+    let productID: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case _id, time, likes, image, title, content
+        case productID = "product_id"
+    }
 }

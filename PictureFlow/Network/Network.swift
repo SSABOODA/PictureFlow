@@ -47,19 +47,20 @@ final class Network {
         router: Router,
         completion: @escaping NetworkCompletion<T>
     ) {
-        AF.request(router)
+        AF.request(router, interceptor: AuthManager())
             .validate()
             .responseDecodable(of: T.self) { response in
+                print("response: \(response)")
                 switch response.result {
                 case .success(let data):
+                    
                     completion(.success(data))
                 case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
                     guard let data = response.data else { return }
                     do {
-                        var serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                        let serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
                         print("decoding error value: \(serverError)")
-                        
                         
                         let customErrorResponse = CustomErrorResponse(
                             statusCode: statusCode,

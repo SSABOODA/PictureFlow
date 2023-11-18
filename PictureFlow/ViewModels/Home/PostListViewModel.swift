@@ -25,6 +25,7 @@ final class PostListViewModel: ViewModelType {
         let errorResponse = PublishSubject<CustomErrorResponse>()
         let tokenObservable = BehaviorSubject<String>(value: "")
         
+        print("토큰 확인: \(KeyChain.read(key: APIConstants.accessToken))")
         if let token = KeyChain.read(key: APIConstants.accessToken) {
             tokenObservable.onNext(token)
         }
@@ -33,7 +34,7 @@ final class PostListViewModel: ViewModelType {
             .flatMap {
                 Network.shared.requestObservableConvertible(
                     type: PostListResponse.self,
-                    router: .postList(accessToken: $0, next: nil, limit: nil, product_id: nil)
+                    router: .postList(accessToken: $0)
                 )
             }
             .subscribe(with: self) { owner, result in
