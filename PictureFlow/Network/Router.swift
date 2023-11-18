@@ -44,38 +44,38 @@ enum Router: URLRequestConvertible {
         switch self {
         case .join:
             return [
-                "SesacKey": "\(Router.key)",
+                APIConstants.apiKey: Router.key,
             ]
         case .validation:
             return [
-                "SesacKey": "\(Router.key)",
+                APIConstants.apiKey: Router.key,
             ]
         case .login(_):
             return [
-                "SesacKey": "\(Router.key)",
+                APIConstants.apiKey: Router.key,
             ]
         case .refresh(let accessToken, let refreshToken):
             return [
-                "SesacKey": "\(Router.key)",
-                "Authorization": accessToken,
+                APIConstants.apiKey: Router.key,
+                APIConstants.authorization: accessToken,
                 "Refresh": refreshToken,
             ]
         case .withdraw(let accessToken):
             return [
-                "SesacKey": "\(Router.key)",
-                "Authorization": accessToken,
+                APIConstants.apiKey: Router.key,
+                APIConstants.authorization: accessToken,
             ]
             
         // post
         case .post(let accessToken, _):
             return [
-                "SesacKey": "\(Router.key)",
-                "Authorization": accessToken,
+                APIConstants.apiKey: Router.key,
+                APIConstants.authorization: accessToken,
             ]
         case .postList(let accessToken, _, _, _):
             return [
-                "SesacKey": "\(Router.key)",
-                "Authorization": accessToken,
+                APIConstants.apiKey: Router.key,
+                APIConstants.authorization: accessToken,
             ]
         }
     }
