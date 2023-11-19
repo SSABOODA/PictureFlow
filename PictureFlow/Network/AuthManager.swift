@@ -24,9 +24,6 @@ final class AuthManager: RequestInterceptor {
     // 토큰 만료 확인되면 refresh api 호출해서 토큰 갱신함.
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
         print(#function)
-        let response = request.task?.response as? HTTPURLResponse
-//        print("response.statusCode: \(response?.statusCode)")
-        
         guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 419 else {
             completion(.doNotRetryWithError(error))
             return

@@ -9,8 +9,26 @@ import UIKit
 
 final class PostListView: UIView {
     
+    let nicknameLabel = {
+        let lb = UILabel()
+        return lb
+    }()
+    
+    let postTitleLabel = {
+        let lb = UILabel()
+        return lb
+    }()
+    
+    let postContentLabel = {
+        let lb = UILabel()
+        return lb
+    }()
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
     }
     
     @available(*, unavailable)
