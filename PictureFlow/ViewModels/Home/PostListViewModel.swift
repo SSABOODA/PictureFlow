@@ -19,9 +19,7 @@ final class PostListViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    
     func transform(input: Input) -> Output {
-        print(#function)
         let postListItem = PublishSubject<[PostList]>()
         let errorResponse = PublishSubject<CustomErrorResponse>()
         let tokenObservable = BehaviorSubject<String>(value: "")
@@ -42,7 +40,6 @@ final class PostListViewModel: ViewModelType {
                 )
             }
             .subscribe(with: self) { owner, result in
-                print("tokenObservable subscribe")
                 switch result {
                 case .success(let data):
 //                    print(data)

@@ -5,8 +5,10 @@
 //  Created by 한성봉 on 11/11/23.
 //
 
-import Foundation
+import UIKit
+import Kingfisher
 
+// 정규식
 extension String {
     
     // 이메일 정규식
@@ -32,3 +34,33 @@ extension String {
         return predicate.evaluate(with: self)
     }
 }
+
+// Kignfisher
+extension String {
+    func imageDownloadRequest() -> AnyModifier {
+        let imageDownloadRequest = AnyModifier { request in
+            var headers = request
+            headers.setValue(
+                KeyChain.read(key: APIConstants.accessToken),
+                forHTTPHeaderField: APIConstants.authorization
+            )
+            headers.setValue(
+                APIKey.sesacAPIKey,
+                forHTTPHeaderField: APIConstants.apiKey
+            )
+            return headers
+        }
+        return imageDownloadRequest
+    }
+    
+    func loadImageByKingfisher(imageView: UIImageView) {
+        if let imageURL = URL(string: self) {
+            imageView.kf.setImage(
+                with: imageURL,
+                options: [.requestModifier(self.imageDownloadRequest())]
+            )
+        }
+    }
+}
+
+

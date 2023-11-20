@@ -8,15 +8,17 @@
 import UIKit
 
 final class PostListCollectionViewCell: UICollectionViewCell {
-    let label = UILabel()
+    let postImageView = {
+        let view = UIImageView()
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 15
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        label.backgroundColor = .red
-        contentView.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
+        configureHierarchy()
     }
     
     @available(*, unavailable)
@@ -24,8 +26,14 @@ final class PostListCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with item: String) {
-        print("itme: \(item)")
-        label.text = item
+    private func configureHierarchy() {
+        contentView.addSubview(postImageView)
+        postImageView.snp.makeConstraints { make in
+            make.edges.equalTo(safeAreaLayoutGuide)
+        }
+    }
+    
+    func configureCell(with item: String) {
+        
     }   
 }

@@ -42,12 +42,10 @@ final class PostListViewController: UIViewController {
         navigationItem.title = "FLOW"
         configureHierarchy()
         bind()
-//        let accessToken = KeyChain.read(key: "accessToken")!
+        let accessToken = KeyChain.read(key: "accessToken")!
 //        let refreshToken = KeyChain.read(key: "refreshToken")!
-//        print("accessToken: \(accessToken)")
+        print("accessToken: \(accessToken)")
 //        print("refreshToken: \(refreshToken)")
-//        apiTest()
-        
     }
     
     private func configureHierarchy() {
@@ -76,9 +74,9 @@ final class PostListViewController: UIViewController {
         let input = PostListViewModel.Input()
         let output = viewModel.transform(input: input)
         
+        // TODO: @deprecated 네트워크 통신 데이터 확인용 바인딩:
         output.postListItem
             .subscribe(with: self) { owner, result in
-                print("postListVC result: \(result)")
 //                dump(result)
             }
             .disposed(by: disposeBag)
@@ -91,19 +89,9 @@ final class PostListViewController: UIViewController {
         
         output.postListItem
             .bind(to: tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
-                cell.nicknameLabel.text = element.creator.nick
-                cell.contentLabel.text = element.content
-                
-                let imageURL = "\(BaseURL.baseURL)/\(element.image[0])"
-
-                if let imageURL = URL(string: imageURL) {
-                    print("image URL: \(imageURL)")
-                    cell.profileImageView.kf.setImage(
-                        with: imageURL,
-                        options: [.requestModifier(imageURL.imageDownloadRequest())]
-                    )
-                }
+                cell.configureCell(with: element)
             }
             .disposed(by: disposeBag)
     }
 }
+

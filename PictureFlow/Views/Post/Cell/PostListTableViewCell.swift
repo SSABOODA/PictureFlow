@@ -14,14 +14,13 @@ final class PostListTableViewCell: UITableViewCell {
     let profileImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "person")
-//        view.contentMode = .scaleToFill
         view.clipsToBounds = true
         view.layer.masksToBounds = true
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.clear.cgColor
         view.backgroundColor = .black
         view.tintColor = .white
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
@@ -51,16 +50,24 @@ final class PostListTableViewCell: UITableViewCell {
     
     let contentLabel = {
         let label = UILabel()
-        label.text = "애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%애들아 적금하러 가야지?? 연이율 15%"
+        label.text = "dummy"
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 18)
         return label
     }()
     
     let collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        collectionView.register(PostListCollectionViewCell.self, forCellWithReuseIdentifier: PostListCollectionViewCell.description())
-        collectionView.backgroundColor = .orange
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: createLayout()
+        )
+        
+        collectionView.register(
+            PostListCollectionViewCell.self,
+            forCellWithReuseIdentifier: PostListCollectionViewCell.description()
+        )
+        
+        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
     
@@ -136,10 +143,9 @@ final class PostListTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        print(#function)
         configureHierarchy()
         backgroundColor = .white
-//        selectionStyle = .none
+        selectionStyle = .none
     }
     
     required init?(coder: NSCoder) {
@@ -158,6 +164,7 @@ final class PostListTableViewCell: UITableViewCell {
     }
     
     private func configureHierarchy() {
+//        collectionView.backgroundColor
         contentView.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(postCreatedTimeLabel)
@@ -201,15 +208,13 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-10)
-            make.height.equalTo(100)
-            
+            make.height.equalTo(0)
         }
         
         functionButtonStackView.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom).offset(10)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.width.equalToSuperview().multipliedBy(0.4)
-            
         }
         
         countButtonStackView.snp.makeConstraints { make in
@@ -220,42 +225,69 @@ final class PostListTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(with items: [String]) {
-        print(#function, "===")
-//        let dataSource = createCollectionViewDataSource()
+    func configureCell(with elements: PostList) {
+        print(#function)
+        nicknameLabel.text = elements.creator.nick
+        contentLabel.text = elements.content
         
-        // CollectionView에 바인딩
-//        Observable.just([SectionModel(header: "", items: items)])
-//            .bind(to: collectionView.rx.items(dataSource: dataSource))
-//            .disposed(by: disposeBag)
-//
-//        collectionView.rx.itemSelected
-//            .subscribe(onNext: { indexPath in
-//                print("Selected item at indexPath: \(indexPath)")
-//            })
-//            .disposed(by: disposeBag)
+        if !elements.image.isEmpty {
+            let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
+            imageURL.loadImageByKingfisher(imageView: profileImageView)
+        }
+        
+        configureCollectionView(with: elements.image)
     }
     
-//    private func createCollectionViewDataSource() -> RxCollectionViewSectionedReloadDataSource<SectionModel> {
-//        print(#function)
-//        return RxCollectionViewSectionedReloadDataSource<SectionModel>(
-//            configureCell: { (_, collectionView, indexPath, item) in
-//                print("RxCollectionViewSectionedReloadDataSource")
-//                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostListCollectionViewCell.description(), for: indexPath) as? PostListCollectionViewCell else { return PostListCollectionViewCell() }
-//                cell.configure(with: item)
-//                return cell
-//            }
-//        )
-//    }
-    
+    private func configureCollectionView(with imageList: [String]) {
+        print(#function, imageList)
+        
+        if !imageList.isEmpty {
+            self.collectionView.snp.updateConstraints { make in
+                make.height.equalTo(200)
+            }
+        }
+        
+        Observable.just(imageList)
+            .bind(to: collectionView.rx.items(cellIdentifier: PostListCollectionViewCell.description(), cellType: PostListCollectionViewCell.self)) { (row, element, cell) in
+                let imageURL = "\(BaseURL.baseURL)/\(element)"
+                imageURL.loadImageByKingfisher(imageView: cell.postImageView)
+            }
+            .disposed(by: disposeBag)
+    }
+
+    // @deprecated
     static func createLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
-        let size = UIScreen.main.bounds.width - 40
-        layout.itemSize = CGSize(width: size/2, height: size/2)
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+//        let size = UIScreen.main.bounds.width - 40
+        layout.itemSize = CGSize(width: 200, height: 200)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 10)
+        return layout
+    }
+    
+    // @deprecated
+    static func configurePinterestLayout() -> UICollectionViewLayout {
+        // .fractionalWidth, .absolute, .estimated
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(150))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+        group.interItemSpacing = .fixed(10)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        section.interGroupSpacing = 10
+        
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.scrollDirection = .horizontal
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        layout.configuration = configuration
+        
         return layout
     }
 }
+

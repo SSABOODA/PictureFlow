@@ -29,6 +29,22 @@ enum Router: URLRequestConvertible {
     
     private var baseURL: URL {
         return URL(string: BaseURL.baseURL)!
+//        switch self {
+//        case .join(_):
+//            return URL(string: BaseURL.baseAuthURL)!
+//        case .validation(_):
+//            return URL(string: BaseURL.baseAuthURL)!
+//        case .login(_):
+//            return URL(string: BaseURL.baseAuthURL)!
+//        case .refresh(_,_):
+//            return URL(string: BaseURL.baseAuthURL)!
+//        case .withdraw(_):
+//            return URL(string: BaseURL.baseAuthURL)!
+//        case .post(_,_):
+//            return URL(string: BaseURL.baseURL)!
+//        case .postList(_,_,_,_):
+//            return URL(string: BaseURL.baseURL)!
+//        }
     }
     
     private var path: String {
@@ -88,6 +104,7 @@ enum Router: URLRequestConvertible {
     private var method: HTTPMethod {
         switch self {
         case .join: return .post
+        
         case .validation: return .post
         case .login: return .post
         case .refresh: return .get
@@ -159,16 +176,16 @@ enum Router: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appendingPathComponent(path)
         print("url: \(url)")
-        
+
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
         
         let re = try URLEncoding.default.encode(request, with: parameters)
-        print("re: \(re)")
-        print("method: \(re.httpMethod)")
-        print("header: \(re.headers)")
-        print("parameter: \(parameters)")
+//        print("re: \(re)")
+//        print("method: \(re.httpMethod)")
+//        print("header: \(re.headers)")
+//        print("parameter: \(parameters)")
         return try URLEncoding.default.encode(request, with: parameters)
     }
 }
