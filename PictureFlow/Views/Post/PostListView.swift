@@ -28,7 +28,7 @@ final class PostListView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = UIColor(resource: .backgorund)
     }
     
     @available(*, unavailable)

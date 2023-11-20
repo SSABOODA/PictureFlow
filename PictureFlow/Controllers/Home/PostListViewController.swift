@@ -29,6 +29,7 @@ final class PostListViewController: UIViewController {
             forCellReuseIdentifier: PostListTableViewCell.description()
         )
         view.rowHeight = UITableView.automaticDimension
+        view.backgroundColor = UIColor(resource: .backgorund)
         return view
     }()
     

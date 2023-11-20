@@ -17,7 +17,7 @@ final class CustomTabBarController: UITabBarController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        tabBar.tintColor = .black
+        tabBar.tintColor = UIColor(resource: .tint)
         tabBar.layer.masksToBounds = true
         tabBar.layer.cornerRadius = 20
         tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -28,7 +28,7 @@ final class CustomTabBarController: UITabBarController {
             let shadowView = UIView(frame: .zero)
             shadowView.frame = tabBar.frame
             shadowView.accessibilityIdentifier = "TabBarShadow"
-            shadowView.backgroundColor = UIColor.white
+            shadowView.backgroundColor = UIColor(resource: .backgorund)
             shadowView.layer.cornerRadius = tabBar.layer.cornerRadius
             shadowView.layer.maskedCorners = tabBar.layer.maskedCorners
             shadowView.layer.masksToBounds = false

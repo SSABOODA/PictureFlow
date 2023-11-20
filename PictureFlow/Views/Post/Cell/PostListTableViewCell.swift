@@ -37,6 +37,7 @@ final class PostListTableViewCell: UITableViewCell {
         label.text = "ssaboo99"
         label.font = .boldSystemFont(ofSize: 18)
         label.numberOfLines = 1
+        label.textColor = UIColor(resource: .text)
         return label
     }()
     
@@ -44,7 +45,7 @@ final class PostListTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "18시간전"
         label.font = .systemFont(ofSize: 15)
-        label.textColor = .lightGray
+        label.textColor = UIColor(resource: .text)
         return label
     }()
     
@@ -53,6 +54,7 @@ final class PostListTableViewCell: UITableViewCell {
         label.text = "dummy"
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 18)
+        label.textColor = UIColor(resource: .text)
         return label
     }()
     
@@ -74,28 +76,28 @@ final class PostListTableViewCell: UITableViewCell {
     let likeButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.tintColor = .black
+        button.tintColor = UIColor(resource: .tint)
         return button
     }()
     
     let commentButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "bubble"), for: .normal)
-        button.tintColor = .black
+        button.tintColor = UIColor(resource: .tint)
         return button
     }()
     
     let bookmarkButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        button.tintColor = .black
+        button.tintColor = UIColor(resource: .tint)
         return button
     }()
     
     let shareButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "paperplane"), for: .normal)
-        button.tintColor = .black
+        button.tintColor = UIColor(resource: .tint)
         return button
     }()
     
@@ -144,7 +146,7 @@ final class PostListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureHierarchy()
-        backgroundColor = .white
+        backgroundColor = UIColor(resource: .backgorund)
         selectionStyle = .none
     }
     
@@ -164,7 +166,6 @@ final class PostListTableViewCell: UITableViewCell {
     }
     
     private func configureHierarchy() {
-//        collectionView.backgroundColor
         contentView.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(postCreatedTimeLabel)
