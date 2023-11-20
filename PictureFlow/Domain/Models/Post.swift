@@ -41,11 +41,44 @@ struct PostListRequest: Encodable {
 
 struct PostListResponse: Decodable {
     let data: [PostList]
-    let nextCursor: String
+    var nextCursor: LandingValue
     
     enum CodingKeys: String, CodingKey {
         case data
         case nextCursor = "next_cursor"
+    }
+}
+
+struct LandingValue: Decodable {
+    let stringValue: String?
+    let intValue: Int?
+    
+    init(stringValue: String? = nil, intValue: Int? = nil) {
+        self.stringValue = stringValue
+        self.intValue = intValue
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        
+        // String decode 시도
+        if let value = try? container.decode(String.self) {
+            self = .init(stringValue: value)
+            return
+        }
+
+        // Int decode 시도
+        if let value = try? container.decode(Int.self) {
+            self = .init(intValue: value)
+            return
+        }
+
+        throw DecodingError.typeMismatch(
+            PostListResponse.self,
+            DecodingError.Context(codingPath: decoder.codingPath,
+                                  debugDescription: "Type is not matched",
+                                  underlyingError: nil)
+        )
     }
 }
 
@@ -57,9 +90,27 @@ struct PostList: Decodable {
     let content: String?
     let time: String
     let productID: String?
+    let creator: Creator
+    let comments: [Comments]
     
     enum CodingKeys: String, CodingKey {
         case _id, time, likes, image, title, content
         case productID = "product_id"
+        case creator
+        case comments
     }
 }
+
+
+struct Creator: Decodable {
+    let _id: String
+    let nick: String
+}
+
+struct Comments: Decodable {
+    let _id: String
+    let content: String
+    let time: String
+    let creator: Creator
+}
+

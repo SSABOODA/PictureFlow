@@ -13,19 +13,20 @@ final class PostListViewModel: ViewModelType {
     }
     
     struct Output {
-        let postListItem: PublishSubject<PostListResponse>
+        let postListItem: PublishSubject<[PostList]>
         let errorResponse: PublishSubject<CustomErrorResponse>
     }
     
     var disposeBag = DisposeBag()
-
+    
+    
     func transform(input: Input) -> Output {
         print(#function)
-        let postListItem = PublishSubject<PostListResponse>()
+        let postListItem = PublishSubject<[PostList]>()
         let errorResponse = PublishSubject<CustomErrorResponse>()
         let tokenObservable = BehaviorSubject<String>(value: "")
         
-        print("토큰 확인: \(KeyChain.read(key: APIConstants.accessToken))")
+//        print("토큰 확인: \(KeyChain.read(key: APIConstants.accessToken))")
         if let token = KeyChain.read(key: APIConstants.accessToken) {
             tokenObservable.onNext(token)
         }
@@ -34,15 +35,18 @@ final class PostListViewModel: ViewModelType {
             .flatMap {
                 Network.shared.requestObservableConvertible(
                     type: PostListResponse.self,
-                    router: .postList(accessToken: $0)
+                    router: .postList(
+                        accessToken: $0,
+                        product_id: "picture_flow"
+                    )
                 )
             }
             .subscribe(with: self) { owner, result in
                 print("tokenObservable subscribe")
                 switch result {
                 case .success(let data):
-                    print(data)
-                    postListItem.onNext(data)
+//                    print(data)
+                    postListItem.onNext(data.data)
                 case .failure(let error):
                     print("error.statusCode: \(error.statusCode)")
                     errorResponse.onNext(error)
@@ -54,10 +58,5 @@ final class PostListViewModel: ViewModelType {
             postListItem: postListItem,
             errorResponse: errorResponse
         )
-    }
-    
-    func fetchPostList() {
-        
-        
     }
 }

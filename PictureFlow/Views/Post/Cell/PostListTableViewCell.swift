@@ -214,7 +214,7 @@ final class PostListTableViewCell: UITableViewCell {
         countButtonStackView.snp.makeConstraints { make in
             make.top.equalTo(functionButtonStackView.snp.bottom).offset(5)
             make.leading.equalTo(nicknameLabel.snp.leading)
-            make.width.equalToSuperview().multipliedBy(0.4)
+            make.width.equalToSuperview().multipliedBy(0.35)
             make.bottom.equalToSuperview().inset(15)
         }
     }

@@ -50,10 +50,9 @@ final class Network {
         AF.request(router, interceptor: AuthManager())
             .validate()
             .responseDecodable(of: T.self) { response in
-                print("response: \(response)")
+//                print("response: \(response)")
                 switch response.result {
                 case .success(let data):
-                    
                     completion(.success(data))
                 case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
