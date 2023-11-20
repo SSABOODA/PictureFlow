@@ -7,22 +7,24 @@
 
 import Foundation
 
-final class UserDefaultsHelper {
-    static let standard = UserDefaultsHelper()
-    private init() { }
+struct CustomDefaults<T> {
+    let key: String
+    let defaultValue: T
     
-    let userDefaults = UserDefaults.standard
-    
+    var value: T {
+        get {
+            UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: key)
+        }
+    }
+}
+
+enum UserDefaultsManager {
     enum Key: String {
         case isLoggedIn
     }
     
-    var isLoggedIn: Bool {
-        get {
-            return userDefaults.bool(forKey: Key.isLoggedIn.rawValue)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Key.isLoggedIn.rawValue)
-        }
-    }
+    static var isLoggedIn = CustomDefaults(key: Key.isLoggedIn.rawValue, defaultValue: false)
 }
