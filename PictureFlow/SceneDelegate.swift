@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        var isLoggedIn =  UserDefaultsManager.isLoggedIn.value
+        var isLoggedIn =  UserDefaultsManager.isLoggedIn
 //        isLoggedIn = false
         if !isLoggedIn {
             // 로그인 상태 X

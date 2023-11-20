@@ -67,7 +67,7 @@ final class SignInViewModel: ViewModelType {
                     KeyChain.create(key: APIConstants.refreshToken, token: success.refreshToken)
                     loginSuccess.accept(true)
 //                    UserDefaultsHelper.standard.isLoggedIn = true                    
-                    UserDefaultsManager.isLoggedIn.value = true
+                    UserDefaultsManager.isLoggedIn = true
                     
                 case .failure(let error):
                     print("subscribe errorResponse: \(error)")

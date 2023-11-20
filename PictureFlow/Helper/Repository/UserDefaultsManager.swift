@@ -7,11 +7,12 @@
 
 import Foundation
 
+@propertyWrapper
 struct CustomDefaults<T> {
     let key: String
     let defaultValue: T
     
-    var value: T {
+    var wrappedValue: T {
         get {
             UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
         }
@@ -26,5 +27,5 @@ enum UserDefaultsManager {
         case isLoggedIn
     }
     
-    static var isLoggedIn = CustomDefaults(key: Key.isLoggedIn.rawValue, defaultValue: false)
+    @CustomDefaults(key: Key.isLoggedIn.rawValue, defaultValue: false) static var isLoggedIn
 }
