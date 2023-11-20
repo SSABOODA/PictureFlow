@@ -5,7 +5,7 @@
 //  Created by 한성봉 on 11/12/23.
 //
 
-import Foundation
+import UIKit
 import Alamofire
 
 final class AuthManager: RequestInterceptor {
@@ -40,9 +40,20 @@ final class AuthManager: RequestInterceptor {
                     KeyChain.create(key: APIConstants.accessToken, token: data.token)
                     completion(.retry)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print("=========", error.statusCode)
+                    if error.statusCode == 418 {
+                        self.goBackLoginView()
+                    }
                     completion(.doNotRetryWithError(error))
                 }
         }
+    }
+    
+    private func goBackLoginView() {
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        let sceneDelegate = windowScene?.delegate as? SceneDelegate
+        let vc = SignInViewController()
+        sceneDelegate?.window?.rootViewController = vc
+        sceneDelegate?.window?.makeKey()
     }
 }

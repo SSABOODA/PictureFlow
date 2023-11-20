@@ -50,7 +50,6 @@ final class Network {
         AF.request(router, interceptor: AuthManager())
             .validate()
             .responseDecodable(of: T.self) { response in
-//                print("response: \(response)")
                 switch response.result {
                 case .success(let data):
                     completion(.success(data))
@@ -60,12 +59,10 @@ final class Network {
                     do {
                         let serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
                         print("decoding error value: \(serverError)")
-                        
                         let customErrorResponse = CustomErrorResponse(
                             statusCode: statusCode,
                             message: serverError.message
                         )
-                        
                         completion(.failure(customErrorResponse))
                     }
                     catch {
@@ -74,6 +71,7 @@ final class Network {
                 }
             }
     }
+    
     
     func requestObservableConvertible<T: Decodable>(
         type: T.Type,

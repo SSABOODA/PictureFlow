@@ -10,19 +10,6 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-struct SectionModel {
-    var header: String
-    var items: [String]
-}
-
-extension SectionModel: SectionModelType {
-    init(original: SectionModel, items: [String]) {
-        self = original
-        self.items = items
-    }
-}
-
-
 struct DataList {
     let name: String
     let content: String
@@ -36,7 +23,10 @@ final class PostListViewController: UIViewController {
     
     private let tableView: UITableView = {
         let view = UITableView()
-        view.register(PostListTableViewCell.self, forCellReuseIdentifier: PostListTableViewCell.description())
+        view.register(
+            PostListTableViewCell.self,
+            forCellReuseIdentifier: PostListTableViewCell.description()
+        )
         view.rowHeight = UITableView.automaticDimension
         return view
     }()
@@ -48,43 +38,15 @@ final class PostListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function, PostListViewController.description())
-        configureHierarchy()
         navigationItem.title = "FLOW"
+        configureHierarchy()
+        bind()
 //        let accessToken = KeyChain.read(key: "accessToken")!
 //        let refreshToken = KeyChain.read(key: "refreshToken")!
 //        print("accessToken: \(accessToken)")
 //        print("refreshToken: \(refreshToken)")
 //        apiTest()
-        bind()
         
-        
-//        let sections: [SectionModel] = [
-//            SectionModel(header: "Section 1", items: ["Item 1", "Item 2", "Item 3"]),
-//            SectionModel(header: "Section 2", items: ["Item 4", "Item 5", "Item 6"])
-//        ]
-        
-//        let dataSource = createTableViewDataSource()
-        
-        // TableView에 바인딩
-//        Observable.just(sections)
-//            .bind(to: tableView.rx.items(dataSource: dataSource))
-//            .disposed(by: disposeBag)
-        
-        
-//        let data: [DataList] = [
-//            DataList(name: "1", content: "123"),
-//            DataList(name: "2", content: "456"),
-//            DataList(name: "3", content: "789"),
-//        ]
-//        
-//        let items = BehaviorSubject(value: data)
-//    
-//        items
-//            .bind(to: tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
-////                cell.label.text = element.name
-//            }
-//            .disposed(by: disposeBag)
-
     }
     
     private func configureHierarchy() {
@@ -128,13 +90,10 @@ final class PostListViewController: UIViewController {
         
         output.postListItem
             .bind(to: tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
-                
                 cell.nicknameLabel.text = element.creator.nick
                 cell.contentLabel.text = element.content
             }
             .disposed(by: disposeBag)
-        
-        
     }
     private func apiTest() {
 //        guard let token = KeyChain.read(key: "accessToken") else { return }

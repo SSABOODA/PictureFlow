@@ -235,17 +235,17 @@ final class PostListTableViewCell: UITableViewCell {
 //            .disposed(by: disposeBag)
     }
     
-    private func createCollectionViewDataSource() -> RxCollectionViewSectionedReloadDataSource<SectionModel> {
-        print(#function)
-        return RxCollectionViewSectionedReloadDataSource<SectionModel>(
-            configureCell: { (_, collectionView, indexPath, item) in
-                print("RxCollectionViewSectionedReloadDataSource")
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostListCollectionViewCell.description(), for: indexPath) as? PostListCollectionViewCell else { return PostListCollectionViewCell() }
-                cell.configure(with: item)
-                return cell
-            }
-        )
-    }
+//    private func createCollectionViewDataSource() -> RxCollectionViewSectionedReloadDataSource<SectionModel> {
+//        print(#function)
+//        return RxCollectionViewSectionedReloadDataSource<SectionModel>(
+//            configureCell: { (_, collectionView, indexPath, item) in
+//                print("RxCollectionViewSectionedReloadDataSource")
+//                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostListCollectionViewCell.description(), for: indexPath) as? PostListCollectionViewCell else { return PostListCollectionViewCell() }
+//                cell.configure(with: item)
+//                return cell
+//            }
+//        )
+//    }
     
     static func createLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
