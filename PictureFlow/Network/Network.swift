@@ -72,7 +72,6 @@ final class Network {
             }
     }
     
-    
     func requestObservableConvertible<T: Decodable>(
         type: T.Type,
         router: Router

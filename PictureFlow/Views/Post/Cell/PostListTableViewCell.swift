@@ -21,6 +21,7 @@ final class PostListTableViewCell: UITableViewCell {
         view.layer.borderColor = UIColor.clear.cgColor
         view.backgroundColor = .black
         view.tintColor = .white
+        view.contentMode = .scaleAspectFit
         return view
     }()
     

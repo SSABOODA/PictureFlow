@@ -40,8 +40,7 @@ final class AuthManager: RequestInterceptor {
                     KeyChain.create(key: APIConstants.accessToken, token: data.token)
                     completion(.retry)
                 case .failure(let error):
-                    print("=========", error.statusCode)
-                    if error.statusCode == 418 {
+                    if error.statusCode == 418 { // refresh 토큰 만료 시 재로그인
                         self.goBackLoginView()
                     }
                     completion(.doNotRetryWithError(error))

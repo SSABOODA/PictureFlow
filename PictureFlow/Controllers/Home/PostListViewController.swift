@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import Kingfisher
 
 struct DataList {
     let name: String
@@ -78,7 +79,7 @@ final class PostListViewController: UIViewController {
         output.postListItem
             .subscribe(with: self) { owner, result in
                 print("postListVC result: \(result)")
-                dump(result)
+//                dump(result)
             }
             .disposed(by: disposeBag)
         
@@ -92,26 +93,17 @@ final class PostListViewController: UIViewController {
             .bind(to: tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
                 cell.nicknameLabel.text = element.creator.nick
                 cell.contentLabel.text = element.content
+                
+                let imageURL = "\(BaseURL.baseURL)/\(element.image[0])"
+
+                if let imageURL = URL(string: imageURL) {
+                    print("image URL: \(imageURL)")
+                    cell.profileImageView.kf.setImage(
+                        with: imageURL,
+                        options: [.requestModifier(imageURL.imageDownloadRequest())]
+                    )
+                }
             }
             .disposed(by: disposeBag)
     }
-    private func apiTest() {
-//        guard let token = KeyChain.read(key: "accessToken") else { return }
-//        Network.shared.requestConvertible(
-//            type: PostListResponse.self,
-//            router: .postList(accessToken: token)
-//        ) { response in
-//            switch response {
-//            case .success(let success):
-//                print("apiTest")
-//                dump(success)
-//            case .failure(let error):
-//                print("apiTest", error)
-//            }
-//        }
-    }
 }
-
-
-
-
