@@ -227,7 +227,6 @@ final class PostListTableViewCell: UITableViewCell {
     }
     
     func configureCell(with elements: PostList) {
-        print(#function)
         nicknameLabel.text = elements.creator.nick
         contentLabel.text = elements.content
         
@@ -236,11 +235,15 @@ final class PostListTableViewCell: UITableViewCell {
             imageURL.loadImageByKingfisher(imageView: profileImageView)
         }
         
+        // 시간 작업
+        let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
+        postCreatedTimeLabel.text = timeContent
+            
         configureCollectionView(with: elements.image)
     }
     
     private func configureCollectionView(with imageList: [String]) {
-        print(#function, imageList)
+//        print(#function, imageList)
         
         if !imageList.isEmpty {
             self.collectionView.snp.updateConstraints { make in

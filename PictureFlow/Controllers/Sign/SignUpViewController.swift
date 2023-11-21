@@ -28,7 +28,7 @@ final class SignUpViewController: UIViewController {
     
     @objc func datePickerValueDidChange(_ datePicker: UIDatePicker) {
         self.diaryDate = datePicker.date
-        self.mainView.birthdayTextField.text = datePicker.date.convertDateToString(format: .compact)
+        self.mainView.birthdayTextField.text = datePicker.date.convertDateToString(format: .compact, localeType: .ko_KR)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,7 +44,7 @@ final class SignUpViewController: UIViewController {
             nickname: mainView.nicknameTextField.rx.text.orEmpty,
             phoneNumber: mainView.phoneNumberTextField.rx.text.orEmpty,
             birthday: mainView.datePicker.rx.date
-                .map { $0.convertDateToString(format: .compact) },
+                .map { $0.convertDateToString(format: .compact, localeType: .ko_KR) },
             signUpButtonTap: mainView.signUpButton.rx.tap
         )
         

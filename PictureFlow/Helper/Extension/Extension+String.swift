@@ -55,6 +55,7 @@ extension String {
     
     func loadImageByKingfisher(imageView: UIImageView) {
         if let imageURL = URL(string: self) {
+            imageView.kf.indicatorType = .activity
             imageView.kf.setImage(
                 with: imageURL,
                 options: [.requestModifier(self.imageDownloadRequest())]
@@ -62,5 +63,4 @@ extension String {
         }
     }
 }
-
 

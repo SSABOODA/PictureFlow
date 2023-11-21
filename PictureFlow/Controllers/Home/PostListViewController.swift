@@ -33,6 +33,8 @@ final class PostListViewController: UIViewController {
         return view
     }()
     
+    let refreshControl: UIRefreshControl = UIRefreshControl()
+    
     override func loadView() {
         view = mainView
     }
@@ -43,10 +45,34 @@ final class PostListViewController: UIViewController {
         navigationItem.title = "FLOW"
         configureHierarchy()
         bind()
+        
+        configureRefreshControl()
+        printAccessToken() // @Deprecated
+
+    }
+    
+    func printAccessToken() {
         let accessToken = KeyChain.read(key: "accessToken")!
-//        let refreshToken = KeyChain.read(key: "refreshToken")!
         print("accessToken: \(accessToken)")
+//        let refreshToken = KeyChain.read(key: "refreshToken")!
 //        print("refreshToken: \(refreshToken)")
+    }
+    
+    func configureRefreshControl() {
+        refreshControl.endRefreshing()
+        tableView.refreshControl = refreshControl
+        
+        let refreshLoading = PublishRelay<Bool>() // ViewModel에 있다고 가정
+        refreshControl.rx.controlEvent(.valueChanged)
+            .bind(onNext: { [weak self] _ in
+                // viewModel.updateDataSource()
+                // 아래코드: viewModel에서 발생한다고 가정
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1) { [weak self] in
+//                    self?.refreshLoading.accept(true) // viewModel에서 dataSource업데이트 끝난 경우
+                    self?.refreshControl.endRefreshing()
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func configureHierarchy() {
@@ -56,26 +82,12 @@ final class PostListViewController: UIViewController {
             make.horizontalEdges.bottom.equalToSuperview()
         }
     }
-    
-//    private func createTableViewDataSource() -> RxTableViewSectionedReloadDataSource<SectionModel> {
-//        return RxTableViewSectionedReloadDataSource<SectionModel>(
-//            configureCell: { (_, tableView, indexPath, sectionItem) in
-//                print("RxTableViewSectionedReloadDataSource")
-//                let cell = tableView.dequeueReusableCell(withIdentifier: PostListTableViewCell.description(), for: indexPath) as! PostListTableViewCell
-//                cell.configure(with: [sectionItem])
-//                return cell
-//            }
-////            titleForHeaderInSection: { dataSource, sectionIndex in
-////                return dataSource[sectionIndex].header
-////            }
-//        )
-//    }
-    
+
     private func bind() {
         let input = PostListViewModel.Input()
         let output = viewModel.transform(input: input)
         
-        // TODO: @deprecated 네트워크 통신 데이터 확인용 바인딩:
+//         TODO: @deprecated 네트워크 통신 데이터 확인용 바인딩:
         output.postListItem
             .subscribe(with: self) { owner, result in
 //                dump(result)
