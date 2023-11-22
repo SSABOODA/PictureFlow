@@ -11,29 +11,13 @@ import RxCocoa
 import RxDataSources
 import Kingfisher
 
-struct DataList {
-    let name: String
-    let content: String
-}
-
 final class PostListViewController: UIViewController {
     
     let mainView = PostListView()
     let viewModel = PostListViewModel()
     var disposeBag = DisposeBag()
     
-    private let tableView: UITableView = {
-        let view = UITableView()
-        view.register(
-            PostListTableViewCell.self,
-            forCellReuseIdentifier: PostListTableViewCell.description()
-        )
-        view.rowHeight = UITableView.automaticDimension
-        view.backgroundColor = UIColor(resource: .backgorund)
-        return view
-    }()
     
-    let refreshControl: UIRefreshControl = UIRefreshControl()
     
     override func loadView() {
         view = mainView
@@ -43,7 +27,6 @@ final class PostListViewController: UIViewController {
         super.viewDidLoad()
         print(#function, PostListViewController.description())
         navigationItem.title = "FLOW"
-        configureHierarchy()
         bind()
         
         configureRefreshControl()
@@ -59,40 +42,25 @@ final class PostListViewController: UIViewController {
     }
     
     func configureRefreshControl() {
-        refreshControl.endRefreshing()
-        tableView.refreshControl = refreshControl
+        mainView.refreshControl.endRefreshing()
+        mainView.tableView.refreshControl = mainView.refreshControl
         
-        let refreshLoading = PublishRelay<Bool>() // ViewModel에 있다고 가정
-        refreshControl.rx.controlEvent(.valueChanged)
-            .bind(onNext: { [weak self] _ in
-                // viewModel.updateDataSource()
-                // 아래코드: viewModel에서 발생한다고 가정
-                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1) { [weak self] in
-//                    self?.refreshLoading.accept(true) // viewModel에서 dataSource업데이트 끝난 경우
-                    self?.refreshControl.endRefreshing()
+        mainView.refreshControl.rx.controlEvent(.valueChanged)
+            .bind(with: self) { owner, _ in
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1) {
+                    owner.viewModel.updateDateSource()
+                    owner.mainView.refreshControl.endRefreshing()
+                    owner.viewModel.refreshLoading.accept(true)
                 }
-            })
+            }
             .disposed(by: disposeBag)
     }
     
-    private func configureHierarchy() {
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.horizontalEdges.bottom.equalToSuperview()
-        }
-    }
+    
 
     private func bind() {
         let input = PostListViewModel.Input()
         let output = viewModel.transform(input: input)
-        
-//         TODO: @deprecated 네트워크 통신 데이터 확인용 바인딩:
-        output.postListItem
-            .subscribe(with: self) { owner, result in
-//                dump(result)
-            }
-            .disposed(by: disposeBag)
         
         output.errorResponse
             .subscribe(with: self) { owner, error in
@@ -101,9 +69,13 @@ final class PostListViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.postListItem
-            .bind(to: tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
+            .bind(to: mainView.tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
                 cell.configureCell(with: element)
             }
+            .disposed(by: disposeBag)
+        
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
     }
 }

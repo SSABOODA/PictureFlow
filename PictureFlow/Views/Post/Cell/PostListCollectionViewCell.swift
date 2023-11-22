@@ -21,6 +21,16 @@ final class PostListCollectionViewCell: UICollectionViewCell {
         configureHierarchy()
     }
     
+    @objc func imageTapped() {
+        // 이미지를 탭했을 때 실행되는 코드
+        // 전체 화면으로 전환하는 코드를 여기에 추가
+        toggleFullScreen()
+    }
+    
+    func toggleFullScreen() {
+        
+    }
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

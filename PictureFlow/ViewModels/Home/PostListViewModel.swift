@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 final class PostListViewModel: ViewModelType {
     struct Input {
@@ -15,19 +16,19 @@ final class PostListViewModel: ViewModelType {
     struct Output {
         let postListItem: PublishSubject<[PostList]>
         let errorResponse: PublishSubject<CustomErrorResponse>
+        let refreshLoading: PublishRelay<Bool>
     }
     
     var disposeBag = DisposeBag()
     
+    let postListItem = PublishSubject<[PostList]>()
+    let errorResponse = PublishSubject<CustomErrorResponse>()
+    let tokenObservable = BehaviorSubject<String>(value: "")
+    let refreshLoading = PublishRelay<Bool>()
+    
     func transform(input: Input) -> Output {
-        let postListItem = PublishSubject<[PostList]>()
-        let errorResponse = PublishSubject<CustomErrorResponse>()
-        let tokenObservable = BehaviorSubject<String>(value: "")
         
-//        print("토큰 확인: \(KeyChain.read(key: APIConstants.accessToken))")
-        if let token = KeyChain.read(key: APIConstants.accessToken) {
-            tokenObservable.onNext(token)
-        }
+        self.updateDateSource()
         
         tokenObservable
             .flatMap {
@@ -35,6 +36,7 @@ final class PostListViewModel: ViewModelType {
                     type: PostListResponse.self,
                     router: .postList(
                         accessToken: $0,
+                        limit: "10",
                         product_id: "picture_flow"
                     )
                 )
@@ -43,17 +45,27 @@ final class PostListViewModel: ViewModelType {
                 switch result {
                 case .success(let data):
 //                    print(data)
-                    postListItem.onNext(data.data)
+                    owner.postListItem.onNext(data.data)
                 case .failure(let error):
                     print("error.statusCode: \(error.statusCode)")
-                    errorResponse.onNext(error)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)
         
         return Output(
             postListItem: postListItem,
-            errorResponse: errorResponse
+            errorResponse: errorResponse,
+            refreshLoading: refreshLoading
         )
+    }
+    
+    func updateDateSource() {
+        if let token = KeyChain.read(key: APIConstants.accessToken) {
+            print("토큰 확인: \(token)")
+            tokenObservable.onNext(token)
+        } else {
+            print("토큰 확인 실패")
+        }
     }
 }

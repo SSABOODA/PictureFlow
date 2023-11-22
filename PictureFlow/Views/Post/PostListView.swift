@@ -24,11 +24,23 @@ final class PostListView: UIView {
         return lb
     }()
     
+    let tableView: UITableView = {
+        let view = UITableView()
+        view.register(
+            PostListTableViewCell.self,
+            forCellReuseIdentifier: PostListTableViewCell.description()
+        )
+        view.rowHeight = UITableView.automaticDimension
+        view.backgroundColor = UIColor(resource: .backgorund)
+        return view
+    }()
     
+    let refreshControl: UIRefreshControl = UIRefreshControl()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(resource: .backgorund)
+        configureHierarchy()
     }
     
     @available(*, unavailable)
@@ -36,5 +48,11 @@ final class PostListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    private func configureHierarchy() {
+        addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.horizontalEdges.bottom.equalToSuperview()
+        }
+    }
 }

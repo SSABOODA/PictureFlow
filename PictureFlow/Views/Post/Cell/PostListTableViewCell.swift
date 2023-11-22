@@ -18,8 +18,8 @@ final class PostListTableViewCell: UITableViewCell {
         view.layer.masksToBounds = true
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.clear.cgColor
-        view.backgroundColor = .black
-        view.tintColor = .white
+        view.backgroundColor = UIColor(resource: .tint)
+        view.tintColor = UIColor(resource: .backgorund)
         view.contentMode = .scaleAspectFill
         return view
     }()
@@ -34,7 +34,6 @@ final class PostListTableViewCell: UITableViewCell {
     
     let nicknameLabel = {
         let label = UILabel()
-        label.text = "ssaboo99"
         label.font = .boldSystemFont(ofSize: 18)
         label.numberOfLines = 1
         label.textColor = UIColor(resource: .text)
@@ -43,7 +42,6 @@ final class PostListTableViewCell: UITableViewCell {
     
     let postCreatedTimeLabel = {
         let label = UILabel()
-        label.text = "18시간전"
         label.font = .systemFont(ofSize: 15)
         label.textColor = UIColor(resource: .text)
         return label
@@ -51,7 +49,6 @@ final class PostListTableViewCell: UITableViewCell {
     
     let contentLabel = {
         let label = UILabel()
-        label.text = "dummy"
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 18)
         label.textColor = UIColor(resource: .text)
@@ -63,13 +60,12 @@ final class PostListTableViewCell: UITableViewCell {
             frame: .zero,
             collectionViewLayout: createLayout()
         )
-        
         collectionView.register(
             PostListCollectionViewCell.self,
             forCellWithReuseIdentifier: PostListCollectionViewCell.description()
         )
-        
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = UIColor(resource: .backgorund).withAlphaComponent(0)
         return collectionView
     }()
     
@@ -156,6 +152,7 @@ final class PostListTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+//        profileImageView.image = nil
         disposeBag = DisposeBag()
     }
     
@@ -207,7 +204,8 @@ final class PostListTableViewCell: UITableViewCell {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
-            make.leading.equalTo(nicknameLabel.snp.leading)
+//            make.leading.equalTo(nicknameLabel.snp.leading)
+            make.leading.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(0)
         }
@@ -227,29 +225,30 @@ final class PostListTableViewCell: UITableViewCell {
     }
     
     func configureCell(with elements: PostList) {
+        updateCollectionViewHeight(isEmpty: elements.image.isEmpty)
+        
+        // 시간 작업
+        let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
+        
         nicknameLabel.text = elements.creator.nick
         contentLabel.text = elements.content
-        
+        postCreatedTimeLabel.text = timeContent
         if !elements.image.isEmpty {
             let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
             imageURL.loadImageByKingfisher(imageView: profileImageView)
         }
-        
-        // 시간 작업
-        let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
-        postCreatedTimeLabel.text = timeContent
-            
+
         configureCollectionView(with: elements.image)
     }
     
-    private func configureCollectionView(with imageList: [String]) {
-//        print(#function, imageList)
-        
-        if !imageList.isEmpty {
-            self.collectionView.snp.updateConstraints { make in
-                make.height.equalTo(200)
-            }
+    private func updateCollectionViewHeight(isEmpty: Bool) {
+        let height = isEmpty ? 0 : 200
+        self.collectionView.snp.updateConstraints { make in
+            make.height.equalTo(height)
         }
+    }
+    
+    private func configureCollectionView(with imageList: [String]) {
         
         Observable.just(imageList)
             .bind(to: collectionView.rx.items(cellIdentifier: PostListCollectionViewCell.description(), cellType: PostListCollectionViewCell.self)) { (row, element, cell) in
@@ -259,7 +258,6 @@ final class PostListTableViewCell: UITableViewCell {
             .disposed(by: disposeBag)
     }
 
-    // @deprecated
     static func createLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -267,7 +265,7 @@ final class PostListTableViewCell: UITableViewCell {
         layout.minimumInteritemSpacing = 8
 //        let size = UIScreen.main.bounds.width - 40
         layout.itemSize = CGSize(width: 200, height: 200)
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 10)
         return layout
     }
     
