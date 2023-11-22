@@ -204,7 +204,6 @@ final class PostListTableViewCell: UITableViewCell {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
-//            make.leading.equalTo(nicknameLabel.snp.leading)
             make.leading.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(0)
@@ -237,7 +236,6 @@ final class PostListTableViewCell: UITableViewCell {
             let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
             imageURL.loadImageByKingfisher(imageView: profileImageView)
         }
-
         configureCollectionView(with: elements.image)
     }
     
@@ -249,7 +247,6 @@ final class PostListTableViewCell: UITableViewCell {
     }
     
     private func configureCollectionView(with imageList: [String]) {
-        
         Observable.just(imageList)
             .bind(to: collectionView.rx.items(cellIdentifier: PostListCollectionViewCell.description(), cellType: PostListCollectionViewCell.self)) { (row, element, cell) in
                 let imageURL = "\(BaseURL.baseURL)/\(element)"

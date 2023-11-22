@@ -44,15 +44,15 @@ final class CustomTabBarController: UITabBarController {
     private func configureViewController() {
         let PostListVC = UINavigationController(rootViewController: PostListViewController())
         let SearchVC = UINavigationController(rootViewController: SearchViewController())
-        let PostVC = UINavigationController(rootViewController: PostViewController())
-        let LikeVC = UINavigationController(rootViewController: PostViewController())
-        let ProfileVC = UINavigationController(rootViewController: PostViewController())
+        let PostWriteVC = UINavigationController(rootViewController: PostWriteViewController())
+        let LikeVC = UINavigationController(rootViewController: LikeViewController())
+        let ProfileVC = UINavigationController(rootViewController: ProfileViewController())
         
         setViewControllers(
             [
                 PostListVC,
                 SearchVC,
-                PostVC,
+                PostWriteVC,
                 LikeVC,
                 ProfileVC
             ], animated: true
@@ -70,7 +70,7 @@ final class CustomTabBarController: UITabBarController {
         )
 
         createTabBarItem(
-            viewContoller: PostVC,
+            viewContoller: PostWriteVC,
             imageString: "square.and.pencil"
         )
         

@@ -17,8 +17,6 @@ final class PostListViewController: UIViewController {
     let viewModel = PostListViewModel()
     var disposeBag = DisposeBag()
     
-    
-    
     override func loadView() {
         view = mainView
     }
@@ -30,8 +28,8 @@ final class PostListViewController: UIViewController {
         bind()
         
         configureRefreshControl()
+        setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .tint))
         printAccessToken() // @Deprecated
-
     }
     
     func printAccessToken() {
@@ -71,6 +69,18 @@ final class PostListViewController: UIViewController {
         output.postListItem
             .bind(to: mainView.tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
                 cell.configureCell(with: element)
+            }
+            .disposed(by: disposeBag)
+        
+        Observable.zip(mainView.tableView.rx.itemSelected, mainView.tableView.rx.modelSelected(PostList.self))
+            .map {
+                let item = $0.1
+                return PostList(_id: item._id, likes: item.likes, image: item.image, title: item.title, content: item.content, time: item.time, productID: item.productID, creator: item.creator, comments: item.comments)
+            }
+            .subscribe(with: self) { owner, value in
+                let vc = PostDetailViewController()
+                vc.postDetailViewModel.postItem = value
+                owner.transition(viewController: vc, style: .push)
             }
             .disposed(by: disposeBag)
         

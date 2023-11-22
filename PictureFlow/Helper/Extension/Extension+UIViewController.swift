@@ -103,7 +103,7 @@ extension UIViewController {
  */
 
 extension UIViewController {
-    func setNavigationBarBackButtonItem(title: String = "", color: UIColor) {
+    func setNavigationBarBackButtonItem(title: String? = nil, color: UIColor) {
         let backBarButtonItem = UIBarButtonItem(
             title: title,
             style: .plain,
