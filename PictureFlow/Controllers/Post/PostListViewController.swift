@@ -33,8 +33,8 @@ final class PostListViewController: UIViewController {
     }
     
     func printAccessToken() {
-        let accessToken = KeyChain.read(key: "accessToken")!
-        print("accessToken: \(accessToken)")
+//        let accessToken = KeyChain.read(key: "accessToken")!
+//        print("accessToken: \(accessToken)")
 //        let refreshToken = KeyChain.read(key: "refreshToken")!
 //        print("refreshToken: \(refreshToken)")
     }
@@ -53,8 +53,6 @@ final class PostListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
-    
-    
 
     private func bind() {
         let input = PostListViewModel.Input()
@@ -72,14 +70,17 @@ final class PostListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        Observable.zip(mainView.tableView.rx.itemSelected, mainView.tableView.rx.modelSelected(PostList.self))
+        Observable.zip(
+            mainView.tableView.rx.itemSelected,
+            mainView.tableView.rx.modelSelected(PostList.self)
+        )
             .map {
                 let item = $0.1
                 return PostList(_id: item._id, likes: item.likes, image: item.image, title: item.title, content: item.content, time: item.time, productID: item.productID, creator: item.creator, comments: item.comments)
             }
             .subscribe(with: self) { owner, value in
                 let vc = PostDetailViewController()
-                vc.postDetailViewModel.postItem = value
+                vc.viewModel.postList = value
                 owner.transition(viewController: vc, style: .push)
             }
             .disposed(by: disposeBag)

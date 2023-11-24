@@ -9,38 +9,186 @@ import Foundation
 import Alamofire
 import RxSwift
 
-enum NetworkError: Int, Error, LocalizedError {
-    case missingRequireParameter = 400
-    case missingParameter = 420
-    case doesNotExistUser = 401
-    case existUserInfo = 409
-    case expiredToken = 419
-    case overRequest = 429
-    case badRequest = 444
-    case invalidServer = 500
+protocol ErrorProtocol: Error {
+    var errorDescription: String { get }
+}
+
+struct APICustomError {
     
-    var errorDescription: String {
-        switch self {
-        case .missingRequireParameter: return "필수값이 없거나, 비밀번호가 일치하지 않습니다."
-        case .missingParameter: return "해당 키값을 다시확인하거나, 잘못된 요청입니다."
-        case .doesNotExistUser: return "존재하지 않는 유저입니다."
-        case .existUserInfo: return "이미 가입한 유저의 이메일입니다."
-        case .expiredToken: return "토큰이 만료되었습니다."
-        case .overRequest: return "과호출입니다."
-        case .badRequest: return "해당 url을 확인하거나, 잘못된 요청입니다."
-        case .invalidServer: return "서버 에러"
+    // 공통 에러
+    enum CommonError: Int, ErrorProtocol {
+        
+        case notExistApikey = 420 // "This service sesac memolease only"
+        case overRequest = 429 // "과호출입니다."
+        case badRequestURL = 444 // 돌아가 여긴 자네가 올 곳이 아니야.
+        case serverInternalError = 500 // serverError
+        
+        var errorDescription: String {
+            switch self {
+            case .notExistApikey: return "notExistApikey"
+            case .overRequest: return "overRequest"
+            case .badRequestURL: return "badRequestURL"
+            case .serverInternalError: return "serverInternalError"
+            }
         }
     }
+    
+    // 회원가입
+    enum JoinError: Int, ErrorProtocol {
+        case missingParameter = 400 // 필수값을 채워주세요
+        case alreadySignedUp = 409 // 이미 가입한 유저일 때 리턴
+        
+        var errorDescription: String {
+            switch self {
+            case .missingParameter: return "missingParameter"
+            case .alreadySignedUp: return "alreadySignedUp"
+            }
+        }
+    }
+    
+    // 이메일 유효성 체크
+    enum EmailValidationError: Int, ErrorProtocol {
+        case missingParameter = 400 // 필수값을 채워주세요
+        case unavailableEmail = 409 // 사용이 불가한 이메일입니다.
+        
+        var errorDescription: String {
+            switch self {
+            case .missingParameter: return "missingParameter"
+            case .unavailableEmail: return "unavailableEmail"
+            }
+        }
+    }
+    
+    // 로그인
+    enum LoginError: Int, ErrorProtocol {
+        case missingParameter = 400 // 필수값을 채워주세요
+        case checkAccount = 401 // 계정을 확인해주세요
+        
+        var errorDescription: String {
+            switch self {
+            case .missingParameter: return "missingParameter"
+            case .checkAccount: return "checkAccount"
+            }
+        }
+    }
+    
+    // AccessToken 갱신
+    enum TokenRefreshError: Int, ErrorProtocol {
+        case unableAuthenticateAccessToken = 401 // 인증할 수 없는 토큰 값
+        case forbidden = 403 // Forbidden
+        case noExpired = 409 // 액세스 토큰이 만료되지 않았습니다.
+        case refreshTokenExpired = 418 // 리프레스 토큰이 만료되었습니다. 다시 로그인 해주세요
+        
+        var errorDescription: String {
+            switch self {
+            case .unableAuthenticateAccessToken: return "unableAuthenticateAccessToken"
+            case .forbidden: return "forbidden"
+            case .noExpired: return "noExpired"
+            case .refreshTokenExpired: return "refreshTokenExpired"
+            }
+        }
+    }
+    
+    // 탈퇴
+    enum WithdrawError: Int, ErrorProtocol {
+        case unableAuthenticateAccessToken = 401 // 인증할 수 없는 액세스 토큰입니다.
+        case forbidden = 403 // Forbidden
+        case accessTokenExpired = 419 // 액세스 토큰이 만료되었습니다.
+        
+        var errorDescription: String {
+            switch self {
+            case .unableAuthenticateAccessToken: return "unableAuthenticateAccessToken"
+            case .forbidden: return "forbidden"
+            case .accessTokenExpired: return "accessTokenExpired"
+            }
+        }
+    }
+    
+    // 포스트 작성
+    enum PostCreateError: Int, ErrorProtocol {
+        case badRequest = 400 // 잘못된 요청입니다.
+        case unableAuthenticateAccessToken = 401 // 인증할 수 없는 액세스 토큰입니다.
+        case forbidden = 403
+        case notExistPost = 410 // 생성된 게시글이 없습니다.
+        case accessTokenExpired = 419 // 액세스 토큰이 만료되었습니다.
+        
+        var errorDescription: String {
+            switch self {
+            case .badRequest: return "badRequest"
+            case .unableAuthenticateAccessToken: return "unableAuthenticateAccessToken"
+            case .forbidden: return "forbidden"
+            case .notExistPost: return "notExistPost"
+            case .accessTokenExpired: return "accessTokenExpired"
+            }
+        }
+    }
+    
+    // 포스트 조회
+    enum PostReadError: Int, ErrorProtocol {
+        case badRequest = 400 // 잘못된 요청입니다.
+        case unableAuthenticateAccessToken = 401 // 인증할 수 없는 액세스 토큰입니다.
+        case forbidden = 403
+        case accessTokenExpired = 419 // 액세스 토큰이 만료되었습니다.
+        
+        var errorDescription: String {
+            switch self {
+            case .badRequest: return "badRequest"
+            case .unableAuthenticateAccessToken: return "unableAuthenticateAccessToken"
+            case .forbidden: return "forbidden"
+            case .accessTokenExpired: return "accessTokenExpired"
+            }
+        }
+    }
+    
+    // 포스트 수정
+    enum PostUpdateError: Int, ErrorProtocol {
+        case badRequest = 400 // 잘못된 요청입니다.
+        case unableAuthenticateAccessToken = 401 // 인증할 수 없는 액세스 토큰입니다.
+        case forbidden = 403
+        case notExistPost = 410 // 수정할 게시글을 찾을 수 없습니다.
+        case accessTokenExpired = 419 // 액세스 토큰이 만료되었습니다.
+        case NoPermissionToEdit = 445 // 수정할 권한이 없습니다.
+        
+        var errorDescription: String {
+            switch self {
+            case .badRequest: return "badRequest"
+            case .unableAuthenticateAccessToken: return "unableAuthenticateAccessToken"
+            case .forbidden: return "forbidden"
+            case .notExistPost: return "notExistPost"
+            case .accessTokenExpired: return "accessTokenExpired"
+            case .NoPermissionToEdit: return "NoPermissionToEdit"
+            }
+        }
+    }
+    
+    // 포스트 삭제
+    enum PostDeleteError: Int, ErrorProtocol {
+        case unableAuthenticateAccessToken = 401 // 인증할 수 없는 액세스 토큰입니다.
+        case forbidden = 403
+        case notExistPost = 410 // 삭제할 게시글을 찾을 수 없습니다.
+        case accessTokenExpired = 419 // 액세스 토큰이 만료되었습니다.
+        case NoPermissionToDelete = 445 // 삭제할 권한이 없습니다.
+        
+        var errorDescription: String {
+            switch self {
+            case .unableAuthenticateAccessToken: return "unableAuthenticateAccessToken"
+            case .forbidden: return "forbidden"
+            case .notExistPost: return "notExistPost"
+            case .accessTokenExpired: return "accessTokenExpired"
+            case .NoPermissionToDelete: return "NoPermissionToDelete"
+            }
+        }
+    }
+    
 }
+
+
 
 final class Network {
     static let shared = Network()
     private init() {}
     
-    /*
-     Single
-     */
-    
+    // AF Request
     typealias NetworkCompletion<T> = (Result<T, CustomErrorResponse>) -> Void
     func requestConvertible<T: Decodable>(
         type: T.Type? = nil,
@@ -55,6 +203,7 @@ final class Network {
                     completion(.success(data))
                 case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
+                    print("statusCode : \(statusCode)")
                     guard let data = response.data else { return }
                     do {
                         let serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
@@ -72,12 +221,12 @@ final class Network {
             }
     }
     
+    // Single Observable
     func requestObservableConvertible<T: Decodable>(
         type: T.Type,
         router: Router
     ) -> Single<Result<T, CustomErrorResponse>> {
         return Single.create { [weak self] single in
-            
             self?.requestConvertible(type: T.self, router: router) { result in
                 switch result {
                 case .success(let success):

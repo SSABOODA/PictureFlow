@@ -41,6 +41,7 @@ final class SignUpViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let signUpSuccess = BehaviorRelay(value: false)
         let errorResponse = PublishRelay<CustomErrorResponse>()
+        let errorResponse2 = PublishRelay<APICustomError>()
         
         let signUpModelObservable = BehaviorSubject<SignUpReqeust>(value: model)
         let validationModelObservable = BehaviorSubject<ValidationRequest>(value: validationModel)
@@ -84,7 +85,7 @@ final class SignUpViewModel: ViewModelType {
             validationModelObservable.onNext(validationModel)
         }
         .disposed(by: disposeBag)
-        
+                
         input.signUpButtonTap
             .withLatestFrom(validationModelObservable)
             .flatMap {
@@ -93,14 +94,18 @@ final class SignUpViewModel: ViewModelType {
                     router: .validation(model: $0)
                 )
             }
+            // bind, drive 변경해도 됨
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let success):
                     print(success.message)
                     emailValidation.accept(true)
                 case .failure(let error):
+                    // TODO: Error Custom Message (작업 예정)
+                    
                     print("\(error)")
-                    errorResponse.accept(error)
+                    _ = APICustomError.CommonError(rawValue: error.statusCode)?.errorDescription
+//                    errorResponse.accept(error) // 다른 방식
                 }
             } onDisposed: { owner in
                 print("onDisposed")
@@ -126,7 +131,7 @@ final class SignUpViewModel: ViewModelType {
                     signUpSuccess.accept(true)
                 case .failure(let error):
                     print("subscribe \(error)")
-                    errorResponse.accept(error)
+//                    errorResponse.accept(error)
                 }
             } onDisposed: { owner in
                 print("onDisposed")
