@@ -59,9 +59,6 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
 
-        
-        
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -89,25 +86,6 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
     }
     
-    private func collectionViewBind(imageList: [String]) {
-        
-//        mainView.collectionView.snp.updateConstraints { make in
-//            make.height.equalTo(200)
-//        }
-        
-//        sizeHeaderToFit()
-//        Observable.just(imageList)
-//            .bind(to: mainView.collectionView.rx.items(
-//                cellIdentifier: PostListCollectionViewCell.description(),
-//                cellType: PostListCollectionViewCell.self)
-//            ) { (row, element, cell) in
-//                let imageURL = "\(BaseURL.baseURL)/\(element)"
-//                imageURL.loadImageByKingfisher(imageView: cell.postImageView)
-//            }
-//            .disposed(by: disposeBag)
-        
-    }
-    
 }
 
 // RxDataSource
@@ -122,10 +100,7 @@ extension PostDetailViewController {
             return cell
             
         } configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) in
-            
-//            self.collectionView.delegate = nil
-//            self.collectionView.dataSource = nil
-            
+ 
             if kind == UICollectionView.elementKindSectionHeader, indexPath.section == 0 {
                 guard let cell = collectionView.dequeueReusableSupplementaryView(
                     ofKind: kind,
@@ -152,6 +127,10 @@ extension PostDetailViewController {
                     let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
                     imageURL.loadImageByKingfisher(imageView: cell.profileImageView)
                 }
+                
+                cell.commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
+                cell.likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
+                
                 
                 
                 /*

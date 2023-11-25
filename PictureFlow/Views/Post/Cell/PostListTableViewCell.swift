@@ -236,6 +236,9 @@ final class PostListTableViewCell: UITableViewCell {
             let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
             imageURL.loadImageByKingfisher(imageView: profileImageView)
         }
+        
+        commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
+        likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
         configureCollectionView(with: elements.image)
     }
     
