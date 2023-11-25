@@ -1,13 +1,14 @@
 //
-//  TestHeaderView.swift
+//  CommentTableViewHeaderView.swift
 //  PictureFlow
 //
-//  Created by 한성봉 on 11/23/23.
+//  Created by 한성봉 on 11/24/23.
 //
 
 import UIKit
 
-class TestHeaderView: UIView {
+final class CommentCollectionReusableHeaderView: UICollectionReusableView {
+    
     let profileImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "person")
@@ -101,7 +102,7 @@ class TestHeaderView: UIView {
     
     let commentCountButton = {
         let button = UIButton()
-        button.setTitle("99 답글", for: .normal)
+        button.setTitle("91 답글", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
         return button
@@ -109,7 +110,7 @@ class TestHeaderView: UIView {
     
     let likeCountButton = {
         let button = UIButton()
-        button.setTitle("199 좋아요", for: .normal)
+        button.setTitle("141 좋아요", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
         return button
@@ -128,6 +129,7 @@ class TestHeaderView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = UIColor(resource: .backgorund)
         configureHierarchy()
         configureLayout()
     }
@@ -135,6 +137,12 @@ class TestHeaderView: UIView {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        profileImageView.layoutIfNeeded()
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
     }
     
     func configureHierarchy() {
@@ -149,13 +157,13 @@ class TestHeaderView: UIView {
     
     func configureLayout() {
         profileImageView.snp.makeConstraints { make in
-            make.size.equalTo(35)
             make.top.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(15)
+            make.size.equalTo(35)
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.top)
+            make.top.equalToSuperview().inset(10)
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
         
@@ -167,21 +175,29 @@ class TestHeaderView: UIView {
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(10)
             make.leading.equalTo(profileImageView.snp.leading)
-            make.trailing.equalTo(postCreatedTimeLabel.snp.trailing)
+            make.trailing.equalToSuperview().offset(-15)
         }
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(200)
+            make.leading.equalTo(safeAreaLayoutGuide)
+            make.trailing.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(0)
         }
         
         functionButtonStackView.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom).offset(10)
             make.leading.equalTo(profileImageView.snp.leading)
-            make.width.equalTo(100)
-            make.bottom.equalToSuperview().offset(-5)
+            make.width.equalToSuperview().multipliedBy(0.4)
         }
+        
+        countButtonStackView.snp.makeConstraints { make in
+            make.top.equalTo(functionButtonStackView.snp.bottom).offset(5)
+            make.leading.equalTo(profileImageView.snp.leading)
+            make.width.equalToSuperview().multipliedBy(0.35)
+            make.bottom.equalToSuperview().inset(15)
+        }
+        
     }
     
     static func createLayout() -> UICollectionViewFlowLayout {
@@ -190,12 +206,19 @@ class TestHeaderView: UIView {
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
         layout.itemSize = CGSize(width: 200, height: 200)
-        layout.sectionInset = UIEdgeInsets(
-            top: 10,
-            left: 15,
-            bottom: 10,
-            right: 10
-        )
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 10)
         return layout
+    }
+}
+
+
+final class EmptyCommentCollectionReusableHeaderView: UICollectionReusableView {
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

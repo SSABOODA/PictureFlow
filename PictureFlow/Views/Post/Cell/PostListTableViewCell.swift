@@ -266,27 +266,6 @@ final class PostListTableViewCell: UITableViewCell {
         return layout
     }
     
-    // @deprecated
-    static func configurePinterestLayout() -> UICollectionViewLayout {
-        // .fractionalWidth, .absolute, .estimated
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(150))
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
-        group.interItemSpacing = .fixed(10)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        section.interGroupSpacing = 10
-        
-        let configuration = UICollectionViewCompositionalLayoutConfiguration()
-        configuration.scrollDirection = .horizontal
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        layout.configuration = configuration
-        
-        return layout
-    }
+    
 }
 
