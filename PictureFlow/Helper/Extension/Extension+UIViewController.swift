@@ -41,8 +41,8 @@ extension UIViewController {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
         let sceneDelegate = windowScene.delegate as? SceneDelegate
         let vc = viewController
-        let nav = UINavigationController(rootViewController: vc)
-        sceneDelegate?.window?.rootViewController = nav
+//        let nav = UINavigationController(rootViewController: vc)
+        sceneDelegate?.window?.rootViewController = vc
         sceneDelegate?.window?.makeKey()
     }
 }

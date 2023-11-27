@@ -26,8 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = vc
         } else {
             // 로그인 상태 O
-            let tabBar = CustomTabBarController()
-            window?.rootViewController = tabBar
+            let tabbarVC = CustomTabBarController()
+            window?.rootViewController = tabbarVC
         }
         
         window?.makeKeyAndVisible()

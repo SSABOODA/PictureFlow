@@ -10,6 +10,7 @@ import Security
 
 class KeyChain {
     // Create
+    
     class func create(key: String, token: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,

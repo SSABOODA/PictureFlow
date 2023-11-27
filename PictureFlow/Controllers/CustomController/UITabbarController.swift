@@ -7,12 +7,13 @@
 
 import UIKit
 
-final class CustomTabBarController: UITabBarController {
+final class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
-        configureTabBarLayout()
+        
+        self.delegate = self
     }
     
     override func viewWillLayoutSubviews() {
@@ -57,18 +58,18 @@ final class CustomTabBarController: UITabBarController {
                 ProfileVC
             ], animated: true
         )
-
+        
         createTabBarItem(
             viewContoller: PostListVC,
             imageString: "house",
             selectedImageString: "house.fill"
         )
-
+        
         createTabBarItem(
             viewContoller: SearchVC,
             imageString: "magnifyingglass"
         )
-
+        
         createTabBarItem(
             viewContoller: PostWriteVC,
             imageString: "square.and.pencil"
@@ -87,8 +88,6 @@ final class CustomTabBarController: UITabBarController {
         )
         modalPresentationStyle = .fullScreen
     }
-    
-    private func configureTabBarLayout() {}
 }
 
 extension UITabBarController {
@@ -98,7 +97,6 @@ extension UITabBarController {
         imageString: String,
         selectedImageString: String = ""
     ) {
-
         viewContoller.tabBarItem = UITabBarItem(
             title: titleString,
             image: UIImage(systemName: imageString),

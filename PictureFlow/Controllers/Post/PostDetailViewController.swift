@@ -10,37 +10,12 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-
-
 final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     
     var viewModel = PostDetailViewModel()
     let mainView = PostDetailView()
     var disposeBag = DisposeBag()
     
-    lazy var collectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: createLayout()
-        )
-        collectionView.register(
-            CommentCollectionViewCell.self,
-            forCellWithReuseIdentifier: CommentCollectionViewCell.description()
-        )
-        collectionView.register(
-            CommentCollectionReusableHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: CommentCollectionReusableHeaderView.description()
-        )
-        
-        collectionView.register(
-            EmptyCommentCollectionReusableHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: EmptyCommentCollectionReusableHeaderView.description()
-        )
-        return collectionView
-    }()
-
     override func loadView() {
         view = mainView
     }
@@ -49,14 +24,7 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor(resource: .backgorund)
         bind()
-        
-        view.addSubview(collectionView)
-        collectionView.backgroundColor = .systemMint
-        collectionView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-        
-        collectionView.rx.setDelegate(self)
+        mainView.collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
 
     }
@@ -74,12 +42,12 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         let dataSource = configureRxCollectionViewDataSource()
         
         output.postObservableItem
-            .bind(to: collectionView.rx.items(dataSource: dataSource))
+            .bind(to: mainView.collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         output.postObservableItem.onNext(viewModel.postDataList)
         
-        collectionView.rx.itemSelected
+        mainView.collectionView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
                 print(indexPath)
             }
@@ -131,8 +99,6 @@ extension PostDetailViewController {
                 cell.commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
                 cell.likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
                 
-                
-                
                 /*
                  collectionView 작업
                  */
@@ -164,46 +130,6 @@ extension PostDetailViewController {
         }
         return dataSource
     }
-    
 
-    private func configureCollectionView(with imageList: [String]) {
-        
-    }
 }
 
-extension PostDetailViewController {
-    func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { _, _ in
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.1)
-            )
-            let group = NSCollectionLayoutGroup.vertical(
-                layoutSize: groupSize,
-                subitems: [item]
-            )
-            
-            let headerFooterSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(1.0)
-            )
-            let header = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: headerFooterSize,
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top
-            )
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.boundarySupplementaryItems = [header]
-            
-            return section
-        }
-        return layout
-    }
-}

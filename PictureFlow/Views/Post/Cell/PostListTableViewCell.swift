@@ -12,15 +12,7 @@ import RxDataSources
 final class PostListTableViewCell: UITableViewCell {
     
     let profileImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "person")
-        view.clipsToBounds = true
-        view.layer.masksToBounds = true
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.clear.cgColor
-        view.backgroundColor = UIColor(resource: .tint)
-        view.tintColor = UIColor(resource: .backgorund)
-        view.contentMode = .scaleAspectFill
+        let view = ProfileImageView(frame: .zero)
         return view
     }()
     
