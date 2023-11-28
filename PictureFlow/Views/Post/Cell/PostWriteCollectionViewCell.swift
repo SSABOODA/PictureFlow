@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import PhotosUI
+import RxSwift
 
 final class PostWriteCollectionViewCell: UICollectionViewCell {
-    
+
     let profileImageView = {
         let view = ProfileImageView(frame: .zero)
         return view
@@ -87,13 +89,29 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
         stackView.distribution = .fillEqually
         return stackView
     }()
+    
+    let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: createLayout()
+        )
+        collectionView.register(
+            PostListCollectionViewCell.self,
+            forCellWithReuseIdentifier: PostListCollectionViewCell.description()
+        )
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = UIColor(resource: .backgorund).withAlphaComponent(0)
+        return collectionView
+    }()
+    
+    let disposeBag = DisposeBag()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHierarchy()
         configureLayout()
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -111,6 +129,7 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
         addSubview(nicknameLabel)
         addSubview(postContentTextField)
         addSubview(functionButtonStackView)
+        addSubview(collectionView)
 
     }
     
@@ -118,7 +137,7 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(10)
             make.leading.equalTo(safeAreaLayoutGuide).inset(5)
-            make.size.equalTo(40)
+            make.size.equalTo(35)
         }
         
         leftDividLineView.snp.makeConstraints { make in
@@ -141,11 +160,28 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(100)
         }
         
-//        functionButtonStackView.backgroundColor = .green
+//        collectionView.backgroundColor = .red
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(postContentTextField.snp.bottom).offset(5)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-10)
+            make.height.equalTo(200)
+        }
+        
         functionButtonStackView.snp.makeConstraints { make in
-            make.top.equalTo(postContentTextField.snp.bottom).offset(10)
+            make.top.equalTo(collectionView.snp.bottom).offset(10)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.bottom.equalToSuperview().offset(-5)
         }
+    }
+    
+    static func createLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 8
+        layout.itemSize = CGSize(width: 200, height: 200)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 10)
+        return layout
     }
 }

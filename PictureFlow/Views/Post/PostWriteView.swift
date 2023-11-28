@@ -43,18 +43,22 @@ extension PostWriteView {
         let sectionProvider = { (sectionIndex: Int,
             layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
+            let heightDimension = NSCollectionLayoutDimension.estimated(500)
+            
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(UIScreen.main.bounds.height * 0.35)
+                heightDimension: heightDimension
             )
+            
             let item = NSCollectionLayoutItem(
                 layoutSize: itemSize
             )
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(UIScreen.main.bounds.height * 0.35)
+                heightDimension: heightDimension
             )
+            
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: groupSize,
                 subitems: [item]
@@ -68,11 +72,6 @@ extension PostWriteView {
                 leading: 20,
                 bottom: 0,
                 trailing: 20
-            )
-
-            let titleSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(UIScreen.main.bounds.height*0.1)
             )
             return section
         }

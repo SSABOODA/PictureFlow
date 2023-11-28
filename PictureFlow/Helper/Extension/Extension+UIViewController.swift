@@ -37,11 +37,10 @@ extension UIViewController {
     }
     
     // Root ViewController
-    func changeRootViewController<T: UIViewController>(viewController: T) {
+    func changeRootViewController<T: UIViewController>(viewController: T, isNav: Bool = false) {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
         let sceneDelegate = windowScene.delegate as? SceneDelegate
-        let vc = viewController
-//        let nav = UINavigationController(rootViewController: vc)
+        let vc = isNav ? UINavigationController(rootViewController: viewController) : viewController
         sceneDelegate?.window?.rootViewController = vc
         sceneDelegate?.window?.makeKey()
     }
