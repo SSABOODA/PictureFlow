@@ -46,6 +46,7 @@
 		F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */; };
 		F76EE9312B11DA27005C6106 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9302B11DA27005C6106 /* ProfileImageView.swift */; };
 		F76EE9412B1452D8005C6106 /* PostWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9402B1452D8005C6106 /* PostWriteView.swift */; };
+		F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */; };
 		F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */; };
 		F7B409412B075730006CD373 /* UserVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409402B075730006CD373 /* UserVerification.swift */; };
 		F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409432B076F9D006CD373 /* UITabbarController.swift */; };
@@ -101,6 +102,7 @@
 		F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteCollectionViewCell.swift; sourceTree = "<group>"; };
 		F76EE9302B11DA27005C6106 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		F76EE9402B1452D8005C6106 /* PostWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteView.swift; sourceTree = "<group>"; };
+		F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewModel.swift; sourceTree = "<group>"; };
 		F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		F7B409402B075730006CD373 /* UserVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVerification.swift; sourceTree = "<group>"; };
 		F7B409432B076F9D006CD373 /* UITabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabbarController.swift; sourceTree = "<group>"; };
@@ -341,6 +343,7 @@
 			children = (
 				F7B4094F2B078CE2006CD373 /* PostListViewModel.swift */,
 				F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */,
+				F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -552,6 +555,7 @@
 				F76EE9312B11DA27005C6106 /* ProfileImageView.swift in Sources */,
 				F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */,
 				F7B409542B07958F006CD373 /* PostListView.swift in Sources */,
+				F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

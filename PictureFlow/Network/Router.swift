@@ -19,7 +19,7 @@ enum Router: URLRequestConvertible {
     case withdraw(accessToken: String) // 회원탈퇴
     
     // Post
-    case post(accessToken: String, model: PostRequest) // 게시글 작성
+    case post(accessToken: String, model: PostWriteRequest) // 게시글 작성
     case postList(
         accessToken: String,
         next: String? = "",
@@ -29,22 +29,6 @@ enum Router: URLRequestConvertible {
     
     private var baseURL: URL {
         return URL(string: BaseURL.baseURL)!
-//        switch self {
-//        case .join(_):
-//            return URL(string: BaseURL.baseAuthURL)!
-//        case .validation(_):
-//            return URL(string: BaseURL.baseAuthURL)!
-//        case .login(_):
-//            return URL(string: BaseURL.baseAuthURL)!
-//        case .refresh(_,_):
-//            return URL(string: BaseURL.baseAuthURL)!
-//        case .withdraw(_):
-//            return URL(string: BaseURL.baseAuthURL)!
-//        case .post(_,_):
-//            return URL(string: BaseURL.baseURL)!
-//        case .postList(_,_,_,_):
-//            return URL(string: BaseURL.baseURL)!
-//        }
     }
     
     private var path: String {
@@ -62,42 +46,32 @@ enum Router: URLRequestConvertible {
     }
     
     private var header: HTTPHeaders {
+        var defaultHeader: HTTPHeaders = [
+            APIConstants.apiKey: Router.key,
+        ]
         switch self {
         case .join:
-            return [
-                APIConstants.apiKey: Router.key,
-            ]
+            return defaultHeader
         case .validation:
-            return [
-                APIConstants.apiKey: Router.key,
-            ]
+            return defaultHeader
         case .login(_):
-            return [
-                APIConstants.apiKey: Router.key,
-            ]
+            return defaultHeader
         case .refresh(let accessToken, let refreshToken):
-            return [
-                APIConstants.apiKey: Router.key,
-                APIConstants.authorization: accessToken,
-                "Refresh": refreshToken,
-            ]
+            defaultHeader[APIConstants.authorization] = accessToken
+            defaultHeader["Refresh"] = refreshToken
+            return defaultHeader
         case .withdraw(let accessToken):
-            return [
-                APIConstants.apiKey: Router.key,
-                APIConstants.authorization: accessToken,
-            ]
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
             
         // post
         case .post(let accessToken, _):
-            return [
-                APIConstants.apiKey: Router.key,
-                APIConstants.authorization: accessToken,
-            ]
+            defaultHeader[APIConstants.authorization] = accessToken
+            defaultHeader["Content-Type"] = "multipart/form-data"
+            return defaultHeader
         case .postList(let accessToken, _, _, _):
-            return [
-                APIConstants.apiKey: Router.key,
-                APIConstants.authorization: accessToken,
-            ]
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
         }
     }
     
@@ -110,13 +84,13 @@ enum Router: URLRequestConvertible {
         case .refresh: return .get
         case .withdraw: return .post
             
-            // post
+        // post
         case .post: return .post
         case .postList: return .get
         }
     }
     
-    private var parameters: Parameters? {
+    var parameters: Parameters? {
         switch self {
         case .join(let model):
             return [
@@ -142,36 +116,28 @@ enum Router: URLRequestConvertible {
             
         // post
         case .post(_, let model):
+            return nil
             return [
                 "title": model.title,
                 "content": model.content,
                 "file": model.file,
-                "product_id": model.product_id,
-                "content1": model.content1 ?? "",
-                "content2": model.content2 ?? "",
-                "content3": model.content3 ?? "",
-                "content4": model.content4 ?? "",
-                "content5": model.content5 ?? ""
+                "product_id": model.productId,
+                "content1": model.content1,
+                "content2": model.content2,
+                "content3": model.content3,
+                "content4": model.content4,
+                "content5": model.content5
             ]
         case .postList(_, let next, let limit, let product_id):
             return [
                 "next": next ?? "",
                 "limit": limit ?? "",
                 "product_id": product_id ?? "",
-//                "product_id": product_id ?? ""
             ]
         }
     }
     
-//    private var query: [String: String]? {
-//        switch self {
-//        case .join: return nil
-//        case .validation: return nil
-//        case .login: return nil
-//        case .refresh: return nil
-//        case .withdraw: return nil
-//        }
-//    }
+//    private var query: [String: String]? { return ["": ""] }
     
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appendingPathComponent(path)
@@ -182,10 +148,41 @@ enum Router: URLRequestConvertible {
         request.method = method
         
         let re = try URLEncoding.default.encode(request, with: parameters)
-//        print("re: \(re)")
-//        print("method: \(re.httpMethod)")
-//        print("header: \(re.headers)")
-//        print("parameter: \(parameters)")
+        print("re: \(re)")
+        print("method: \(re.httpMethod)")
+        print("header: \(re.headers)")
+        print("parameter: \(parameters)")
         return try URLEncoding.default.encode(request, with: parameters)
+    }
+}
+
+
+extension Router {
+    var multipart: MultipartFormData {
+        switch self {
+        case .post(_, let model):
+            let multipartFormData = MultipartFormData()
+            
+            print("multipart model: \(model)")
+            
+            multipartFormData.append(Data(model.title.utf8), withName: "title")
+            multipartFormData.append(Data(model.productId.utf8), withName: "product_id")
+            multipartFormData.append(Data(model.content.utf8), withName: "content")
+            multipartFormData.append(Data(model.content1.utf8), withName: "content1")
+            multipartFormData.append(Data(model.content2.utf8), withName: "content2")
+            multipartFormData.append(Data(model.content3.utf8), withName: "content3")
+            multipartFormData.append(Data(model.content4.utf8), withName: "content4")
+            multipartFormData.append(Data(model.content5.utf8), withName: "content5")
+            
+            for image in model.file {
+                print("multipart image: \(image)")
+                multipartFormData.append(image.jpegData(compressionQuality: 0.1) ?? Data(),
+                                         withName: "file",
+                                         fileName: "image.jpeg",
+                                         mimeType: "image/jpeg")
+            }
+            return multipartFormData
+        default: return MultipartFormData()
+        }
     }
 }

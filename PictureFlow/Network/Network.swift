@@ -5,7 +5,7 @@
 //  Created by 한성봉 on 11/11/23.
 //
 
-import Foundation
+import UIKit
 import Alamofire
 import RxSwift
 
@@ -179,9 +179,7 @@ struct APICustomError {
             }
         }
     }
-    
 }
-
 
 
 final class Network {
@@ -195,7 +193,10 @@ final class Network {
         router: Router,
         completion: @escaping NetworkCompletion<T>
     ) {
-        AF.request(router, interceptor: AuthManager())
+        AF.request(
+            router,
+            interceptor: AuthManager()
+        )
             .validate()
             .responseDecodable(of: T.self) { response in
                 switch response.result {
@@ -204,21 +205,48 @@ final class Network {
                 case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
                     print("statusCode : \(statusCode)")
-                    guard let data = response.data else { return }
-                    do {
-                        let serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
-                        print("decoding error value: \(serverError)")
-                        let customErrorResponse = CustomErrorResponse(
-                            statusCode: statusCode,
-                            message: serverError.message
-                        )
-                        completion(.failure(customErrorResponse))
-                    }
-                    catch {
-                        print(error)
-                    }
+                    let error = self.makeCustomErrorResponse(response: response, statusCode: statusCode)
+                    completion(.failure(error))
                 }
             }
+    }
+    
+    func requestFormDataConvertible(
+        router: Router,
+        model: PostWriteRequest,
+        images: [UIImage]
+    ) -> Single<Result<Data, CustomErrorResponse>> {
+        
+        return Single.create { single in
+            let request = AF.upload(
+                multipartFormData: router.multipart,
+                with: router,
+                interceptor: AuthManager()
+            ).responseData { response in
+                print("REQUEST START", response.response?.statusCode)
+                
+                switch response.result {
+                case .success(let data):
+                    print(data)
+                    single(.success(.success(data)))
+                case .failure(let error):
+                    
+                    let statusCode = response.response?.statusCode ?? 500
+                    print(statusCode, error.localizedDescription)
+                    let error = self.makeCustomErrorResponse(
+                        response: response,
+                        statusCode: statusCode
+                    )
+
+                    
+                    single(.success(.failure(error)))
+                }
+            }
+        
+            return Disposables.create() {
+                request.cancel()
+            }
+        }
     }
     
     // Single Observable
@@ -239,3 +267,58 @@ final class Network {
         }
     }
 }
+
+
+extension Network {
+    func makeCustomErrorResponse<T>(response: DataResponse<T, AFError>, statusCode: Int) -> CustomErrorResponse {
+        
+        var customErrorResponse = CustomErrorResponse(statusCode: 500, message: "ServerError")
+        guard let data = response.data else { return customErrorResponse }
+        
+        do {
+            let serverError = try JSONDecoder().decode(ErrorResponse.self, from: data)
+            print("decoding error value: \(serverError)")
+            customErrorResponse = CustomErrorResponse(
+                statusCode: statusCode,
+                message: serverError.message
+            )
+        }
+        catch {
+            print(error)
+        }
+        return customErrorResponse
+    }
+}
+
+
+
+/*
+ { multipartFormData in
+     // 기본타입 처리
+     multipartFormData.append(Data(model.title.utf8), withName: "title")
+     multipartFormData.append(Data(model.productId.utf8), withName: "product_id")
+     multipartFormData.append(Data(model.content.utf8), withName: "content")
+     multipartFormData.append(Data(model.content1.utf8), withName: "content1")
+     multipartFormData.append(Data(model.content2.utf8), withName: "content2")
+     multipartFormData.append(Data(model.content3.utf8), withName: "content3")
+     multipartFormData.append(Data(model.content4.utf8), withName: "content4")
+     multipartFormData.append(Data(model.content5.utf8), withName: "content5")
+     
+     // Date 처리
+//                    multipartFormData.append(Data(model.time?.toString().utf8 ?? "".utf8), withName: "time")
+
+     for image in images {
+         // UIImage 처리
+         print("multipart di image: \(image)")
+         multipartFormData.append(image.jpegData(compressionQuality: 1) ?? Data(),
+                                  withName: "file",
+                                  fileName: "image.jpeg",
+                                  mimeType: "image/jpeg")
+     }
+
+     // 배열 처리
+//                    let keywords =  try! JSONSerialization.data(withJSONObject: model.keywords, options: .prettyPrinted)
+//                    multipartFormData.append(keywords, withName: "keywords")
+
+ },
+ */

@@ -29,6 +29,7 @@ final class PostListViewController: UIViewController {
         
         configureRefreshControl()
         setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .tint))
+        
         printAccessToken() // @Deprecated
     }
     

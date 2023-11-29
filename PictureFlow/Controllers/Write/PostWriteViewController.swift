@@ -21,15 +21,12 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
     }
     
     let mainView = PostWriteView()
+    let viewModel = PostWriteViewModel()
+    
     private var dataSource: UICollectionViewDiffableDataSource<Section, PostCreateModel>!
+    var createList = [PostCreateModel()]
     
-    var photoImageList = [UIImage]()
-    var photoImageObservableList = BehaviorSubject<[UIImage]>(value: [])
     let disposeBag = DisposeBag()
-    
-    var createList = [
-        PostCreateModel(),
-    ]
     
     override func loadView() {
         view = mainView
@@ -44,6 +41,11 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
         mainView.collectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
+        
+        bind()
+    }
+    
+    func bind() {
     }
 }
 
@@ -51,7 +53,10 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
 extension PostWriteViewController {
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<PostWriteCollectionViewCell, PostCreateModel> { cell, indexPath, itemIdentifier in
+        let cellRegistration = UICollectionView.CellRegistration<PostWriteCollectionViewCell, PostCreateModel> { [weak self] cell, indexPath, itemIdentifier in
+            
+            guard let self else { return }
+            guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
             
 //            cell.collectionView.delegate = nil
 //            cell.collectionView.dataSource = nil
@@ -64,17 +69,18 @@ extension PostWriteViewController {
                 }
                 .disposed(by: cell.disposeBag)
             
-            self.photoImageObservableList
+            let input = PostWriteViewModel.Input(
+                postCreateButtonTap: rightBarButton.rx.tap,
+                postContentText: cell.postContentTextField.rx.text.orEmpty
+            )
+            
+            let output = viewModel.transform(input: input)
+            output.photoImageObservableList
                 .bind(to: cell.collectionView.rx.items(
                     cellIdentifier: PostListCollectionViewCell.description(),
                     cellType: PostListCollectionViewCell.self)) { (row, element, innerCell) in
                         print("⭐️ rx element: \(element)")
-                        
-//                        cell.collectionView.snp.updateConstraints { make in
-//                            make.height.equalTo(200)
-//                        }
-//                        cell.collectionView.layoutIfNeeded()
-                     
+
                         innerCell.postImageView.image = element
                 }
                 .disposed(by: cell.disposeBag)
@@ -96,28 +102,28 @@ extension PostWriteViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-//    @objc 
-    func addImageButtonClicked() {
-        print(#function)
-        var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 5 // 제한 없을 경우 0
-        configuration.filter = .any(of: [.images, .videos])
-        
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        self.present(picker, animated: true, completion: nil)
-    }
+    
 }
 
 // PHPickerViewControllerDelegate
 extension PostWriteViewController: PHPickerViewControllerDelegate {
+    private func addImageButtonClicked() {
+        print(#function)
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 5 // 제한 없을 경우 0
+        configuration.filter = .any(of: [.images, .videos])
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        self.present(picker, animated: true, completion: nil)
+    }
+    
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         print(#function)
         
         if !results.isEmpty {
-            photoImageList.removeAll()
-            print("======photoImageList: \(photoImageList)")
+            viewModel.photoImageList.removeAll()
+            print("======photoImageList: \(viewModel.photoImageList)")
             for result in results {
                 let itemProvider = result.itemProvider
                 print("======itemProvider: \(itemProvider)")
@@ -125,14 +131,16 @@ extension PostWriteViewController: PHPickerViewControllerDelegate {
                     itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
                         guard let image = image as? UIImage else { return }
                         print("🔥 image: \(image)")
+                        
                         DispatchQueue.main.async {
-                            self?.photoImageList.append(image)
+                            self?.viewModel.photoImageList.append(image)
+                            self?.viewModel.photoImageObservableList.onNext(self?.viewModel.photoImageList ?? [])
                         }
-                        self?.photoImageObservableList.onNext(self?.photoImageList ?? [])
                     }
                 }
             }
         }
+        
     }
 }
 
@@ -147,14 +155,16 @@ extension PostWriteViewController {
             action: #selector(cancelButtonClicked)
         )
         navigationItem.leftBarButtonItem?.tintColor = UIColor(resource: .tint)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+                
+        let postCreateButton = UIBarButtonItem(
             image: UIImage(systemName: "plus"),
             style: .plain,
             target: self,
             action: #selector(plusButtonClicked)
         )
+        navigationItem.rightBarButtonItem = postCreateButton
         navigationItem.rightBarButtonItem?.tintColor = UIColor(resource: .tint)
+        
     }
     
     @objc func cancelButtonClicked() {
@@ -166,15 +176,18 @@ extension PostWriteViewController {
             let vc = CustomTabBarController()
             self.changeRootViewController(viewController: vc)
         }
-
-        
-        
     }
     
     @objc func plusButtonClicked() {
-        print("photoImageList: \(photoImageList)")
-        self.createList.append(PostCreateModel())
-        self.performSnapshot()
+        // 셀 더하기
+//        self.createList.append(PostCreateModel())
+//        self.performSnapshot()
+        
+        // 게시글 작성 Create
+//        viewModel.postCreateRequest()
+        
+        
     }
+
 }
 

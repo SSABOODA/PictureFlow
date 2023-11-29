@@ -5,28 +5,7 @@
 //  Created by 한성봉 on 11/17/23.
 //
 
-import Foundation
-
-/*
- 게시글 작성(post)
- /post
- */
-
-struct PostRequest: Encodable {
-    var title: String
-    var content: String
-    var file: String // TODO: 파일 로직 처리 수정 필요
-    var product_id: String
-    var content1: String?
-    var content2: String?
-    var content3: String?
-    var content4: String?
-    var content5: String?
-}
-
-struct PostResponse: Decodable {
-    
-}
+import UIKit
 
 /*
  게시글 조회(post)
@@ -101,7 +80,6 @@ struct PostList: Decodable {
     }
 }
 
-
 struct Creator: Decodable {
     let _id: String
     let nick: String
@@ -112,5 +90,41 @@ struct Comments: Decodable {
     let content: String
     let time: String
     let creator: Creator
+}
+
+
+/*
+ 게시글 작성(Create)
+ */
+
+struct PostWriteRequest {
+    var title: String
+    var content: String
+    var file: [UIImage] = []
+    var productId: String = "picture_flow"
+    var content1: String = ""
+    var content2: String = ""
+    var content3: String = ""
+    var content4: String = ""
+    var content5: String = ""
+}
+
+struct PostWriteResponse: Decodable {
+    let _id: String
+    let likes: [String]
+    let image: [String]
+    let title: String?
+    let content: String?
+    let time: String
+    let productID: String?
+    let creator: Creator
+    let comments: [Comments]
+    
+    enum CodingKeys: String, CodingKey {
+        case _id, time, likes, image, title, content
+        case productID = "product_id"
+        case creator
+        case comments
+    }
 }
 
