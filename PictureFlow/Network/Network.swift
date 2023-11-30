@@ -211,10 +211,9 @@ final class Network {
             }
     }
     
+    // single ImageUpload
     func requestFormDataConvertible(
-        router: Router,
-        model: PostWriteRequest,
-        images: [UIImage]
+        router: Router
     ) -> Single<Result<Data, CustomErrorResponse>> {
         
         return Single.create { single in
@@ -223,7 +222,7 @@ final class Network {
                 with: router,
                 interceptor: AuthManager()
             ).responseData { response in
-                print("REQUEST START", response.response?.statusCode)
+                print("REQUEST START", response.response?.statusCode ?? 999)
                 
                 switch response.result {
                 case .success(let data):
@@ -237,8 +236,6 @@ final class Network {
                         response: response,
                         statusCode: statusCode
                     )
-
-                    
                     single(.success(.failure(error)))
                 }
             }

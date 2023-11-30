@@ -18,8 +18,9 @@ final class PostWriteViewModel: ViewModelType {
     struct Output {
         let postWriteRequestObservable: PublishSubject<PostWriteRequest>
         let photoImageObservableList: BehaviorSubject<[UIImage]>
+        let successPostCreate: BehaviorRelay<Bool>
     }
-
+    
     var disposeBag = DisposeBag()
     
     var postWriteRequestModel = PostWriteRequest(
@@ -33,6 +34,7 @@ final class PostWriteViewModel: ViewModelType {
     
     var photoImageList = [UIImage]()
     var photoImageObservableList = BehaviorSubject<[UIImage]>(value: [])
+    var successPostCreate = BehaviorRelay(value: false)
     
     func transform(input: Input) -> Output {
         
@@ -54,9 +56,7 @@ final class PostWriteViewModel: ViewModelType {
                 content1: "test1",
                 content2: "test2"
             )
-            
-//            print("model: \(model)")
-            
+
             owner.postWriteRequestObservable.onNext(model)
         }
         .disposed(by: disposeBag)
@@ -68,28 +68,24 @@ final class PostWriteViewModel: ViewModelType {
                     router: .post(
                         accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
                         model: $0
-                    ),
-                    model: $0,
-                    images: $0.file
+                    )
                 )
             }
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let data):
                     print("======", data)
+                    owner.successPostCreate.accept(true)
                 case .failure(let error):
                     print("======", error)
                 }
             }
             .disposed(by: disposeBag)
         
-        
-        
         return Output(
             postWriteRequestObservable: postWriteRequestObservable,
-            photoImageObservableList: photoImageObservableList
+            photoImageObservableList: photoImageObservableList,
+            successPostCreate: successPostCreate
         )
     }
-    
-    
 }

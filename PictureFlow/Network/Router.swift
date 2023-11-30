@@ -115,19 +115,8 @@ enum Router: URLRequestConvertible {
             return nil
             
         // post
-        case .post(_, let model):
+        case .post(_, _):
             return nil
-            return [
-                "title": model.title,
-                "content": model.content,
-                "file": model.file,
-                "product_id": model.productId,
-                "content1": model.content1,
-                "content2": model.content2,
-                "content3": model.content3,
-                "content4": model.content4,
-                "content5": model.content5
-            ]
         case .postList(_, let next, let limit, let product_id):
             return [
                 "next": next ?? "",
@@ -148,14 +137,13 @@ enum Router: URLRequestConvertible {
         request.method = method
         
         let re = try URLEncoding.default.encode(request, with: parameters)
-        print("re: \(re)")
-        print("method: \(re.httpMethod)")
-        print("header: \(re.headers)")
-        print("parameter: \(parameters)")
+//        print("re: \(re)")
+//        print("method: \(re.httpMethod)")
+//        print("header: \(re.headers)")
+//        print("parameter: \(parameters)")
         return try URLEncoding.default.encode(request, with: parameters)
     }
 }
-
 
 extension Router {
     var multipart: MultipartFormData {
@@ -186,3 +174,30 @@ extension Router {
         }
     }
 }
+
+/*
+ for (key, value) in params {
+     if let temp = value as? String {
+         multiPart.append(temp.data(using: .utf8)!, withName: key)
+     }
+     if let temp = value as? Int {
+         multiPart.append("\(temp)".data(using: .utf8)!, withName: key)
+     }
+     if let temp = value as? NSArray {
+         temp.forEach({ element in
+             let keyObj = key + "[]"
+             if let string = element as? String {
+                 multiPart.append(string.data(using: .utf8)!, withName: keyObj)
+             } else
+             if let num = element as? Int {
+                 let value = "\(num)"
+                 multiPart.append(value.data(using: .utf8)!, withName: keyObj)
+             }
+         })
+     }
+ }
+ multiPart.append(image, withName: "newsletter_image", fileName: "\(self.tfTitle.text ?? "")_logo.png", mimeType: "image/jpeg")
+
+  */
+
+

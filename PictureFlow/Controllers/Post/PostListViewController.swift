@@ -71,6 +71,11 @@ final class PostListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+        
+        
         Observable.zip(
             mainView.tableView.rx.itemSelected,
             mainView.tableView.rx.modelSelected(PostList.self)
@@ -84,10 +89,6 @@ final class PostListViewController: UIViewController {
                 vc.viewModel.postList = value
                 owner.transition(viewController: vc, style: .push)
             }
-            .disposed(by: disposeBag)
-        
-        output.refreshLoading
-            .bind(to: mainView.refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
     }
 }

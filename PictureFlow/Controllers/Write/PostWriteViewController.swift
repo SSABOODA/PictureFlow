@@ -46,6 +46,7 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func bind() {
+       
     }
 }
 
@@ -84,6 +85,16 @@ extension PostWriteViewController {
                         innerCell.postImageView.image = element
                 }
                 .disposed(by: cell.disposeBag)
+            
+            output.successPostCreate
+                .bind(with: self) { owner, isCreated in
+                    if isCreated {
+                        let vc = CustomTabBarController()
+                        owner.changeRootViewController(viewController: vc)
+                    }
+                }
+                .disposed(by: cell.disposeBag)
+            
 
         }
         
@@ -108,9 +119,8 @@ extension PostWriteViewController {
 // PHPickerViewControllerDelegate
 extension PostWriteViewController: PHPickerViewControllerDelegate {
     private func addImageButtonClicked() {
-        print(#function)
         var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 5 // 제한 없을 경우 0
+        configuration.selectionLimit = 5
         configuration.filter = .any(of: [.images, .videos])
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
@@ -123,15 +133,12 @@ extension PostWriteViewController: PHPickerViewControllerDelegate {
         
         if !results.isEmpty {
             viewModel.photoImageList.removeAll()
-            print("======photoImageList: \(viewModel.photoImageList)")
             for result in results {
                 let itemProvider = result.itemProvider
-                print("======itemProvider: \(itemProvider)")
                 if itemProvider.canLoadObject(ofClass: UIImage.self) {
                     itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
                         guard let image = image as? UIImage else { return }
                         print("🔥 image: \(image)")
-                        
                         DispatchQueue.main.async {
                             self?.viewModel.photoImageList.append(image)
                             self?.viewModel.photoImageObservableList.onNext(self?.viewModel.photoImageList ?? [])
@@ -148,23 +155,26 @@ extension PostWriteViewController: PHPickerViewControllerDelegate {
 extension PostWriteViewController {
     private func configureNavigationBar() {
         navigationItem.title = "새로운 글 작성"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
+        
+        // postCancelButton
+        let postCancelButton = UIBarButtonItem(
             title: "취소",
             style: .plain,
             target: self,
             action: #selector(cancelButtonClicked)
         )
+        navigationItem.leftBarButtonItem = postCancelButton
         navigationItem.leftBarButtonItem?.tintColor = UIColor(resource: .tint)
-                
+        
+        // postCreateButton
         let postCreateButton = UIBarButtonItem(
-            image: UIImage(systemName: "plus"),
+            title: "게시",
             style: .plain,
             target: self,
             action: #selector(plusButtonClicked)
         )
         navigationItem.rightBarButtonItem = postCreateButton
         navigationItem.rightBarButtonItem?.tintColor = UIColor(resource: .tint)
-        
     }
     
     @objc func cancelButtonClicked() {

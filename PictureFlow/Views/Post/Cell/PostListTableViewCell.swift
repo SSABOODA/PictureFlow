@@ -198,7 +198,7 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
             make.leading.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-10)
-            make.height.equalTo(0)
+            make.height.equalTo(200)
         }
         
         functionButtonStackView.snp.makeConstraints { make in
@@ -239,6 +239,7 @@ final class PostListTableViewCell: UITableViewCell {
         self.collectionView.snp.updateConstraints { make in
             make.height.equalTo(height)
         }
+        self.collectionView.layoutIfNeeded()
     }
     
     private func configureCollectionView(with imageList: [String]) {
@@ -255,7 +256,6 @@ final class PostListTableViewCell: UITableViewCell {
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
-//        let size = UIScreen.main.bounds.width - 40
         layout.itemSize = CGSize(width: 200, height: 200)
         layout.sectionInset = UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 10)
         return layout

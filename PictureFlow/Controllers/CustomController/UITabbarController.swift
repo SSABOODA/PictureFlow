@@ -61,8 +61,8 @@ final class CustomTabBarController: UITabBarController, UITabBarControllerDelega
         
         createTabBarItem(
             viewContoller: PostListVC,
-            imageString: "house",
-            selectedImageString: "house.fill"
+            imageString: "postList"
+//            selectedImageString: "house.fill"
         )
         
         createTabBarItem(
@@ -99,7 +99,7 @@ extension UITabBarController {
     ) {
         viewContoller.tabBarItem = UITabBarItem(
             title: titleString,
-            image: UIImage(systemName: imageString),
+            image: imageString == "postList" ? UIImage(named: "postList"): UIImage(systemName: imageString),
             selectedImage: UIImage(systemName: selectedImageString)
         )
     }
