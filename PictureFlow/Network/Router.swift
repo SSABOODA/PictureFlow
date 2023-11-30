@@ -136,7 +136,7 @@ enum Router: URLRequestConvertible {
         request.headers = header
         request.method = method
         
-        let re = try URLEncoding.default.encode(request, with: parameters)
+//        let re = try URLEncoding.default.encode(request, with: parameters)
 //        print("re: \(re)")
 //        print("method: \(re.httpMethod)")
 //        print("header: \(re.headers)")

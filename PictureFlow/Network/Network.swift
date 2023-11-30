@@ -267,7 +267,7 @@ final class Network {
 
 
 extension Network {
-    func makeCustomErrorResponse<T>(response: DataResponse<T, AFError>, statusCode: Int) -> CustomErrorResponse {
+    private func makeCustomErrorResponse<T>(response: DataResponse<T, AFError>, statusCode: Int) -> CustomErrorResponse {
         
         var customErrorResponse = CustomErrorResponse(statusCode: 500, message: "ServerError")
         guard let data = response.data else { return customErrorResponse }

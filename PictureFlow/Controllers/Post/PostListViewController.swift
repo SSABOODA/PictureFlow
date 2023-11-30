@@ -71,10 +71,23 @@ final class PostListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        mainView.tableView.rx.prefetchRows
+            .compactMap(\.last?.row)
+            .withUnretained(self)
+            .bind(with: self) { owner, rowSet in
+                let row = rowSet.1
+                guard row == owner.viewModel.postListDataSource.count - 1 else { return }
+                
+                let nextCursor = owner.viewModel.nextCursor
+                if nextCursor != "0" {
+                    owner.viewModel.prefetchData(next: nextCursor)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         output.refreshLoading
             .bind(to: mainView.refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
-        
         
         Observable.zip(
             mainView.tableView.rx.itemSelected,

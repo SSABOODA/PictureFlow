@@ -19,8 +19,8 @@ struct PostListRequest: Encodable {
 }
 
 struct PostListResponse: Decodable {
-    let data: [PostList]
-    var nextCursor: LandingValue
+    var data: [PostList]
+    var nextCursor: String
     
     enum CodingKeys: String, CodingKey {
         case data
@@ -28,38 +28,41 @@ struct PostListResponse: Decodable {
     }
 }
 
-struct LandingValue: Decodable {
-    let stringValue: String?
-    let intValue: Int?
-    
-    init(stringValue: String? = nil, intValue: Int? = nil) {
-        self.stringValue = stringValue
-        self.intValue = intValue
-    }
+/*
+ struct LandingValue: Decodable {
+     let stringValue: String?
+     let intValue: Int?
+     
+     init(stringValue: String? = nil, intValue: Int? = nil) {
+         self.stringValue = stringValue
+         self.intValue = intValue
+     }
 
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        
-        // String decode 시도
-        if let value = try? container.decode(String.self) {
-            self = .init(stringValue: value)
-            return
-        }
+     init(from decoder: Decoder) throws {
+         let container = try decoder.singleValueContainer()
+         
+         // String decode 시도
+         if let value = try? container.decode(String.self) {
+             self = .init(stringValue: value)
+             return
+         }
 
-        // Int decode 시도
-        if let value = try? container.decode(Int.self) {
-            self = .init(intValue: value)
-            return
-        }
+         // Int decode 시도
+         if let value = try? container.decode(Int.self) {
+             self = .init(intValue: value)
+             return
+         }
 
-        throw DecodingError.typeMismatch(
-            PostListResponse.self,
-            DecodingError.Context(codingPath: decoder.codingPath,
-                                  debugDescription: "Type is not matched",
-                                  underlyingError: nil)
-        )
-    }
-}
+         throw DecodingError.typeMismatch(
+             PostListResponse.self,
+             DecodingError.Context(codingPath: decoder.codingPath,
+                                   debugDescription: "Type is not matched",
+                                   underlyingError: nil)
+         )
+     }
+ }
+ */
+
 
 struct PostList: Decodable {
     let _id: String

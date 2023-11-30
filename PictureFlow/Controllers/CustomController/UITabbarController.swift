@@ -61,30 +61,31 @@ final class CustomTabBarController: UITabBarController, UITabBarControllerDelega
         
         createTabBarItem(
             viewContoller: PostListVC,
-            imageString: "postList"
-//            selectedImageString: "house.fill"
+            imageString: "home",
+            selectedImageString: "home-select"
         )
         
         createTabBarItem(
             viewContoller: SearchVC,
-            imageString: "magnifyingglass"
+            imageString: "search",
+            selectedImageString: "search-select"
         )
         
         createTabBarItem(
             viewContoller: PostWriteVC,
-            imageString: "square.and.pencil"
+            imageString: "post"
         )
         
         createTabBarItem(
             viewContoller: LikeVC,
             imageString: "heart",
-            selectedImageString: "heart.fill"
+            selectedImageString: "heart-select"
         )
         
         createTabBarItem(
             viewContoller: ProfileVC,
             imageString: "person",
-            selectedImageString: "person.fill"
+            selectedImageString: "person-select"
         )
         modalPresentationStyle = .fullScreen
     }
@@ -99,8 +100,9 @@ extension UITabBarController {
     ) {
         viewContoller.tabBarItem = UITabBarItem(
             title: titleString,
-            image: imageString == "postList" ? UIImage(named: "postList"): UIImage(systemName: imageString),
-            selectedImage: UIImage(systemName: selectedImageString)
+            image: UIImage(named: imageString),
+            selectedImage: UIImage(named: selectedImageString)
+            
         )
     }
 }

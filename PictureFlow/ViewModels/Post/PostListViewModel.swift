@@ -21,6 +21,9 @@ final class PostListViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
+    var nextCursor = ""
+    var postListDataSource = [PostList]()
+    
     let postListItem = PublishSubject<[PostList]>()
     let errorResponse = PublishSubject<CustomErrorResponse>()
     let tokenObservable = BehaviorSubject<String>(value: "")
@@ -36,6 +39,7 @@ final class PostListViewModel: ViewModelType {
                     type: PostListResponse.self,
                     router: .postList(
                         accessToken: $0,
+                        next: self.nextCursor,
                         limit: "10",
                         product_id: "picture_flow"
                     )
@@ -44,10 +48,11 @@ final class PostListViewModel: ViewModelType {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let data):
-//                    print(data)
-                    owner.postListItem.onNext(data.data)
+                    owner.nextCursor = data.nextCursor
+                    owner.postListDataSource = data.data
+                    owner.postListItem.onNext(owner.postListDataSource)
                 case .failure(let error):
-                    print("error.statusCode: \(error.asAFError?.responseCode)")
+                    print("error.statusCode: \(error.statusCode)")
 //                    owner.errorResponse.onNext(error)
                 }
             }
@@ -66,6 +71,24 @@ final class PostListViewModel: ViewModelType {
             tokenObservable.onNext(token)
         } else {
             print("토큰 확인 실패")
+        }
+    }
+    
+    func prefetchData(next: String) {
+        guard let token = KeyChain.read(key: APIConstants.accessToken) else { return }
+        Network.shared.requestConvertible(
+            type: PostListResponse.self,
+            router: .postList(accessToken: token, next: next, limit: "10", product_id: "picture_flow")
+        ) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+                self.nextCursor = data.nextCursor
+                self.postListDataSource.append(contentsOf: data.data)
+                self.postListItem.onNext(self.postListDataSource)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
 }
