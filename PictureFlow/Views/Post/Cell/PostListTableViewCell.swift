@@ -144,7 +144,7 @@ final class PostListTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-//        profileImageView.image = nil
+        profileImageView.image = nil
         disposeBag = DisposeBag()
     }
     
@@ -169,6 +169,7 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(10)
             make.size.equalTo(30)
+            make.bottom.equalToSuperview().offset(-15)
         }
         
         leftDividLineView.snp.makeConstraints { make in
@@ -192,13 +193,14 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalTo(nicknameLabel.snp.bottom).offset(5)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-15)
+            make.bottom.equalToSuperview().offset(-15) //
         }
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
             make.leading.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-10)
-            make.height.equalTo(200)
+            make.height.equalTo(0)
         }
         
         functionButtonStackView.snp.makeConstraints { make in
@@ -231,6 +233,9 @@ final class PostListTableViewCell: UITableViewCell {
         
         commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
         likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
+        
+//        print(elements.content, elements.image)
+        
         configureCollectionView(with: elements.image)
     }
     

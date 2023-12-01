@@ -21,6 +21,11 @@ final class PostListCollectionViewCell: UICollectionViewCell {
         configureHierarchy()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        postImageView.image = nil
+    }
+    
     @objc func imageTapped() {
         // 이미지를 탭했을 때 실행되는 코드
         // 전체 화면으로 전환하는 코드를 여기에 추가

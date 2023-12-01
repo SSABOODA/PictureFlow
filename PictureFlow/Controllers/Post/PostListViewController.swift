@@ -66,7 +66,9 @@ final class PostListViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.postListItem
-            .bind(to: mainView.tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
+            .bind(to: mainView.tableView.rx.items(
+                cellIdentifier: PostListTableViewCell.description(),
+                cellType: PostListTableViewCell.self)) { (row, element, cell) in
                 cell.configureCell(with: element)
             }
             .disposed(by: disposeBag)
@@ -95,7 +97,17 @@ final class PostListViewController: UIViewController {
         )
             .map {
                 let item = $0.1
-                return PostList(_id: item._id, likes: item.likes, image: item.image, title: item.title, content: item.content, time: item.time, productID: item.productID, creator: item.creator, comments: item.comments)
+                return PostList(
+                    _id: item._id,
+                    likes: item.likes,
+                    image: item.image,
+                    title: item.title,
+                    content: item.content,
+                    time: item.time,
+                    productID: item.productID,
+                    creator: item.creator,
+                    comments: item.comments
+                )
             }
             .subscribe(with: self) { owner, value in
                 let vc = PostDetailViewController()
