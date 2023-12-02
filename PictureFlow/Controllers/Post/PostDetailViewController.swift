@@ -50,6 +50,14 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
                 print(indexPath)
             }
             .disposed(by: disposeBag)
+        
+        mainView.commentInputButton.rx.tap
+            .bind(with: self) { owner, _ in
+                print("TAP")
+                let vc = CommentCreateViewController()
+                owner.transition(viewController: vc, style: .presentNavigation)
+            }
+            .disposed(by: disposeBag)
     }
     
 }

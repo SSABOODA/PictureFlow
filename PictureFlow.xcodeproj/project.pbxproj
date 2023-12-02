@@ -43,6 +43,8 @@
 		F7095A8B2B0239B000F0218B /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A8A2B0239B000F0218B /* PostListViewController.swift */; };
 		F72C69042B1AED98007B1F8F /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C69032B1AED98007B1F8F /* Extension+UIColor.swift */; };
 		F72C69062B1AEDB5007B1F8F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C69052B1AEDB5007B1F8F /* Color.swift */; };
+		F72C69092B1AF086007B1F8F /* CommentCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C69082B1AF086007B1F8F /* CommentCreateViewController.swift */; };
+		F72C690C2B1AF2E3007B1F8F /* CommentCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C690B2B1AF2E3007B1F8F /* CommentCreateView.swift */; };
 		F76EE92B2B10A293005C6106 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92A2B10A293005C6106 /* PostDetailView.swift */; };
 		F76EE92D2B10AE12005C6106 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92C2B10AE12005C6106 /* CommentHeaderView.swift */; };
 		F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */; };
@@ -101,6 +103,8 @@
 		F7095A8A2B0239B000F0218B /* PostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewController.swift; sourceTree = "<group>"; };
 		F72C69032B1AED98007B1F8F /* Extension+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
 		F72C69052B1AEDB5007B1F8F /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		F72C69082B1AF086007B1F8F /* CommentCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCreateViewController.swift; sourceTree = "<group>"; };
+		F72C690B2B1AF2E3007B1F8F /* CommentCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCreateView.swift; sourceTree = "<group>"; };
 		F76EE92A2B10A293005C6106 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		F76EE92C2B10AE12005C6106 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -193,6 +197,7 @@
 		F7095A112AFE1D2B00F0218B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F72C69072B1AF077007B1F8F /* Comment */,
 				F7095A892B0239A600F0218B /* Post */,
 				F7D662852B0DC2E20039E40F /* Like */,
 				F7D662842B0DC2D70039E40F /* Profile */,
@@ -207,6 +212,7 @@
 		F7095A122AFE372100F0218B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F72C690A2B1AF2D8007B1F8F /* Comment */,
 				F7B409592B09D992006CD373 /* Post */,
 				F7B409582B09D980006CD373 /* Sign */,
 				F7095A182AFE381300F0218B /* CustomView */,
@@ -325,6 +331,22 @@
 				F7B409482B077146006CD373 /* PostDetailViewController.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		F72C69072B1AF077007B1F8F /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				F72C69082B1AF086007B1F8F /* CommentCreateViewController.swift */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		F72C690A2B1AF2D8007B1F8F /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				F72C690B2B1AF2E3007B1F8F /* CommentCreateView.swift */,
+			);
+			path = Comment;
 			sourceTree = "<group>";
 		};
 		F7B409422B075A84006CD373 /* CustomController */ = {
@@ -525,6 +547,7 @@
 				F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */,
 				F7095A602B00C41000F0218B /* KeyChain.swift in Sources */,
 				F76EE92B2B10A293005C6106 /* PostDetailView.swift in Sources */,
+				F72C69092B1AF086007B1F8F /* CommentCreateViewController.swift in Sources */,
 				F7D6628A2B0DE7ED0039E40F /* PostDetailViewModel.swift in Sources */,
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
@@ -533,6 +556,7 @@
 				F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
 				F7095A882B02340600F0218B /* Extension+Date.swift in Sources */,
+				F72C690C2B1AF2E3007B1F8F /* CommentCreateView.swift in Sources */,
 				F76EE92D2B10AE12005C6106 /* CommentHeaderView.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
 				F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */,
