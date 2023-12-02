@@ -119,10 +119,11 @@ final class PostListTableViewCell: UITableViewCell {
     }()
     
     lazy var countButtonStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            commentCountButton,
-            likeCountButton
-        ])
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                commentCountButton,
+                likeCountButton
+            ])
         stackView.axis = .horizontal
         stackView.spacing = 5
         stackView.distribution = .fill
@@ -156,10 +157,10 @@ final class PostListTableViewCell: UITableViewCell {
     
     private func configureHierarchy() {
         contentView.addSubview(profileImageView)
+        contentView.addSubview(leftDividLineView)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(postCreatedTimeLabel)
         contentView.addSubview(contentLabel)
-        contentView.addSubview(leftDividLineView)
         
         contentView.addSubview(collectionView)
         contentView.addSubview(functionButtonStackView)
@@ -168,8 +169,8 @@ final class PostListTableViewCell: UITableViewCell {
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(10)
+            make.trailing.equalTo(nicknameLabel.snp.leading).offset(-10)
             make.size.equalTo(30)
-            make.bottom.equalToSuperview().offset(-15)
         }
         
         leftDividLineView.snp.makeConstraints { make in
@@ -183,7 +184,7 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalToSuperview().inset(10)
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
-        
+    
         postCreatedTimeLabel.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.top)
             make.trailing.equalToSuperview().offset(-15)
@@ -193,14 +194,13 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalTo(nicknameLabel.snp.bottom).offset(5)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-15)
-            make.bottom.equalToSuperview().offset(-15) //
         }
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
             make.leading.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-10)
-            make.height.equalTo(0)
+            make.height.equalTo(200)
         }
         
         functionButtonStackView.snp.makeConstraints { make in
@@ -220,17 +220,19 @@ final class PostListTableViewCell: UITableViewCell {
     func configureCell(with elements: PostList) {
         updateCollectionViewHeight(isEmpty: elements.image.isEmpty)
         
-        // 시간 작업
-        let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
-        
-        nicknameLabel.text = elements.creator.nick
-        contentLabel.text = elements.content
-        postCreatedTimeLabel.text = timeContent
+        // Profile Image
         if !elements.image.isEmpty {
             let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
             imageURL.loadImageByKingfisher(imageView: profileImageView)
         }
         
+        // 시간 작업
+        let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
+        
+        nicknameLabel.text = elements.creator.nick
+        postCreatedTimeLabel.text = timeContent
+        contentLabel.text = elements.content
+
         commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
         likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
         

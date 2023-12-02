@@ -31,6 +31,7 @@ final class PostListView: UIView {
             forCellReuseIdentifier: PostListTableViewCell.description()
         )
         view.rowHeight = UITableView.automaticDimension
+        view.estimatedRowHeight = 100
         view.backgroundColor = UIColor(resource: .backgorund)
         return view
     }()

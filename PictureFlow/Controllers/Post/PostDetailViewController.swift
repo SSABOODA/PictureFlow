@@ -32,9 +32,7 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
-    
 
-    
     private func bind() {
         let input = PostDetailViewModel.Input()
         let output = viewModel.transform(input: input)
@@ -62,7 +60,6 @@ extension PostDetailViewController {
         let dataSource = RxCollectionViewSectionedReloadDataSource<PostDetailModel> { (dataSource, collectionView, indexPath, data) in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.description(), for: indexPath) as? CommentCollectionViewCell else { return UICollectionViewCell() }
-            print(data)
             cell.backgroundColor = .blue
 //            cell.label.text = data
             return cell

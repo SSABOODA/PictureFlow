@@ -41,6 +41,8 @@
 		F7095A662B00F82200F0218B /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A652B00F82200F0218B /* APIConstants.swift */; };
 		F7095A882B02340600F0218B /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A872B02340600F0218B /* Extension+Date.swift */; };
 		F7095A8B2B0239B000F0218B /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A8A2B0239B000F0218B /* PostListViewController.swift */; };
+		F72C69042B1AED98007B1F8F /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C69032B1AED98007B1F8F /* Extension+UIColor.swift */; };
+		F72C69062B1AEDB5007B1F8F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C69052B1AEDB5007B1F8F /* Color.swift */; };
 		F76EE92B2B10A293005C6106 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92A2B10A293005C6106 /* PostDetailView.swift */; };
 		F76EE92D2B10AE12005C6106 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92C2B10AE12005C6106 /* CommentHeaderView.swift */; };
 		F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */; };
@@ -97,6 +99,8 @@
 		F7095A652B00F82200F0218B /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		F7095A872B02340600F0218B /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
 		F7095A8A2B0239B000F0218B /* PostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewController.swift; sourceTree = "<group>"; };
+		F72C69032B1AED98007B1F8F /* Extension+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
+		F72C69052B1AEDB5007B1F8F /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		F76EE92A2B10A293005C6106 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		F76EE92C2B10AE12005C6106 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -110,7 +114,7 @@
 		F7B409482B077146006CD373 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		F7B4094A2B07714F006CD373 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
 		F7B4094C2B07715A006CD373 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		F7B4094F2B078CE2006CD373 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; };
+		F7B4094F2B078CE2006CD373 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; usesTabs = 0; };
 		F7B409512B078DA8006CD373 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		F7B409532B07958F006CD373 /* PostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListView.swift; sourceTree = "<group>"; };
 		F7B4095B2B09D9BC006CD373 /* PostListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListTableViewCell.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 				F7095A292AFE3DE600F0218B /* Extension+UIViewController.swift */,
 				F7095A382AFF6FB700F0218B /* Extension+String.swift */,
 				F7095A872B02340600F0218B /* Extension+Date.swift */,
+				F72C69032B1AED98007B1F8F /* Extension+UIColor.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				F7095A652B00F82200F0218B /* APIConstants.swift */,
+				F72C69052B1AEDB5007B1F8F /* Color.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -532,6 +538,8 @@
 				F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */,
 				F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
+				F72C69062B1AEDB5007B1F8F /* Color.swift in Sources */,
+				F72C69042B1AED98007B1F8F /* Extension+UIColor.swift in Sources */,
 				F7095A2A2AFE3DE600F0218B /* Extension+UIViewController.swift in Sources */,
 				F7095A312AFE513A00F0218B /* SignUpView.swift in Sources */,
 				F7095A392AFF6FB700F0218B /* Extension+String.swift in Sources */,

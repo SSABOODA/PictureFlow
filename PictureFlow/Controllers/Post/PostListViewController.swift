@@ -110,6 +110,7 @@ final class PostListViewController: UIViewController {
                 )
             }
             .subscribe(with: self) { owner, value in
+                print("clicked")
                 let vc = PostDetailViewController()
                 vc.viewModel.postList = value
                 owner.transition(viewController: vc, style: .push)
@@ -118,3 +119,5 @@ final class PostListViewController: UIViewController {
     }
 }
 
+extension PostListViewController: UITableViewDelegate {
+}

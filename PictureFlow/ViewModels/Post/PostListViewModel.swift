@@ -66,6 +66,7 @@ final class PostListViewModel: ViewModelType {
     }
     
     func updateDateSource() {
+        self.postListDataSource.removeAll()
         if let token = KeyChain.read(key: APIConstants.accessToken) {
             print("토큰 확인: \(token)")
             tokenObservable.onNext(token)
@@ -82,7 +83,6 @@ final class PostListViewModel: ViewModelType {
         ) { result in
             switch result {
             case .success(let data):
-                print(data)
                 self.nextCursor = data.nextCursor
                 self.postListDataSource.append(contentsOf: data.data)
                 self.postListItem.onNext(self.postListDataSource)

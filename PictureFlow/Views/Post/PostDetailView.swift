@@ -31,13 +31,22 @@ final class PostDetailView: UIView {
         return collectionView
     }()
     
-    lazy var commentTableView = {
-        let view = UITableView(frame: .zero, style: .grouped)
-        view.rowHeight = UITableView.automaticDimension
+    let commentInputButtonView = {
+        let view = UIView()
         view.backgroundColor = UIColor(resource: .backgorund)
         return view
     }()
     
+    let commentInputButton = {
+        let button = UIButton()
+        button.setTitle("답글 남기기", for: .normal)
+        button.setTitleColor(UIColor.lightGray, for: .normal)
+        button.backgroundColor = UIColor.lightGray.withAlphaComponent(0.1)
+        button.layer.cornerRadius = 20
+        button.clipsToBounds = true
+        return button
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHierarchy()
@@ -50,18 +59,26 @@ final class PostDetailView: UIView {
     }
 
     private func configureHierarchy() {
-        addSubview(commentTableView)
         addSubview(collectionView)
+        addSubview(commentInputButtonView)
+        commentInputButtonView.addSubview(commentInputButton)
     }
     
     private func configureLayout() {
-        commentTableView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
-        }
         
         collectionView.backgroundColor = .systemMint
         collectionView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+            make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
+            make.bottom.equalTo(commentInputButtonView.snp.top)
+        }
+
+        commentInputButtonView.snp.makeConstraints { make in
+            make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
+            make.height.equalToSuperview().multipliedBy(0.07)
+        }
+        
+        commentInputButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(10)
         }
     }
     
