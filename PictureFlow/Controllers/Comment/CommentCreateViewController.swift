@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 final class CommentCreateViewController: UIViewController {
     
@@ -20,15 +21,15 @@ final class CommentCreateViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        mainView.commentTextView.delegate = self
         configureNavigationBar()
         bind()
+        configureTextView()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        mainView.commentTextView.becomeFirstResponder()
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        mainView.commentTextView.becomeFirstResponder()
+//    }
     
     private func bind() {
         guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
@@ -47,8 +48,48 @@ final class CommentCreateViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        
     }
     
+    private func configureTextView() {
+        mainView.commentTextView.rx.didChange
+            .withLatestFrom(mainView.commentTextView.rx.text)
+            .bind(with: self) { owner, text in
+                let size = CGSize(width: owner.view.frame.width, height: .infinity)
+                let estimatedSize = owner.mainView.commentTextView.sizeThatFits(size)
+                
+                owner.mainView.commentTextView.constraints.forEach { (constraint) in
+                    /// 180 이하일때는 더 이상 줄어들지 않게하기
+                    if estimatedSize.height <= 180 {
+                        
+                    } else {
+                        if constraint.firstAttribute == .height {
+                            constraint.constant = estimatedSize.height
+                        }
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.commentTextView.rx.didBeginEditing
+            .bind(with: self) { owner, _ in
+                if (owner.mainView.commentTextView.text) == "답글을 남겨보세요..." {
+                    owner.mainView.commentTextView.text = nil
+                    owner.mainView.commentTextView.textColor = UIColor(resource: .text)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.commentTextView.rx.didEndEditing
+            .bind(with: self) { owner, _ in
+                if (owner.mainView.commentTextView.text) == nil ||  (owner.mainView.commentTextView.text) == "" {
+                    owner.mainView.commentTextView.text = "답글을 남겨보세요..."
+                    owner.mainView.commentTextView.textColor = .lightGray
+                }
+            }
+            .disposed(by: disposeBag)
+    }
 }
 
 // 네비게이션 세팅
@@ -89,24 +130,5 @@ extension CommentCreateViewController {
     
     @objc func plusButtonClicked() {
         
-    }
-}
-
-extension CommentCreateViewController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        print(#function)
-        let size = CGSize(width: view.frame.width, height: .infinity)
-        let estimatedSize = textView.sizeThatFits(size)
-        
-        textView.constraints.forEach { (constraint) in
-            /// 180 이하일때는 더 이상 줄어들지 않게하기
-            if estimatedSize.height <= 180 {
-                
-            } else {
-                if constraint.firstAttribute == .height {
-                    constraint.constant = estimatedSize.height
-                }
-            }
-        }
     }
 }

@@ -51,6 +51,7 @@ final class CommentCreateView: UIView {
     let commentTextView = {
         let tv = UITextView()
         tv.text = "답글을 남겨보세요..."
+        tv.textColor = .lightGray
         tv.font = .systemFont(ofSize: 17)
         tv.isScrollEnabled = false
         tv.sizeToFit()

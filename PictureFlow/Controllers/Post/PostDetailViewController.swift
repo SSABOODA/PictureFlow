@@ -23,15 +23,12 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        
-        mainView.collectionView.rx.setDelegate(self)
+        mainView.collectionView.rx
+            .setDelegate(self)
             .disposed(by: disposeBag)
-
+        
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
 
     private func bind() {
         let input = PostDetailViewModel.Input()
@@ -53,7 +50,7 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         
         mainView.commentInputButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("답글 남기기 TAP")
+                print("답글 남기기 버튼 TAP")
                 let vc = CommentCreateViewController()
                 guard let post = self.viewModel.postList else { return }
                 vc.viewModel.postId = post._id
@@ -61,7 +58,6 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
             }
             .disposed(by: disposeBag)
     }
-    
 }
 
 // RxDataSource
@@ -70,19 +66,12 @@ extension PostDetailViewController {
         let dataSource = RxCollectionViewSectionedReloadDataSource<PostDetailModel> { (dataSource, collectionView, indexPath, data) in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.description(), for: indexPath) as? CommentCollectionViewCell else { return UICollectionViewCell() }
-        
             print("🔥", data)
-            
-            
-            
             cell.nicknameLabel.text = data.creator.nick
             cell.commentContentLabel.text = data.content
             
-//            let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: data.time)
-            
-            cell.commentCreatedTimeLabel.text = "99일 전"
-            
-            
+            let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: data.time)
+            cell.commentCreatedTimeLabel.text = timeContent
             return cell
             
         } configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) in

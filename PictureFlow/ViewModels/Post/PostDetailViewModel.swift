@@ -27,46 +27,46 @@ final class PostDetailViewModel: ViewModelType {
     
     struct Output {
         let postObservableItem: PublishSubject<[PostDetailModel]>
-        let postDataList: [PostDetailModel]
     }
     
     var disposeBag = DisposeBag()
+
     var postList: PostList?
+    
     var postObservableItem = PublishSubject<[PostDetailModel]>()
     var postDataList: [PostDetailModel] = []
     
+    let tokenObservable = BehaviorSubject<String>(value: "")
+    
     func transform(input: Input) -> Output {
         
-        print("DETAIL postList: \(postList)")
         
+        
+//        print("DETAIL postList: \(postList)")
         if let postList {
             postDataList.insert(
                 PostDetailModel(
                     header: postList,
-                    items: [
-                        Comments(
-                            _id: "",
-                            content: "컨텐츠 컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠",
-                            time: "시간",
-                            creator: Creator(_id: "idC", nick: "ggg", profile: "")
-                        )
-                    ]
+                    items: []
                 ),
                 at: 0
             )
+                
+            _ = postList.comments.map { postDataList[0].items.append($0) }
+            
         }
         
-        postDataList[0].items.append(
-            Comments(
-                _id: "_id2",
-                content: "22222",
-                time: "",
-                creator: Creator(_id: "idC", nick: "ggg", profile: ""))
-        )
-
         return Output(
-            postObservableItem: postObservableItem,
-            postDataList: postDataList
+            postObservableItem: postObservableItem
         )
+    }
+    
+    func updateDateSource() {
+        if let token = KeyChain.read(key: APIConstants.accessToken) {
+            print("토큰 확인: \(token)")
+            tokenObservable.onNext(token)
+        } else {
+            print("토큰 확인 실패")
+        }
     }
 }
