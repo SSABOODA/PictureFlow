@@ -10,8 +10,6 @@ import SnapKit
 
 final class CommentCreateView: UIView {
     
-    private var textViewHeightConstraint: Constraint?
-    
     let scrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -52,10 +50,11 @@ final class CommentCreateView: UIView {
     
     let commentTextView = {
         let tv = UITextView()
-        tv.text = "답글을 남겨보세요"
+        tv.text = "답글을 남겨보세요..."
         tv.font = .systemFont(ofSize: 17)
         tv.isScrollEnabled = false
         tv.sizeToFit()
+        tv.backgroundColor = .clear
         return tv
     }()
     

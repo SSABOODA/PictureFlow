@@ -27,6 +27,9 @@ enum Router: URLRequestConvertible {
         product_id: String? = ""
     ) // 게시글 조회
     
+    // Comment
+    case commentCreate(postId: String, accessToken: String, model: CommentCreateRequest) // 댓글 작성
+    
     private var baseURL: URL {
         return URL(string: BaseURL.baseURL)!
     }
@@ -42,6 +45,9 @@ enum Router: URLRequestConvertible {
         // post
         case .post: return "post"
         case .postList: return "post"
+            
+        // comment
+        case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
         }
     }
     
@@ -72,6 +78,11 @@ enum Router: URLRequestConvertible {
         case .postList(let accessToken, _, _, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+            
+        // comment
+        case .commentCreate(_, let accessToken, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
         }
     }
     
@@ -87,6 +98,9 @@ enum Router: URLRequestConvertible {
         // post
         case .post: return .post
         case .postList: return .get
+            
+        // comment
+        case .commentCreate: return .post
         }
     }
     
@@ -115,13 +129,19 @@ enum Router: URLRequestConvertible {
             return nil
             
         // post
-        case .post(_, _):
+        case .post:
             return nil
         case .postList(_, let next, let limit, let product_id):
             return [
                 "next": next ?? "",
                 "limit": limit ?? "",
                 "product_id": product_id ?? "",
+            ]
+            
+        // comment
+        case .commentCreate(_, _, let model):
+            return [
+                "content": model.content
             ]
         }
     }
@@ -152,6 +172,17 @@ extension Router {
             let multipartFormData = MultipartFormData()
             
             print("multipart model: \(model)")
+            
+            let _: [String:Any] = [
+                "title": model.title,
+                "productId": model.productId,
+                "content": model.content,
+                "content1": model.content1,
+                "content2": model.content2,
+                "content3": model.content3,
+                "content4": model.content4,
+                "content5": model.content5
+            ]
             
             multipartFormData.append(Data(model.title.utf8), withName: "title")
             multipartFormData.append(Data(model.productId.utf8), withName: "product_id")

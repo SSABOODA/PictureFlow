@@ -37,19 +37,33 @@ final class PostDetailViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
+        print("DETAIL postList: \(postList)")
+        
         if let postList {
             postDataList.insert(
                 PostDetailModel(
                     header: postList,
                     items: [
-                        Comments(_id: "_idT", content: "123", time: "time", creator: Creator(_id: "idC", nick: "ggg"))
+                        Comments(
+                            _id: "",
+                            content: "컨텐츠 컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠컨텐츠",
+                            time: "시간",
+                            creator: Creator(_id: "idC", nick: "ggg", profile: "")
+                        )
                     ]
                 ),
                 at: 0
             )
         }
         
-        
+        postDataList[0].items.append(
+            Comments(
+                _id: "_id2",
+                content: "22222",
+                time: "",
+                creator: Creator(_id: "idC", nick: "ggg", profile: ""))
+        )
+
         return Output(
             postObservableItem: postObservableItem,
             postDataList: postDataList

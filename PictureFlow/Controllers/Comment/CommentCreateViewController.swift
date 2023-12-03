@@ -6,26 +6,49 @@
 //
 
 import UIKit
+import RxSwift
 
 final class CommentCreateViewController: UIViewController {
     
     let mainView = CommentCreateView()
-    
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureNavigationBar()
-        mainView.commentTextView.delegate = self
-    }
+    let viewModel = CommentCreateViewModel()
+    var disposeBag = DisposeBag()
     
     override func loadView() {
         view = mainView
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mainView.commentTextView.delegate = self
+        configureNavigationBar()
+        bind()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         mainView.commentTextView.becomeFirstResponder()
     }
+    
+    private func bind() {
+        guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
+        
+        let input = CommentCreateViewModel.Input(
+            commentCreateButtonTap: rightBarButton.rx.tap,
+            commentCreateContentText: mainView.commentTextView.rx.text.orEmpty
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.commentCreateSuccess
+            .subscribe(with: self) { owner, value in
+                if value {
+                    owner.dismiss(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
 }
 
 // 네비게이션 세팅
@@ -85,8 +108,5 @@ extension CommentCreateViewController: UITextViewDelegate {
                 }
             }
         }
-        
-        
-        
     }
 }

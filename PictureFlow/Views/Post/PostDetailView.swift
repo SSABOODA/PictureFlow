@@ -49,6 +49,7 @@ final class PostDetailView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = UIColor(resource: .backgorund)
         configureHierarchy()
         configureLayout()
     }
@@ -65,8 +66,6 @@ final class PostDetailView: UIView {
     }
     
     private func configureLayout() {
-        
-        collectionView.backgroundColor = .systemMint
         collectionView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(commentInputButtonView.snp.top)
@@ -83,16 +82,21 @@ final class PostDetailView: UIView {
     }
     
     func createLayout() -> UICollectionViewLayout {
+        let heightDimension = NSCollectionLayoutDimension.estimated(500)
+        
         let layout = UICollectionViewCompositionalLayout { _, _ in
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
+                heightDimension: heightDimension
             )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let item = NSCollectionLayoutItem(
+                layoutSize: itemSize
+            )
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.1)
+                heightDimension: heightDimension
             )
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: groupSize,

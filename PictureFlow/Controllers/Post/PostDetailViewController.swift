@@ -22,8 +22,8 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(resource: .backgorund)
         bind()
+        
         mainView.collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
 
@@ -53,8 +53,10 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         
         mainView.commentInputButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("TAP")
+                print("답글 남기기 TAP")
                 let vc = CommentCreateViewController()
+                guard let post = self.viewModel.postList else { return }
+                vc.viewModel.postId = post._id
                 owner.transition(viewController: vc, style: .presentNavigation)
             }
             .disposed(by: disposeBag)
@@ -64,16 +66,29 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
 
 // RxDataSource
 extension PostDetailViewController {
-    func configureRxCollectionViewDataSource() -> RxCollectionViewSectionedReloadDataSource<PostDetailModel> {
+    private func configureRxCollectionViewDataSource() -> RxCollectionViewSectionedReloadDataSource<PostDetailModel> {
         let dataSource = RxCollectionViewSectionedReloadDataSource<PostDetailModel> { (dataSource, collectionView, indexPath, data) in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.description(), for: indexPath) as? CommentCollectionViewCell else { return UICollectionViewCell() }
-            cell.backgroundColor = .blue
-//            cell.label.text = data
+        
+            print("🔥", data)
+            
+            
+            
+            cell.nicknameLabel.text = data.creator.nick
+            cell.commentContentLabel.text = data.content
+            
+//            let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: data.time)
+            
+            cell.commentCreatedTimeLabel.text = "99일 전"
+            
+            
             return cell
             
         } configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) in
- 
+            /*
+             HeaderView 작업
+             */
             if kind == UICollectionView.elementKindSectionHeader, indexPath.section == 0 {
                 guard let cell = collectionView.dequeueReusableSupplementaryView(
                     ofKind: kind,

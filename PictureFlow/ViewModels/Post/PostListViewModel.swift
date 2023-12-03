@@ -79,7 +79,12 @@ final class PostListViewModel: ViewModelType {
         guard let token = KeyChain.read(key: APIConstants.accessToken) else { return }
         Network.shared.requestConvertible(
             type: PostListResponse.self,
-            router: .postList(accessToken: token, next: next, limit: "10", product_id: "picture_flow")
+            router: .postList(
+                accessToken: token,
+                next: next,
+                limit: "10",
+                product_id: "picture_flow"
+            )
         ) { result in
             switch result {
             case .success(let data):
