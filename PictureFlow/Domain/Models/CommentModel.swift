@@ -7,6 +7,9 @@
 
 import Foundation
 
+/*
+ 댓글 작성
+ */
 struct CommentCreateRequest: Codable {
     let content: String
 }

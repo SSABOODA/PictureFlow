@@ -63,7 +63,6 @@ struct PostListResponse: Decodable {
  }
  */
 
-
 struct PostList: Decodable {
     let _id: String
     let likes: [String]

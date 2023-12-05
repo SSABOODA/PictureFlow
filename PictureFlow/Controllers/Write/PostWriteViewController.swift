@@ -59,9 +59,6 @@ extension PostWriteViewController {
             guard let self else { return }
             guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
             
-//            cell.collectionView.delegate = nil
-//            cell.collectionView.dataSource = nil
-            
             print("cell registration")
             
             cell.addImageButton.rx.tap

@@ -33,6 +33,12 @@ final class PostListViewController: UIViewController {
         printAccessToken() // @Deprecated
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(#function, PostListViewController.description())
+        self.viewModel.updateDateSource()
+    }
+    
     func printAccessToken() {
 //        let accessToken = KeyChain.read(key: "accessToken")!
 //        print("accessToken: \(accessToken)")

@@ -67,6 +67,7 @@
 		F7B409572B08D8B7006CD373 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F7B409562B08D8B7006CD373 /* RxDataSources */; };
 		F7B4095C2B09D9BC006CD373 /* PostListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4095B2B09D9BC006CD373 /* PostListTableViewCell.swift */; };
 		F7B4095E2B09DA33006CD373 /* PostListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4095D2B09DA33006CD373 /* PostListCollectionViewCell.swift */; };
+		F7C031D62B1F7A05002EAF19 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C031D52B1F7A05002EAF19 /* UserProfile.swift */; };
 		F7D6627A2B0CA4CA0039E40F /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662792B0CA4CA0039E40F /* DateHelper.swift */; };
 		F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */; };
 		F7D6628A2B0DE7ED0039E40F /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */; };
@@ -129,6 +130,7 @@
 		F7B409532B07958F006CD373 /* PostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListView.swift; sourceTree = "<group>"; };
 		F7B4095B2B09D9BC006CD373 /* PostListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListTableViewCell.swift; sourceTree = "<group>"; };
 		F7B4095D2B09DA33006CD373 /* PostListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListCollectionViewCell.swift; sourceTree = "<group>"; };
+		F7C031D52B1F7A05002EAF19 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		F7D662792B0CA4CA0039E40F /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewController.swift; sourceTree = "<group>"; };
 		F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				F7B409402B075730006CD373 /* UserVerificationModel.swift */,
 				F7B409512B078DA8006CD373 /* PostModel.swift */,
 				F72C69102B1C4146007B1F8F /* CommentModel.swift */,
+				F7C031D52B1F7A05002EAF19 /* UserProfile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -581,6 +584,7 @@
 				F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
 				F72C69062B1AEDB5007B1F8F /* Color.swift in Sources */,
+				F7C031D62B1F7A05002EAF19 /* UserProfile.swift in Sources */,
 				F72C69042B1AED98007B1F8F /* Extension+UIColor.swift in Sources */,
 				F7095A2A2AFE3DE600F0218B /* Extension+UIViewController.swift in Sources */,
 				F7095A312AFE513A00F0218B /* SignUpView.swift in Sources */,

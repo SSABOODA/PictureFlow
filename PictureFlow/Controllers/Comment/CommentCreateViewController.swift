@@ -14,6 +14,7 @@ final class CommentCreateViewController: UIViewController {
     let mainView = CommentCreateView()
     let viewModel = CommentCreateViewModel()
     var disposeBag = DisposeBag()
+    var completionHandler: ((Comments) -> Void)?
     
     override func loadView() {
         view = mainView
@@ -22,14 +23,9 @@ final class CommentCreateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
-        bind()
         configureTextView()
+        bind()
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        mainView.commentTextView.becomeFirstResponder()
-//    }
     
     private func bind() {
         guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
@@ -41,15 +37,12 @@ final class CommentCreateViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
-        output.commentCreateSuccess
-            .subscribe(with: self) { owner, value in
-                if value {
-                    owner.dismiss(animated: true)
-                }
+        output.commentsObservableInfo
+            .subscribe(with: self) { owner, newComment in
+                owner.completionHandler?(newComment)
+                owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
-        
-        
     }
     
     private func configureTextView() {

@@ -23,24 +23,31 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
+        
         mainView.collectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
-        
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(#function)
+    }
+    
     private func bind() {
         let input = PostDetailViewModel.Input()
         let output = viewModel.transform(input: input)
          
         let dataSource = configureRxCollectionViewDataSource()
-        
+
         output.postObservableItem
+            .observe(on: MainScheduler.instance)
             .bind(to: mainView.collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         output.postObservableItem.onNext(viewModel.postDataList)
+        
+        dump(viewModel.postDataList)
         
         mainView.collectionView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
@@ -52,6 +59,14 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
             .bind(with: self) { owner, _ in
                 print("답글 남기기 버튼 TAP")
                 let vc = CommentCreateViewController()
+                
+                vc.completionHandler = { newComment in
+                    print("newComment: \(newComment)")
+//                    owner.viewModel.commentCreateSuccess.onNext(newComment)
+                    owner.viewModel.postDataList[0].items.insert(newComment, at: 0)
+                    owner.viewModel.postObservableItem.onNext(owner.viewModel.postDataList)
+                }
+                
                 guard let post = self.viewModel.postList else { return }
                 vc.viewModel.postId = post._id
                 owner.transition(viewController: vc, style: .presentNavigation)
@@ -65,8 +80,12 @@ extension PostDetailViewController {
     private func configureRxCollectionViewDataSource() -> RxCollectionViewSectionedReloadDataSource<PostDetailModel> {
         let dataSource = RxCollectionViewSectionedReloadDataSource<PostDetailModel> { (dataSource, collectionView, indexPath, data) in
             
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.description(), for: indexPath) as? CommentCollectionViewCell else { return UICollectionViewCell() }
-            print("🔥", data)
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.description(), for: indexPath) as? CommentCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+//            print("🔥 \(data)", data)
+            
             cell.nicknameLabel.text = data.creator.nick
             cell.commentContentLabel.text = data.content
             
@@ -75,6 +94,7 @@ extension PostDetailViewController {
             return cell
             
         } configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) in
+            print("indexPath.section: \(indexPath.section)")
             /*
              HeaderView 작업
              */
@@ -92,11 +112,11 @@ extension PostDetailViewController {
                  */
                 
                 let elements = dataSource[indexPath.section].header
-                print("elements: \(elements)")
+                //              print("elements: \(elements)")
                 
                 // 시간 작업
                 let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
-
+                
                 cell.nicknameLabel.text = elements.creator.nick
                 cell.postCreatedTimeLabel.text = timeContent
                 cell.contentLabel.text = elements.content
@@ -117,14 +137,17 @@ extension PostDetailViewController {
                 cell.collectionView.snp.updateConstraints { make in
                     make.height.equalTo(height)
                 }
-
+                
+                cell.collectionView.delegate = nil
+                cell.collectionView.dataSource = nil
+                
                 Observable.just(elements.image)
                     .bind(to: cell.collectionView.rx.items(cellIdentifier: PostListCollectionViewCell.description(), cellType: PostListCollectionViewCell.self)) { (row, element, cell) in
                         let imageURL = "\(BaseURL.baseURL)/\(element)"
                         imageURL.loadImageByKingfisher(imageView: cell.postImageView)
                     }
                     .disposed(by: self.disposeBag)
-
+                
                 return cell
             } else {
                 guard let cell = collectionView.dequeueReusableSupplementaryView(
@@ -139,6 +162,6 @@ extension PostDetailViewController {
         }
         return dataSource
     }
-
+    
 }
 

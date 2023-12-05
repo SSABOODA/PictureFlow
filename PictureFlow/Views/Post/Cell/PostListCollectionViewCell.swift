@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class PostListCollectionViewCell: UICollectionViewCell {
     let postImageView = {
@@ -15,6 +16,8 @@ final class PostListCollectionViewCell: UICollectionViewCell {
         view.contentMode = .scaleAspectFill
         return view
     }()
+    
+    var disposeBag = DisposeBag()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +26,7 @@ final class PostListCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        disposeBag = DisposeBag()
         postImageView.image = nil
     }
     

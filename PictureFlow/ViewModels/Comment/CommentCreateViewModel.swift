@@ -17,6 +17,7 @@ final class CommentCreateViewModel: ViewModelType {
     
     struct Output {
         let commentCreateSuccess: BehaviorRelay<Bool>
+        let commentsObservableInfo: PublishSubject<Comments>
     }
     
     var disposeBag = DisposeBag()
@@ -24,6 +25,7 @@ final class CommentCreateViewModel: ViewModelType {
     var postId: String = ""
     
     var commentCreateSuccess = BehaviorRelay(value: false)
+    var commentsObservableInfo = PublishSubject<Comments>()
     var commentCreateError = PublishSubject<String>()
 
     func transform(input: Input) -> Output {
@@ -47,7 +49,16 @@ final class CommentCreateViewModel: ViewModelType {
                 switch result {
                 case .success(let data):
                     print(data)
-                    owner.commentCreateSuccess.accept(true)
+                    
+                    let newComment = Comments(
+                        _id: data._id,
+                        content: data.content,
+                        time: data.time,
+                        creator: data.creator
+                    )
+                    
+                    owner.commentsObservableInfo.onNext(newComment)
+//                    owner.commentCreateSuccess.accept(true)
                 case .failure(let error):
                     print(error)
                 }
@@ -55,7 +66,8 @@ final class CommentCreateViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
-            commentCreateSuccess: commentCreateSuccess
+            commentCreateSuccess: commentCreateSuccess,
+            commentsObservableInfo: commentsObservableInfo
         )
     }
     

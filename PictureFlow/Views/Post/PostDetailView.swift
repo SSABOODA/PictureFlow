@@ -14,6 +14,7 @@ final class PostDetailView: UIView {
             frame: .zero,
             collectionViewLayout: createLayout()
         )
+        
         collectionView.register(
             CommentCollectionViewCell.self,
             forCellWithReuseIdentifier: CommentCollectionViewCell.description()

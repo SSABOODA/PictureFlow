@@ -30,10 +30,16 @@ enum Router: URLRequestConvertible {
     // Comment
     case commentCreate(postId: String, accessToken: String, model: CommentCreateRequest) // 댓글 작성
     
+    // User Profile
+    case userProfileRetrieve(accessToken: String)
+    
+    
+    /* baseURL */
     private var baseURL: URL {
         return URL(string: BaseURL.baseURL)!
     }
     
+    /* path */
     private var path: String {
         switch self {
         case .join: return "join"
@@ -48,9 +54,13 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
+            
+        // user profile
+        case .userProfileRetrieve: return "profile/me"
         }
     }
     
+    /* header */
     private var header: HTTPHeaders {
         var defaultHeader: HTTPHeaders = [
             APIConstants.apiKey: Router.key,
@@ -83,9 +93,15 @@ enum Router: URLRequestConvertible {
         case .commentCreate(_, let accessToken, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+            
+        // user profile
+        case .userProfileRetrieve(let accessToken):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
         }
     }
     
+    /* method */
     private var method: HTTPMethod {
         switch self {
         case .join: return .post
@@ -101,9 +117,13 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate: return .post
+            
+        // user profile
+        case .userProfileRetrieve: return .get
         }
     }
     
+    /* parameters */
     var parameters: Parameters? {
         switch self {
         case .join(let model):
@@ -123,13 +143,11 @@ enum Router: URLRequestConvertible {
                 "email": model.email,
                 "password": model.password
             ]
-        case .refresh:
-            return nil
-        case .withdraw:
-            return nil
+        case .refresh: return nil
+        case .withdraw: return nil
             
         // post
-        case .post:
+        case .post: // 게시글 작성
             return nil
         case .postList(_, let next, let limit, let product_id):
             return [
@@ -143,6 +161,9 @@ enum Router: URLRequestConvertible {
             return [
                 "content": model.content
             ]
+            
+            // user profile
+        case .userProfileRetrieve: return nil
         }
     }
     
@@ -156,8 +177,8 @@ enum Router: URLRequestConvertible {
         request.headers = header
         request.method = method
         
-//        let re = try URLEncoding.default.encode(request, with: parameters)
-//        print("re: \(re)")
+        let re = try URLEncoding.default.encode(request, with: parameters)
+        print("re: \(re)")
 //        print("method: \(re.httpMethod)")
 //        print("header: \(re.headers)")
 //        print("parameter: \(parameters)")
@@ -170,19 +191,7 @@ extension Router {
         switch self {
         case .post(_, let model):
             let multipartFormData = MultipartFormData()
-            
-            print("multipart model: \(model)")
-            
-            let _: [String:Any] = [
-                "title": model.title,
-                "productId": model.productId,
-                "content": model.content,
-                "content1": model.content1,
-                "content2": model.content2,
-                "content3": model.content3,
-                "content4": model.content4,
-                "content5": model.content5
-            ]
+//            print("multipart model: \(model)")
             
             multipartFormData.append(Data(model.title.utf8), withName: "title")
             multipartFormData.append(Data(model.productId.utf8), withName: "product_id")

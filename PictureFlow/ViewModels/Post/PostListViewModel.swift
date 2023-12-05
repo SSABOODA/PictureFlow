@@ -23,10 +23,10 @@ final class PostListViewModel: ViewModelType {
     
     var nextCursor = ""
     var postListDataSource = [PostList]()
-    
     let postListItem = PublishSubject<[PostList]>()
-    let errorResponse = PublishSubject<CustomErrorResponse>()
+    
     let tokenObservable = BehaviorSubject<String>(value: "")
+    let errorResponse = PublishSubject<CustomErrorResponse>()
     let refreshLoading = PublishRelay<Bool>()
     
     func transform(input: Input) -> Output {
@@ -67,8 +67,9 @@ final class PostListViewModel: ViewModelType {
     
     func updateDateSource() {
         self.postListDataSource.removeAll()
+        self.nextCursor = "0"
         if let token = KeyChain.read(key: APIConstants.accessToken) {
-            print("토큰 확인: \(token)")
+            print("🔑 토큰 확인: \(token)")
             tokenObservable.onNext(token)
         } else {
             print("토큰 확인 실패")

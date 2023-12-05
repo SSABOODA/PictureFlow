@@ -6,9 +6,9 @@
 //
 
 import UIKit
+import RxSwift
 
 final class CommentCollectionViewCell: UICollectionViewCell {
-    
     let profileImageView = {
         let view = ProfileImageView(frame: .zero)
         return view
@@ -38,6 +38,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    var disposeBag = DisposeBag()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(resource: .backgorund)
@@ -54,6 +56,11 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
     }
     
     override func layoutSubviews() {

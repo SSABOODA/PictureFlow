@@ -32,29 +32,47 @@ final class PostDetailViewModel: ViewModelType {
     var disposeBag = DisposeBag()
 
     var postList: PostList?
-    
-    var postObservableItem = PublishSubject<[PostDetailModel]>()
     var postDataList: [PostDetailModel] = []
+    var postObservableItem = PublishSubject<[PostDetailModel]>()
     
     let tokenObservable = BehaviorSubject<String>(value: "")
-    
+    let commentCreateSuccess = BehaviorSubject(value: false)
+
     func transform(input: Input) -> Output {
         
-        
-        
 //        print("DETAIL postList: \(postList)")
+        
         if let postList {
             postDataList.insert(
                 PostDetailModel(
                     header: postList,
                     items: []
-                ),
-                at: 0
+                ), at: 0
             )
-                
             _ = postList.comments.map { postDataList[0].items.append($0) }
-            
         }
+        
+//        commentCreateSuccess
+//            .flatMap { value in
+//                Network.shared.requestObservableConvertible(
+//                    type: UserProfileRetrieveResponse.self,
+//                    router: .userProfileRetrieve(accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "")
+//                )
+//            }
+//            .subscribe(with: self) { owner, result in
+//                switch result {
+//                case .success(let data):
+//                    print(data)
+//                    
+//                    let newComment = Comments(_id: "", content: <#T##String#>, time: <#T##String#>, creator: <#T##Creator#>)
+//                    
+//                case .failure(let error):
+//                    print(error.localizedDescription)
+//                }
+//            }
+//            .disposed(by: disposeBag)
+        
+        
         
         return Output(
             postObservableItem: postObservableItem
