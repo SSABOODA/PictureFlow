@@ -131,3 +131,11 @@ struct PostWriteResponse: Decodable {
     }
 }
 
+
+/*
+ 게시글 삭제
+ */
+
+struct PostDeleteResponse: Decodable {
+    let _id: String
+}

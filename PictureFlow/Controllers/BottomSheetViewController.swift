@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import RxSwift
 
 final class CustomPostStatusModifyButton: UIButton {
 }
 
-final class BottomSheetViewController: UIViewController {
+class BottomSheetViewController: UIViewController {
     
     let bottomHeight: CGFloat = UIScreen.main.bounds.height * 0.25 //359
     
@@ -45,7 +46,7 @@ final class BottomSheetViewController: UIViewController {
     let updateButton = {
         let button = UIButton()
         button.setTitle("수정", for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
         button.setTitleColor(UIColor(resource: .text), for: .normal)
         button.backgroundColor = UIColor(resource: .postStatusModify)
         button.layer.cornerRadius = 20
@@ -56,25 +57,67 @@ final class BottomSheetViewController: UIViewController {
     let deleteButton = {
         let button = UIButton()
         button.setTitle("삭제", for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
         button.setTitleColor(.red, for: .normal)
         button.backgroundColor = UIColor(resource: .postStatusModify)
         button.layer.cornerRadius = 20
         button.clipsToBounds = true
         return button
     }()
+    
+    var disposeBag = DisposeBag()
+    var postId: String = ""
+    var completion: ((Bool) -> Void)?
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupGestureRecognizer()
+        bind()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         showBottomSheet()
+    }
+    
+    func bind() {
+        updateButton.rx.tap
+            .bind(with: self) { owner, _ in
+                print("updateButton did tap")
+            }
+            .disposed(by: disposeBag)
+        
+        deleteButton.rx.tap
+            .bind(with: self) { owner, _ in
+                print("deleteButton did tap")
+                
+                owner.showAlertAction2(
+                    title: "게시물을 삭제하시겠어요?",
+                    message: "게시물을 삭제하면 복원할 수 없습니다.", cancelTitle: "취소", completeTitle: "삭제") {
+                        
+                    } _: {
+                        print("삭제")
+                        
+                        if !owner.postId.isEmpty {
+                            let token = KeyChain.read(key: APIConstants.accessToken) ?? ""
+                            
+                            Network.shared.requestConvertible(type: PostDeleteResponse.self, router: .postDelete(accessToken: token, postId: owner.postId)) { result in
+                                switch result {
+                                case .success(let data):
+                                    print(data)
+                                    owner.completion?(true)
+                                    owner.dismiss(animated: true)
+                                case .failure(let error):
+                                    print(error)
+                                }
+                            }
+                        }
+                    }
+            }
+            .disposed(by: disposeBag)
     }
 
     private func setupUI() {
@@ -131,7 +174,7 @@ final class BottomSheetViewController: UIViewController {
         ])
         
         updateButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(50)
+            make.top.equalToSuperview().offset(45)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.85)
             make.height.equalToSuperview().multipliedBy(0.25)

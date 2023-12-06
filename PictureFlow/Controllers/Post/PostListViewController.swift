@@ -139,11 +139,18 @@ final class PostListViewController: UIViewController {
                     
                     // 더보기 버튼
                     cell.moreInfoButton.rx.tap
+                        .observe(on: MainScheduler.instance)
                         .bind(with: self) { owner, _ in
                             print("more button did tap")
                             let bottomSheetVC = BottomSheetViewController()
+                            bottomSheetVC.completion = { isDeleted in
+                                if isDeleted {
+                                    owner.viewModel.updateDateSource()
+                                }
+                            }
+                            bottomSheetVC.postId = owner.viewModel.postListDataSource[row]._id
                             bottomSheetVC.modalPresentationStyle = .overFullScreen
-                            self.present(bottomSheetVC, animated: false, completion: nil)
+                            self.present(bottomSheetVC, animated: false)
                         }
                         .disposed(by: cell.disposeBag)
 

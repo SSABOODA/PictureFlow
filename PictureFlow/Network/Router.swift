@@ -26,6 +26,7 @@ enum Router: URLRequestConvertible {
         limit: String? = "",
         product_id: String? = ""
     ) // 게시글 조회
+    case postDelete(accessToken: String, postId: String) // 게시글 삭제
     
     // Comment
     case commentCreate(postId: String, accessToken: String, model: CommentCreateRequest) // 댓글 작성
@@ -54,6 +55,7 @@ enum Router: URLRequestConvertible {
         // post
         case .post: return "post"
         case .postList: return "post"
+        case .postDelete(_, let postId): return "post/\(postId)"
             
         // comment
         case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
@@ -94,6 +96,9 @@ enum Router: URLRequestConvertible {
         case .postList(let accessToken, _, _, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+        case .postDelete(let accessToken, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
             
         // comment
         case .commentCreate(_, let accessToken, _):
@@ -125,6 +130,7 @@ enum Router: URLRequestConvertible {
         // post
         case .post: return .post
         case .postList: return .get
+        case .postDelete: return .delete
             
         // comment
         case .commentCreate: return .post
@@ -162,13 +168,14 @@ enum Router: URLRequestConvertible {
             
         // post
         case .post: return nil // 게시글 작성
-        case .postList(_, let next, let limit, let product_id):
+        case .postList(_, let next, let limit, let product_id): // 게시글 조회
             return [
                 "next": next ?? "",
                 "limit": limit ?? "",
                 "product_id": product_id ?? "",
             ]
-            
+        case .postDelete: return nil
+        
         // like
         case .like: return nil
             
