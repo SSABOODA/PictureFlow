@@ -7,6 +7,9 @@
 
 import UIKit
 
+final class CustomPostStatusModifyButton: UIButton {
+}
+
 final class BottomSheetViewController: UIViewController {
     
     let bottomHeight: CGFloat = UIScreen.main.bounds.height * 0.25 //359
@@ -36,14 +39,34 @@ final class BottomSheetViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .systemGray2
         view.layer.cornerRadius = 3
-        
         return view
+    }()
+    
+    let updateButton = {
+        let button = UIButton()
+        button.setTitle("수정", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.setTitleColor(UIColor(resource: .text), for: .normal)
+        button.backgroundColor = UIColor(resource: .postStatusModify)
+        button.layer.cornerRadius = 20
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    let deleteButton = {
+        let button = UIButton()
+        button.setTitle("삭제", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.setTitleColor(.red, for: .normal)
+        button.backgroundColor = UIColor(resource: .postStatusModify)
+        button.layer.cornerRadius = 20
+        button.clipsToBounds = true
+        return button
     }()
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
         setupGestureRecognizer()
     }
@@ -54,12 +77,13 @@ final class BottomSheetViewController: UIViewController {
         showBottomSheet()
     }
 
-    // MARK: - @Functions
-    // UI 세팅 작업
     private func setupUI() {
         view.addSubview(dimmedBackView)
         view.addSubview(bottomSheetView)
         view.addSubview(dismissIndicatorView)
+        
+        bottomSheetView.addSubview(updateButton)
+        bottomSheetView.addSubview(deleteButton)
         
         dimmedBackView.alpha = 0.0
         setupLayout()
@@ -106,6 +130,19 @@ final class BottomSheetViewController: UIViewController {
             dismissIndicatorView.centerXAnchor.constraint(equalTo: bottomSheetView.centerXAnchor)
         ])
         
+        updateButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(50)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.85)
+            make.height.equalToSuperview().multipliedBy(0.25)
+        }
+        
+        deleteButton.snp.makeConstraints { make in
+            make.top.equalTo(updateButton.snp.bottom).offset(10)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(updateButton.snp.width)
+            make.height.equalTo(updateButton.snp.height)
+        }
     }
     
     // 바텀 시트 표출 애니메이션
