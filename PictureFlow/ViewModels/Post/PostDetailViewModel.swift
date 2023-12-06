@@ -51,29 +51,7 @@ final class PostDetailViewModel: ViewModelType {
             )
             _ = postList.comments.map { postDataList[0].items.append($0) }
         }
-        
-//        commentCreateSuccess
-//            .flatMap { value in
-//                Network.shared.requestObservableConvertible(
-//                    type: UserProfileRetrieveResponse.self,
-//                    router: .userProfileRetrieve(accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "")
-//                )
-//            }
-//            .subscribe(with: self) { owner, result in
-//                switch result {
-//                case .success(let data):
-//                    print(data)
-//                    
-//                    let newComment = Comments(_id: "", content: <#T##String#>, time: <#T##String#>, creator: <#T##Creator#>)
-//                    
-//                case .failure(let error):
-//                    print(error.localizedDescription)
-//                }
-//            }
-//            .disposed(by: disposeBag)
-        
-        
-        
+                
         return Output(
             postObservableItem: postObservableItem
         )

@@ -147,8 +147,7 @@ enum Router: URLRequestConvertible {
         case .withdraw: return nil
             
         // post
-        case .post: // 게시글 작성
-            return nil
+        case .post: return nil // 게시글 작성
         case .postList(_, let next, let limit, let product_id):
             return [
                 "next": next ?? "",
@@ -171,14 +170,14 @@ enum Router: URLRequestConvertible {
     
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appendingPathComponent(path)
-        print("url: \(url)")
+//        print("url: \(url)")
 
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
         
-        let re = try URLEncoding.default.encode(request, with: parameters)
-        print("re: \(re)")
+//        let re = try URLEncoding.default.encode(request, with: parameters)
+//        print("re: \(re)")
 //        print("method: \(re.httpMethod)")
 //        print("header: \(re.headers)")
 //        print("parameter: \(parameters)")

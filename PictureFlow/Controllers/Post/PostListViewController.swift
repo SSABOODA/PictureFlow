@@ -26,7 +26,6 @@ final class PostListViewController: UIViewController {
         print(#function, PostListViewController.description())
         navigationItem.title = "FLOW"
         bind()
-        
         configureRefreshControl()
         setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .tint))
         
@@ -41,8 +40,8 @@ final class PostListViewController: UIViewController {
     
     func printAccessToken() {
 //        let accessToken = KeyChain.read(key: "accessToken")!
-//        print("accessToken: \(accessToken)")
 //        let refreshToken = KeyChain.read(key: "refreshToken")!
+//        print("accessToken: \(accessToken)")
 //        print("refreshToken: \(refreshToken)")
     }
     
@@ -51,12 +50,13 @@ final class PostListViewController: UIViewController {
         mainView.tableView.refreshControl = mainView.refreshControl
         
         mainView.refreshControl.rx.controlEvent(.valueChanged)
+            .asObservable()
             .bind(with: self) { owner, _ in
-                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
                     owner.viewModel.updateDateSource()
                     owner.mainView.refreshControl.endRefreshing()
-                    owner.viewModel.refreshLoading.accept(true)
                 }
+                owner.viewModel.refreshLoading.accept(true)
             }
             .disposed(by: disposeBag)
     }
@@ -64,6 +64,10 @@ final class PostListViewController: UIViewController {
     private func bind() {
         let input = PostListViewModel.Input()
         let output = viewModel.transform(input: input)
+        
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
         
         output.errorResponse
             .subscribe(with: self) { owner, error in
@@ -75,9 +79,35 @@ final class PostListViewController: UIViewController {
             .bind(to: mainView.tableView.rx.items(
                 cellIdentifier: PostListTableViewCell.description(),
                 cellType: PostListTableViewCell.self)) { (row, element, cell) in
-                cell.configureCell(with: element)
-            }
-            .disposed(by: disposeBag)
+                    
+                    // cell 데이터 구성
+                    cell.configureCell(with: element)
+                    
+                    // 좋아요 버튼
+                    cell.likeButton.rx.tap
+                        .bind(with: self) { owner, _ in
+                            print("like button tap")
+                        }
+                        .disposed(by: cell.disposeBag)
+                    
+                    // 댓글 버튼
+                    cell.commentButton.rx.tap
+                        .bind(with: self) { owner, _ in
+                            print("comment button tap")
+                            let vc = CommentCreateViewController()
+                            vc.completionHandler = { _ in
+                                // TODO: 답글 수 올리기?
+                            }
+                            let _id = owner.viewModel.postListDataSource[row]._id
+                            vc.viewModel.postId = _id
+                            owner.transition(viewController: vc, style: .presentNavigation)
+                        }
+                        .disposed(by: cell.disposeBag)
+                    
+                    
+                    
+                }
+                .disposed(by: disposeBag)
         
         mainView.tableView.rx.prefetchRows
             .compactMap(\.last?.row)

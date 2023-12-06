@@ -56,9 +56,7 @@ final class CommentCreateViewModel: ViewModelType {
                         time: data.time,
                         creator: data.creator
                     )
-                    
                     owner.commentsObservableInfo.onNext(newComment)
-//                    owner.commentCreateSuccess.accept(true)
                 case .failure(let error):
                     print(error)
                 }

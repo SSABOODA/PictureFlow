@@ -47,7 +47,7 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         
         output.postObservableItem.onNext(viewModel.postDataList)
         
-        dump(viewModel.postDataList)
+//        dump(viewModel.postDataList)
         
         mainView.collectionView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
@@ -59,10 +59,8 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
             .bind(with: self) { owner, _ in
                 print("답글 남기기 버튼 TAP")
                 let vc = CommentCreateViewController()
-                
                 vc.completionHandler = { newComment in
                     print("newComment: \(newComment)")
-//                    owner.viewModel.commentCreateSuccess.onNext(newComment)
                     owner.viewModel.postDataList[0].items.insert(newComment, at: 0)
                     owner.viewModel.postObservableItem.onNext(owner.viewModel.postDataList)
                 }
