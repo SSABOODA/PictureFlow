@@ -135,6 +135,17 @@ final class PostListViewController: UIViewController {
                             owner.transition(viewController: vc, style: .presentNavigation)
                         }
                         .disposed(by: cell.disposeBag)
+                    
+                    
+                    // 더보기 버튼
+                    cell.moreInfoButton.rx.tap
+                        .bind(with: self) { owner, _ in
+                            print("more button did tap")
+                            let bottomSheetVC = BottomSheetViewController()
+                            bottomSheetVC.modalPresentationStyle = .overFullScreen
+                            self.present(bottomSheetVC, animated: false, completion: nil)
+                        }
+                        .disposed(by: cell.disposeBag)
 
                 }
                 .disposed(by: disposeBag)

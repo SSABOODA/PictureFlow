@@ -69,6 +69,7 @@
 		F7B4095E2B09DA33006CD373 /* PostListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4095D2B09DA33006CD373 /* PostListCollectionViewCell.swift */; };
 		F7C031D62B1F7A05002EAF19 /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C031D52B1F7A05002EAF19 /* UserProfileModel.swift */; };
 		F7C031D82B205631002EAF19 /* LikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C031D72B205631002EAF19 /* LikeModel.swift */; };
+		F7C032072B209F28002EAF19 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */; };
 		F7D6627A2B0CA4CA0039E40F /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662792B0CA4CA0039E40F /* DateHelper.swift */; };
 		F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */; };
 		F7D6628A2B0DE7ED0039E40F /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */; };
@@ -133,6 +134,7 @@
 		F7B4095D2B09DA33006CD373 /* PostListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListCollectionViewCell.swift; sourceTree = "<group>"; };
 		F7C031D52B1F7A05002EAF19 /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
 		F7C031D72B205631002EAF19 /* LikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeModel.swift; sourceTree = "<group>"; };
+		F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		F7D662792B0CA4CA0039E40F /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewController.swift; sourceTree = "<group>"; };
 		F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				F7D662822B0DC2B10039E40F /* Search */,
 				F7B409422B075A84006CD373 /* CustomController */,
 				F7095A262AFE3D2600F0218B /* Sign */,
+				F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				F76EE92B2B10A293005C6106 /* PostDetailView.swift in Sources */,
 				F72C69092B1AF086007B1F8F /* CommentCreateViewController.swift in Sources */,
 				F7D6628A2B0DE7ED0039E40F /* PostDetailViewModel.swift in Sources */,
+				F7C032072B209F28002EAF19 /* BottomSheetViewController.swift in Sources */,
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
 				F7B4095C2B09D9BC006CD373 /* PostListTableViewCell.swift in Sources */,

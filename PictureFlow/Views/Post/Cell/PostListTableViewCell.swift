@@ -39,6 +39,13 @@ final class PostListTableViewCell: UITableViewCell {
         return label
     }()
     
+    let moreInfoButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = UIColor(resource: .text)
+        return button
+    }()
+    
     let contentLabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -162,6 +169,7 @@ final class PostListTableViewCell: UITableViewCell {
         contentView.addSubview(leftDividLineView)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(postCreatedTimeLabel)
+        contentView.addSubview(moreInfoButton)
         contentView.addSubview(contentLabel)
         
         contentView.addSubview(collectionView)
@@ -190,6 +198,11 @@ final class PostListTableViewCell: UITableViewCell {
         }
     
         postCreatedTimeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(nicknameLabel.snp.centerY)
+            make.trailing.equalTo(moreInfoButton.snp.leading).offset(-10)
+        }
+        
+        moreInfoButton.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.top)
             make.trailing.equalToSuperview().offset(-15)
         }

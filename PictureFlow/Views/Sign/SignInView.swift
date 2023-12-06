@@ -58,7 +58,7 @@ final class SignInView: UIView {
         let button = UIButton()
         button.setTitle("계정이 없으세요? 가입하러 가기", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(UIColor(resource: .text), for: .normal)
         return button
     }()
     
