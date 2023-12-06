@@ -108,12 +108,24 @@ extension PostDetailViewController {
                 /*
                  Cell 데이터 작업
                  */
-                
                 let elements = dataSource[indexPath.section].header
-                //              print("elements: \(elements)")
                 
                 // 시간 작업
                 let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
+                
+                // 좋아요
+                var likeCount = elements.likes.count
+                
+                let userId = UserDefaultsManager.userID
+                if elements.likes.contains(userId) {
+                    cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                    cell.likeButton.tintColor = .red
+                } else {
+                    cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                    cell.likeButton.tintColor = UIColor(resource: .tint)
+                }
+                
+                cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                 
                 cell.nicknameLabel.text = elements.creator.nick
                 cell.postCreatedTimeLabel.text = timeContent
@@ -125,6 +137,57 @@ extension PostDetailViewController {
                 
                 cell.commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
                 cell.likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
+                
+                // 좋아요 버튼
+                cell.likeButton.rx.tap
+                    .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                    .flatMap {
+                        Network.shared.requestObservableConvertible(
+                            type: LikeRetrieveResponse.self,
+                            router: .like(
+                                accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
+                                postId: elements._id
+                            )
+                        )
+                    }
+                    .observe(on: MainScheduler.instance)
+                    .bind(with: self) { owner, result in
+                        print("like button tap")
+                        switch result {
+                        case .success(let data):
+                            
+                            if data.likeStatus {
+                                cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                                cell.likeButton.tintColor = .red
+                                
+                                likeCount += 1
+                            } else {
+                                cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                                cell.likeButton.tintColor = UIColor(resource: .tint)
+                                
+                                likeCount -= 1
+                            }
+                            cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
+                            print("likeCount: \(likeCount)")
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    .disposed(by: cell.disposeBag)
+                
+                // 댓글 버튼
+                cell.commentButton.rx.tap
+                    .bind(with: self) { owner, _ in
+                        print("comment button tap")
+                        let vc = CommentCreateViewController()
+                        vc.completionHandler = { newComment in
+                            owner.viewModel.postDataList[0].items.insert(newComment, at: 0)
+                            owner.viewModel.postObservableItem.onNext(owner.viewModel.postDataList)
+                        }
+                        vc.viewModel.postId = elements._id
+                        owner.transition(viewController: vc, style: .presentNavigation)
+                    }
+                    .disposed(by: cell.disposeBag)
                 
                 /*
                  collectionView 작업

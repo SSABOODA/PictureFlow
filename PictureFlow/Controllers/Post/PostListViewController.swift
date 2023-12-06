@@ -84,7 +84,10 @@ final class PostListViewController: UIViewController {
                     cell.configureCell(with: element)
                     
                     // 좋아요 버튼
+                    var likeCount = element.likes.count
+                    
                     cell.likeButton.rx.tap
+                        .throttle(.seconds(1), scheduler: MainScheduler.instance)
                         .flatMap {
                             Network.shared.requestObservableConvertible(
                                 type: LikeRetrieveResponse.self,
@@ -99,15 +102,20 @@ final class PostListViewController: UIViewController {
                             print("like button tap")
                             switch result {
                             case .success(let data):
-                                print(data)
                                 
                                 if data.likeStatus {
                                     cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
                                     cell.likeButton.tintColor = .red
+                                    
+                                    likeCount += 1
                                 } else {
                                     cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                                    cell.likeButton.tintColor = .black
+                                    cell.likeButton.tintColor = UIColor(resource: .tint)
+                                    
+                                    likeCount -= 1
                                 }
+                                cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
+                                print("likeCount: \(likeCount)")
                             case .failure(let error):
                                 print(error)
                             }

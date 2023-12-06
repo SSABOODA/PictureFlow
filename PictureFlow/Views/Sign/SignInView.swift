@@ -23,6 +23,7 @@ final class SignInView: UIView {
     
     let emailTextField = {
         let tf = LoginTextField(placeholderText: "이메일")
+        tf.textColor = UIColor(resource: .text)
         return tf
     }()
     
@@ -34,6 +35,7 @@ final class SignInView: UIView {
     let passwordTextField = {
         let tf = LoginTextField(placeholderText: "비밀번호")
         tf.isSecureTextEntry = true
+        tf.textColor = UIColor(resource: .text)
         return tf
     }()
     
@@ -62,7 +64,7 @@ final class SignInView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = UIColor(resource: .background)
         configureHierarchy()
     }
     

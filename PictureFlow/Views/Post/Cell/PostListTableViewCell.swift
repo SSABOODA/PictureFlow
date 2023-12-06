@@ -57,7 +57,7 @@ final class PostListTableViewCell: UITableViewCell {
             forCellWithReuseIdentifier: PostListCollectionViewCell.description()
         )
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = UIColor(resource: .backgorund).withAlphaComponent(0)
+        collectionView.backgroundColor = UIColor(resource: .background).withAlphaComponent(0)
         return collectionView
     }()
     
@@ -134,9 +134,11 @@ final class PostListTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureHierarchy()
-        backgroundColor = UIColor(resource: .backgorund)
+        backgroundColor = UIColor(resource: .background)
         selectionStyle = .none
+        configureHierarchy()
+        configureLayout()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -165,7 +167,9 @@ final class PostListTableViewCell: UITableViewCell {
         contentView.addSubview(collectionView)
         contentView.addSubview(functionButtonStackView)
         contentView.addSubview(countButtonStackView)
-        
+    }
+    
+    private func configureLayout() {
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(10)
@@ -237,16 +241,13 @@ final class PostListTableViewCell: UITableViewCell {
         likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
         
         let userId = UserDefaultsManager.userID
-        print(elements.likes, userId)
         if elements.likes.contains(userId) {
             likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             likeButton.tintColor = .red
         } else {
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            likeButton.tintColor = .black
+            likeButton.tintColor = UIColor(resource: .tint)
         }
-        
-//        print(elements.content, elements.image)
         
         // 컬렉션 뷰 구성
         configureCollectionView(with: elements.image)

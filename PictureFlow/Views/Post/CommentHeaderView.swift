@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class CommentCollectionReusableHeaderView: UICollectionReusableView {
     
@@ -17,7 +18,7 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.clear.cgColor
         view.backgroundColor = UIColor(resource: .tint)
-        view.tintColor = UIColor(resource: .backgorund)
+        view.tintColor = UIColor(resource: .background)
         view.contentMode = .scaleAspectFill
         return view
     }()
@@ -55,7 +56,7 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
             forCellWithReuseIdentifier: PostListCollectionViewCell.description()
         )
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = UIColor(resource: .backgorund).withAlphaComponent(0)
+        collectionView.backgroundColor = UIColor(resource: .background).withAlphaComponent(0)
         return collectionView
     }()
     
@@ -127,9 +128,11 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         return stackView
     }()
     
+    var disposeBag = DisposeBag()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .backgorund)
+        backgroundColor = UIColor(resource: .background)
         configureHierarchy()
         configureLayout()
     }

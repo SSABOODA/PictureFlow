@@ -34,7 +34,7 @@ final class PostDetailView: UIView {
     
     let commentInputButtonView = {
         let view = UIView()
-        view.backgroundColor = UIColor(resource: .backgorund)
+        view.backgroundColor = UIColor(resource: .background)
         return view
     }()
     
@@ -50,7 +50,7 @@ final class PostDetailView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .backgorund)
+        backgroundColor = UIColor(resource: .background)
         configureHierarchy()
         configureLayout()
     }

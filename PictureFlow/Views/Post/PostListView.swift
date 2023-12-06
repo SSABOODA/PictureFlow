@@ -32,7 +32,7 @@ final class PostListView: UIView {
         )
         view.rowHeight = UITableView.automaticDimension
         view.estimatedRowHeight = 100
-        view.backgroundColor = UIColor(resource: .backgorund)
+        view.backgroundColor = UIColor(resource: .background)
         return view
     }()
     
@@ -40,7 +40,7 @@ final class PostListView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .backgorund)
+        backgroundColor = UIColor(resource: .background)
         configureHierarchy()
     }
     

@@ -61,7 +61,7 @@ final class CommentCreateView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .backgorund)
+        backgroundColor = UIColor(resource: .background)
         configureHierarchy()
         configureLayout()
     }

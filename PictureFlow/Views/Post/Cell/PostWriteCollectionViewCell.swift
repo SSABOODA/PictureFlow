@@ -100,7 +100,7 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
             forCellWithReuseIdentifier: PostListCollectionViewCell.description()
         )
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = UIColor(resource: .backgorund).withAlphaComponent(0)
+        collectionView.backgroundColor = UIColor(resource: .background).withAlphaComponent(0)
         return collectionView
     }()
     

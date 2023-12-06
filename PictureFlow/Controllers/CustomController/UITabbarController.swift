@@ -29,7 +29,7 @@ final class CustomTabBarController: UITabBarController, UITabBarControllerDelega
             let shadowView = UIView(frame: .zero)
             shadowView.frame = tabBar.frame
             shadowView.accessibilityIdentifier = "TabBarShadow"
-            shadowView.backgroundColor = UIColor(resource: .backgorund)
+            shadowView.backgroundColor = UIColor(resource: .background)
             shadowView.layer.cornerRadius = tabBar.layer.cornerRadius
             shadowView.layer.maskedCorners = tabBar.layer.maskedCorners
             shadowView.layer.masksToBounds = false

@@ -42,7 +42,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .backgorund)
+        backgroundColor = UIColor(resource: .background)
         layer.addBorder(
             [.top, .bottom],
             color: UIColor.lightGray.withAlphaComponent(0.3),

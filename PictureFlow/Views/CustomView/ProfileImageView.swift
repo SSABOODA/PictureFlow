@@ -25,7 +25,7 @@ class ProfileImageView: UIImageView {
         layer.borderWidth = 1
         layer.borderColor = UIColor.clear.cgColor
         backgroundColor = UIColor(resource: .tint)
-        tintColor = UIColor(resource: .backgorund)
+        tintColor = UIColor(resource: .background)
         contentMode = .scaleAspectFill
     }
 }
