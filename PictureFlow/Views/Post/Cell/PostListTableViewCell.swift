@@ -236,8 +236,19 @@ final class PostListTableViewCell: UITableViewCell {
         commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
         likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
         
+        let userId = UserDefaultsManager.userID
+        print(elements.likes, userId)
+        if elements.likes.contains(userId) {
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            likeButton.tintColor = .red
+        } else {
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            likeButton.tintColor = .black
+        }
+        
 //        print(elements.content, elements.image)
         
+        // 컬렉션 뷰 구성
         configureCollectionView(with: elements.image)
     }
     
@@ -267,7 +278,5 @@ final class PostListTableViewCell: UITableViewCell {
         layout.sectionInset = UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 10)
         return layout
     }
-    
-    
 }
 

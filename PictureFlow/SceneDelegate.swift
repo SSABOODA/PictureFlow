@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         var isLoggedIn =  UserDefaultsManager.isLoggedIn
-//        isLoggedIn = falsee
-        print("isLoggedIn: \(isLoggedIn)")
+//        isLoggedIn = false
+//        print("isLoggedIn: \(isLoggedIn)")
         if !isLoggedIn {
             // 로그인 상태 X
             let vc = SignInViewController()

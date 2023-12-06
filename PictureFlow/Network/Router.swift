@@ -30,6 +30,9 @@ enum Router: URLRequestConvertible {
     // Comment
     case commentCreate(postId: String, accessToken: String, model: CommentCreateRequest) // 댓글 작성
     
+    // Like
+    case like(accessToken: String, postId: String)
+    
     // User Profile
     case userProfileRetrieve(accessToken: String)
     
@@ -54,6 +57,9 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
+            
+        // like
+        case .like(_, let postId): return "post/like/\(postId)"
             
         // user profile
         case .userProfileRetrieve: return "profile/me"
@@ -94,6 +100,11 @@ enum Router: URLRequestConvertible {
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
             
+        // like
+        case .like(let accessToken, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
+            
         // user profile
         case .userProfileRetrieve(let accessToken):
             defaultHeader[APIConstants.authorization] = accessToken
@@ -117,6 +128,9 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate: return .post
+            
+        // like
+        case .like: return .post
             
         // user profile
         case .userProfileRetrieve: return .get
@@ -155,13 +169,16 @@ enum Router: URLRequestConvertible {
                 "product_id": product_id ?? "",
             ]
             
+        // like
+        case .like: return nil
+            
         // comment
         case .commentCreate(_, _, let model):
             return [
                 "content": model.content
             ]
             
-            // user profile
+        // user profile
         case .userProfileRetrieve: return nil
         }
     }

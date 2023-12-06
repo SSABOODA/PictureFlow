@@ -25,7 +25,9 @@ struct CustomDefaults<T> {
 enum UserDefaultsManager {
     enum Key: String {
         case isLoggedIn
+        case userID
     }
     
     @CustomDefaults(key: Key.isLoggedIn.rawValue, defaultValue: false) static var isLoggedIn
+    @CustomDefaults(key: Key.userID.rawValue, defaultValue: "") static var userID
 }

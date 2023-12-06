@@ -85,8 +85,32 @@ final class PostListViewController: UIViewController {
                     
                     // 좋아요 버튼
                     cell.likeButton.rx.tap
-                        .bind(with: self) { owner, _ in
+                        .flatMap {
+                            Network.shared.requestObservableConvertible(
+                                type: LikeRetrieveResponse.self,
+                                router: .like(
+                                    accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
+                                    postId: self.viewModel.postListDataSource[row]._id
+                                )
+                            )
+                        }
+                        .observe(on: MainScheduler.instance)
+                        .bind(with: self) { owner, result in
                             print("like button tap")
+                            switch result {
+                            case .success(let data):
+                                print(data)
+                                
+                                if data.likeStatus {
+                                    cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                                    cell.likeButton.tintColor = .red
+                                } else {
+                                    cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                                    cell.likeButton.tintColor = .black
+                                }
+                            case .failure(let error):
+                                print(error)
+                            }
                         }
                         .disposed(by: cell.disposeBag)
                     
@@ -103,9 +127,7 @@ final class PostListViewController: UIViewController {
                             owner.transition(viewController: vc, style: .presentNavigation)
                         }
                         .disposed(by: cell.disposeBag)
-                    
-                    
-                    
+
                 }
                 .disposed(by: disposeBag)
         
