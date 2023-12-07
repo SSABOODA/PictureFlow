@@ -10,8 +10,10 @@ import PhotosUI
 import RxSwift
 import RxCocoa
 
-struct PostCreateModel: Identifiable, Hashable {
-    let id = UUID()
+struct PostCreateModel: Hashable {
+    let _id: String
+    let content: String
+    let imageList: [String]
 }
 
 final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
@@ -24,10 +26,17 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
     let viewModel = PostWriteViewModel()
     
     private var dataSource: UICollectionViewDiffableDataSource<Section, PostCreateModel>!
-    var createList = [PostCreateModel()]
+    
+    var createList = [
+        PostCreateModel(
+            _id: "",
+            content: "", 
+            imageList: []
+        )
+    ]
     
     let disposeBag = DisposeBag()
-    
+
     override func loadView() {
         view = mainView
     }
@@ -35,18 +44,58 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        configureNavigationBar()
-        configureDataSource()
-        
         mainView.collectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
         
+        configureNavigationBar()
+        configureDataSource()
         bind()
+        configureView()
     }
     
-    func bind() {
-       
+    func configurePostData(completionHandler: ((Int) -> Void)? ) {
+        guard let post = self.viewModel.post else { return }
+        let postData = PostCreateModel(
+            _id: post._id,
+            content: post.content ?? "",
+            imageList: post.image
+        )
+        
+        createList.removeAll()
+        createList.append(postData)
+        
+        let group = DispatchGroup()
+        var postImageList = [UIImage]()
+        
+        
+        for imageString in post.image {
+            let urlString = "\(BaseURL.baseURL)/\(imageString)"
+            print("urlString: \(urlString)")
+            
+            group.enter()
+            urlString.downloadImage(urlString: urlString) { UIImage in
+                guard let image = UIImage else { return }
+                postImageList.append(image)
+                print("postImageList: \(postImageList)")
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            print("END")
+            print("✏️", postImageList)
+            self.viewModel.photoImageObservableList.onNext(postImageList)
+        }
+        
+    }
+ 
+    private func bind() {
+        
+    }
+    
+    private func configureView() {
+        
     }
 }
 
@@ -61,6 +110,9 @@ extension PostWriteViewController {
             
             print("cell registration")
             
+            cell.postContentTextField.text = itemIdentifier.content
+            
+            
             cell.addImageButton.rx.tap
                 .bind(with: self) { owner, _ in
                     owner.addImageButtonClicked()
@@ -73,12 +125,12 @@ extension PostWriteViewController {
             )
             
             let output = viewModel.transform(input: input)
+            
             output.photoImageObservableList
                 .bind(to: cell.collectionView.rx.items(
                     cellIdentifier: PostListCollectionViewCell.description(),
                     cellType: PostListCollectionViewCell.self)) { (row, element, innerCell) in
                         print("⭐️ rx element: \(element)")
-
                         innerCell.postImageView.image = element
                 }
                 .disposed(by: cell.disposeBag)
@@ -91,8 +143,6 @@ extension PostWriteViewController {
                     }
                 }
                 .disposed(by: cell.disposeBag)
-            
-
         }
         
         dataSource = UICollectionViewDiffableDataSource(
@@ -100,17 +150,16 @@ extension PostWriteViewController {
             cellProvider: { collectionView, indexPath, itemIdentifier in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
         })
+        
         self.performSnapshot()
     }
     
-    private func performSnapshot() {
+    func performSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, PostCreateModel>()
         snapshot.appendSections([.main])
         snapshot.appendItems(createList)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
-    
-    
 }
 
 // PHPickerViewControllerDelegate

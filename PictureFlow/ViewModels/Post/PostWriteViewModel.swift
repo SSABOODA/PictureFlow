@@ -23,6 +23,8 @@ final class PostWriteViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
+    var post: PostList?
+    
     var postWriteRequestModel = PostWriteRequest(
         title: "",
         content: "",
@@ -56,7 +58,6 @@ final class PostWriteViewModel: ViewModelType {
                 content1: "test1",
                 content2: "test2"
             )
-
             owner.postWriteRequestObservable.onNext(model)
         }
         .disposed(by: disposeBag)

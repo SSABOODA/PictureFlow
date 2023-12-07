@@ -61,6 +61,30 @@ extension String {
                 options: [.requestModifier(self.imageDownloadRequest())]
             )
         }
+    }   
+}
+
+extension String {
+    func toImage() -> UIImage? {
+        if let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters){
+            return UIImage(data: data)
+        }
+        return nil
+    }
+    
+    func downloadImage(urlString : String, imageCompletionHandler: @escaping (UIImage?) -> Void) {
+        guard let url = URL.init(string: urlString) else { return }
+        
+        ImageDownloader.default.downloadImage(
+            with: url,
+            options: [.requestModifier(self.imageDownloadRequest())]) { result in
+                switch result {
+                case .success(let data):
+                    imageCompletionHandler(data.image)
+                case .failure:
+                    imageCompletionHandler(nil)
+                }
+            }
     }
 }
 

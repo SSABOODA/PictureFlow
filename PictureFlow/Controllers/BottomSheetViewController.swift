@@ -67,9 +67,9 @@ class BottomSheetViewController: UIViewController {
     
     var disposeBag = DisposeBag()
     var postId: String = ""
+    var post: PostList?
     var completion: ((Bool) -> Void)?
 
-    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -79,14 +79,20 @@ class BottomSheetViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         showBottomSheet()
     }
     
-    func bind() {
+    private func bind() {
         updateButton.rx.tap
             .bind(with: self) { owner, _ in
                 print("updateButton did tap")
+                let vc = PostWriteViewController()
+                vc.viewModel.post = owner.post
+                vc.configurePostData() {_ in 
+//                    if owner.post?.image.count ==
+                }
+//                vc.performSnapshot()
+                owner.transition(viewController: vc, style: .presentNavigation)
             }
             .disposed(by: disposeBag)
         
@@ -101,20 +107,22 @@ class BottomSheetViewController: UIViewController {
                     } _: {
                         print("삭제")
                         
-                        if !owner.postId.isEmpty {
-                            let token = KeyChain.read(key: APIConstants.accessToken) ?? ""
-                            
-                            Network.shared.requestConvertible(type: PostDeleteResponse.self, router: .postDelete(accessToken: token, postId: owner.postId)) { result in
-                                switch result {
-                                case .success(let data):
-                                    print(data)
-                                    owner.completion?(true)
-                                    owner.dismiss(animated: true)
-                                case .failure(let error):
-                                    print(error)
-                                }
+                        guard let post = owner.post else { return }
+                        guard let token = KeyChain.read(key: APIConstants.accessToken) else { return }
+
+                        Network.shared.requestConvertible(type: PostDeleteResponse.self, router: .postDelete(
+                            accessToken: token,
+                            postId: post._id)) { result in
+                            switch result {
+                            case .success(let data):
+                                print(data)
+                                owner.completion?(true)
+                                owner.dismiss(animated: true)
+                            case .failure(let error):
+                                print(error.localizedDescription)
                             }
                         }
+                        
                     }
             }
             .disposed(by: disposeBag)

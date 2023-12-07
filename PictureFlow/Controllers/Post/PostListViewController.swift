@@ -148,6 +148,7 @@ final class PostListViewController: UIViewController {
                                     owner.viewModel.updateDateSource()
                                 }
                             }
+                            bottomSheetVC.post = owner.viewModel.postListDataSource[row]
                             bottomSheetVC.postId = owner.viewModel.postListDataSource[row]._id
                             bottomSheetVC.modalPresentationStyle = .overFullScreen
                             self.present(bottomSheetVC, animated: false)
