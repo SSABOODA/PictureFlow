@@ -29,6 +29,7 @@ final class PostDetailView: UIView {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: EmptyCommentCollectionReusableHeaderView.description()
         )
+        collectionView.backgroundColor = UIColor(resource: .background)
         return collectionView
     }()
     

@@ -9,23 +9,25 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class PostUpdateViewModel: ViewModelType {
+final class PostUpdateViewModel: NewPostWriteViewModel {
+
     struct Input {
         let rightBarPostUpdateButtonTap: ControlEvent<Void>
         let postUpdateContentText: ControlProperty<String>
-        
+        let image: BehaviorSubject<[UIImage]>
     }
+
+
+//    struct Output {
+//        let photoImageObservableList: BehaviorSubject<[UIImage]>
+//        let postWriteRequestObservable: PublishSubject<PostUpdateRequest>
+//        let successPostCreate: BehaviorRelay<Bool>
+//    }
     
-    struct Output {
-        let photoImageObservableList: BehaviorSubject<[UIImage]>
-        let postWriteRequestObservable: PublishSubject<PostUpdateRequest>
-        let successPostCreate: BehaviorRelay<Bool>
-    }
-    
-    var disposeBag = DisposeBag()
+//    var disposeBag = DisposeBag()
     var post: PostList?
     
-    var postUpdateRequestModel = PostUpdateRequest(
+    var postUpdateRequestModel = PostWriteRequest(
         title: "",
         content: "",
         file: [UIImage](),
@@ -33,36 +35,35 @@ final class PostUpdateViewModel: ViewModelType {
         content2: ""
     )
     
-    var photoImageList = [UIImage]()
-    var photoImageObservableList = BehaviorSubject<[UIImage]>(value: [])
-    var postWriteRequestObservable = PublishSubject<PostUpdateRequest>()
-    var successPostCreate = BehaviorRelay(value: false)
+//    var photoImageList = [UIImage]()
+//    var photoImageObservableList = BehaviorSubject<[UIImage]>(value: [])
+//    var postWriteRequestObservable = PublishSubject<PostUpdateRequest>()
+//    var successPostCreate = BehaviorRelay(value: false)
     
     func transform(input: Input) -> Output {
-        
         Observable.combineLatest(
             input.postUpdateContentText,
-            photoImageObservableList
+            input.image
         )
-        .subscribe(with: self) { owner, postCreateData in
-            let model = PostUpdateRequest(
+        .subscribe(with: self) { owner, postUpdateData in
+            print("postUpdateData: \(postUpdateData)")
+            let model = PostWriteRequest(
                 title: "",
-                content: postCreateData.0,
-                file: postCreateData.1,
+                content: postUpdateData.0,
+                file: postUpdateData.1,
                 content1: "test1",
                 content2: "test2"
             )
             owner.postWriteRequestObservable.onNext(model)
         }
         .disposed(by: disposeBag)
-            
+        
         input.postUpdateContentText
             .subscribe(with: self) { owner, text in
                 owner.postUpdateRequestModel.content = text
             }
             .disposed(by: disposeBag)
-        
-        
+
         input.rightBarPostUpdateButtonTap
             .withLatestFrom(postWriteRequestObservable)
             .flatMap {
@@ -91,4 +92,58 @@ final class PostUpdateViewModel: ViewModelType {
             successPostCreate: successPostCreate
         )
     }
+    
+    
+    
+    
+//    override func transform(input: Input) -> Output {
+//        Observable.combineLatest(
+//            input.postContentText,
+//            photoImageObservableList
+//        )
+//        .subscribe(with: self) { owner, postUpdateData in
+//            let model = PostUpdateRequest(
+//                title: "",
+//                content: postUpdateData.0,
+//                file: postUpdateData.1,
+//                content1: "test1",
+//                content2: "test2"
+//            )
+//            owner.postWriteRequestObservable.onNext(model)
+//        }
+//        .disposed(by: disposeBag)
+            
+//        input.postUpdateContentText
+//            .subscribe(with: self) { owner, text in
+//                owner.postUpdateRequestModel.content = text
+//            }
+//            .disposed(by: disposeBag)
+//        
+//        input.rightBarPostUpdateButtonTap
+//            .withLatestFrom(postWriteRequestObservable)
+//            .flatMap {
+//                Network.shared.requestFormDataConvertible(
+//                    router: .postUpdate(
+//                        accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
+//                        postId: self.post?._id ?? "",
+//                        model: $0
+//                    )
+//                )
+//            }
+//            .subscribe(with: self) { owner, result in
+//                switch result {
+//                case .success(let data):
+//                    print(data)
+//                    owner.successPostCreate.accept(true)
+//                case .failure(let error):
+//                    print(error.message)
+//                }
+//            }
+//            .disposed(by: disposeBag)
+        
+//        return Output(
+//            photoImageObservableList: photoImageObservableList,
+//            postWriteRequestObservable: postWriteRequestObservable,
+//            successPostCreate: successPostCreate
+//        )
 }

@@ -22,19 +22,29 @@ final class PostUpdateViewController: NewPostWriteViewController {
 
     private func bind() {
         guard let rightBarPostUpdateButton = navigationItem.rightBarButtonItem else { return }
-        let input = PostUpdateViewModel.Input(
+
+//        let input = NewPostWriteViewModel.Input(
+//            postCreateButtonTap: rightBarPostUpdateButton.rx.tap,
+//            postContentText: self.mainView.postContentTextView.rx.text.orEmpty
+//        )
+//        let output = viewModel.transform(input: input)
+//        
+        let PostUpdateViewModelInput = PostUpdateViewModel.Input(
             rightBarPostUpdateButtonTap: rightBarPostUpdateButton.rx.tap,
-            postUpdateContentText: self.mainView.postContentTextView.rx.text.orEmpty
+            postUpdateContentText: self.mainView.postContentTextView.rx.text.orEmpty,
+            image: self.viewModel.photoImageObservableList
         )
+        let PostUpdateViewModelOutput = postUpdateViewModel.transform(input: PostUpdateViewModelInput)
         
-        let output = postUpdateViewModel.transform(input: input)
-        output.successPostCreate
+        PostUpdateViewModelOutput.successPostCreate
             .bind(with: self) { owner, isCreated in
                 if isCreated {
                     owner.dismiss(animated: true)
                 }
             }
             .disposed(by: disposeBag)
+        
+        
     }
     
     func configurePostData() {
@@ -87,13 +97,9 @@ final class PostUpdateViewController: NewPostWriteViewController {
             title: "수정",
             style: .plain,
             target: self,
-            action: #selector(postUpdateButtonTapped)
+            action: nil
         )
         navigationItem.rightBarButtonItem = postUpdateButton
         navigationItem.rightBarButtonItem?.tintColor = UIColor(resource: .tint)
-    }
-    
-    @objc func postUpdateButtonTapped() {
-        
     }
 }

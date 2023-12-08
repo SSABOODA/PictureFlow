@@ -395,9 +395,9 @@ extension NewPostWriteViewController: PHPickerViewControllerDelegate {
                 if itemProvider.canLoadObject(ofClass: UIImage.self) {
                     itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
                         guard let image = image as? UIImage else { return }
-                        print("🔥 image: \(image)")
                         DispatchQueue.main.async {
                             self?.viewModel.photoImageList.append(image)
+                            print("🔥 self?.viewModel.photoImageList: \(self?.viewModel.photoImageList)")
                             self?.viewModel.photoImageObservableList.onNext(self?.viewModel.photoImageList ?? [])
                         }
                     }

@@ -21,7 +21,7 @@ enum Router: URLRequestConvertible {
     // Post
     case post(accessToken: String, model: PostWriteRequest) // 게시글 작성
     case postList(accessToken: String, next: String? = "", limit: String? = "", product_id: String? = "") // 게시글 조회
-    case postUpdate(accessToken: String, postId: String, model: PostUpdateRequest)
+    case postUpdate(accessToken: String, postId: String, model: PostWriteRequest) // 게시글 수정
     case postDelete(accessToken: String, postId: String) // 게시글 삭제
     
     
