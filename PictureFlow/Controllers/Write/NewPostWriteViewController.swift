@@ -217,10 +217,12 @@ extension NewPostWriteView {
     }
 }
 
-///////////
-/* 분기점 */
-///////////
-class NewPostWriteViewModel: ViewModelType {
+
+/* 
+ ///////////  분기점 ///////////
+*/
+
+final class NewPostWriteViewModel: ViewModelType {
     struct Input {
         let postCreateButtonTap: ControlEvent<Void>
         let postContentText: ControlProperty<String>
@@ -228,18 +230,72 @@ class NewPostWriteViewModel: ViewModelType {
     
     struct Output {
         let photoImageObservableList: BehaviorSubject<[UIImage]>
+        let postWriteRequestObservable: PublishSubject<PostWriteRequest>
         let successPostCreate: BehaviorRelay<Bool>
     }
     
     var disposeBag = DisposeBag()
     
+    var postWriteRequestModel = PostWriteRequest(
+        title: "",
+        content: "",
+        file: [UIImage](),
+        content1: "",
+        content2: ""
+    )
+    
     var photoImageList = [UIImage]()
     var photoImageObservableList = BehaviorSubject<[UIImage]>(value: [])
+    var postWriteRequestObservable = PublishSubject<PostWriteRequest>()
     var successPostCreate = BehaviorRelay(value: false)
     
     func transform(input: Input) -> Output {
+        Observable.combineLatest(
+            input.postContentText,
+            photoImageObservableList
+        )
+        .subscribe(with: self) { owner, postCreateData in
+            let model = PostWriteRequest(
+                title: "",
+                content: postCreateData.0,
+                file: postCreateData.1,
+                content1: "test1",
+                content2: "test2"
+            )
+            owner.postWriteRequestObservable.onNext(model)
+        }
+        .disposed(by: disposeBag)
+            
+        input.postContentText
+            .subscribe(with: self) { owner, text in
+                owner.postWriteRequestModel.content = text
+            }
+            .disposed(by: disposeBag)
+        
+        input.postCreateButtonTap
+            .withLatestFrom(postWriteRequestObservable)
+            .flatMap {
+                Network.shared.requestFormDataConvertible(
+                    router: .post(
+                        accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
+                        model: $0
+                    )
+                )
+            }
+            .subscribe(with: self) { owner, result in
+                switch result {
+                case .success(let data):
+                    print("======", data)
+                    owner.successPostCreate.accept(true)
+                case .failure(let error):
+                    print("======", error)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         return Output(
-            photoImageObservableList: photoImageObservableList,
+            photoImageObservableList: photoImageObservableList, 
+            postWriteRequestObservable: postWriteRequestObservable,
             successPostCreate: successPostCreate
         )
     }
@@ -273,6 +329,7 @@ class NewPostWriteViewController: UIViewController {
             .disposed(by: disposeBag)
         
         guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
+        
         let input = NewPostWriteViewModel.Input(
             postCreateButtonTap: rightBarButton.rx.tap,
             postContentText: mainView.postContentTextView.rx.text.orEmpty
@@ -285,12 +342,7 @@ class NewPostWriteViewController: UIViewController {
                 let height = imageList.count == 0 ? 0 : 200
                 
                 self.mainView.collectionView.snp.updateConstraints { make in
-                    let a = make.height
                     make.height.equalTo(height)
-                }
-                
-                self.mainView.backView.snp.makeConstraints { make in
-                    
                 }
             }
             .disposed(by: disposeBag)
@@ -315,8 +367,7 @@ class NewPostWriteViewController: UIViewController {
         output.successPostCreate
             .bind(with: self) { owner, isCreated in
                 if isCreated {
-                    let vc = CustomTabBarController()
-                    owner.changeRootViewController(viewController: vc)
+                    owner.dismiss(animated: true)
                 }
             }
             .disposed(by: disposeBag)

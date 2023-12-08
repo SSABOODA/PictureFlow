@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+// @Deprecated
 final class PostWriteViewModel: ViewModelType {
     struct Input {
         let postCreateButtonTap: ControlEvent<Void>

@@ -44,9 +44,7 @@ final class PostUpdateViewController: PostWriteViewController {
         guard let rightBarPostUpdateButton = navigationItem.rightBarButtonItem else { return }
         let input = PostUpdateViewModel.Input(
             rightBarPostUpdateButtonTap: rightBarPostUpdateButton.rx.tap)
-        let output = postUpdateViewModel.transform(input: input)
-        
-        
+//        let output = postUpdateViewModel.transform(input: input)
         
     }
     
@@ -94,8 +92,9 @@ final class PostUpdateViewController: PostWriteViewController {
     }
 }
 
-/* 이동 */
 
+
+// @Deprecated
 struct PostCreateModel: Hashable {
     let _id: String
     let content: String
