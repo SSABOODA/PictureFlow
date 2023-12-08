@@ -55,6 +55,7 @@
 		F76EE9412B1452D8005C6106 /* PostWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9402B1452D8005C6106 /* PostWriteView.swift */; };
 		F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */; };
 		F7A375B32B22A2AA00810BD9 /* PostListBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */; };
+		F7A375EC2B22F7D500810BD9 /* NewPostWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */; };
 		F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */; };
 		F7B409412B075730006CD373 /* UserVerificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409402B075730006CD373 /* UserVerificationModel.swift */; };
 		F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409432B076F9D006CD373 /* UITabbarController.swift */; };
@@ -122,6 +123,7 @@
 		F76EE9402B1452D8005C6106 /* PostWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteView.swift; sourceTree = "<group>"; };
 		F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewModel.swift; sourceTree = "<group>"; };
 		F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListBottomSheetViewController.swift; sourceTree = "<group>"; };
+		F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostWriteViewController.swift; sourceTree = "<group>"; };
 		F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		F7B409402B075730006CD373 /* UserVerificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVerificationModel.swift; sourceTree = "<group>"; };
 		F7B409432B076F9D006CD373 /* UITabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabbarController.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 			isa = PBXGroup;
 			children = (
 				F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */,
+				F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */,
 			);
 			path = Write;
 			sourceTree = "<group>";
@@ -592,6 +595,7 @@
 				F7B4094D2B07715A006CD373 /* ProfileViewController.swift in Sources */,
 				F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */,
 				F7095A602B00C41000F0218B /* KeyChain.swift in Sources */,
+				F7A375EC2B22F7D500810BD9 /* NewPostWriteViewController.swift in Sources */,
 				F76EE92B2B10A293005C6106 /* PostDetailView.swift in Sources */,
 				F72C69092B1AF086007B1F8F /* CommentCreateViewController.swift in Sources */,
 				F7D6628A2B0DE7ED0039E40F /* PostDetailViewModel.swift in Sources */,

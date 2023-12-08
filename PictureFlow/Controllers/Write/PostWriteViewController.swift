@@ -10,13 +10,99 @@ import PhotosUI
 import RxSwift
 import RxCocoa
 
+final class PostUpdateViewModel: ViewModelType {
+    struct Input {
+        let rightBarPostUpdateButtonTap: ControlEvent<Void>
+//        let postUpdateContentText: postContentTextView.rx.text.orEmpty
+    }
+    
+    struct Output {
+        
+    }
+    
+    var disposeBag = DisposeBag()
+    var post: PostList?
+    
+    func transform(input: Input) -> Output {
+        return Output()
+    }
+}
+
+final class PostUpdateViewController: PostWriteViewController {
+    
+    var postUpdateViewModel = PostUpdateViewModel()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureNavigation()
+        bind()
+       
+    }
+    
+    private func bind() {
+        
+        guard let rightBarPostUpdateButton = navigationItem.rightBarButtonItem else { return }
+        let input = PostUpdateViewModel.Input(
+            rightBarPostUpdateButtonTap: rightBarPostUpdateButton.rx.tap)
+        let output = postUpdateViewModel.transform(input: input)
+        
+        
+        
+    }
+    
+    func configurePostData() {
+        guard let post = self.postUpdateViewModel.post else { return }
+        let postData = PostCreateModel(
+            _id: post._id,
+            content: post.content ?? "",
+            imageList: post.image
+        )
+        
+        createList.removeAll()
+        createList.append(postData)
+        
+        let group = DispatchGroup()
+        for imageString in post.image {
+            let urlString = "\(BaseURL.baseURL)/\(imageString)"
+            group.enter()
+            urlString.downloadImage(urlString: urlString) { [weak self] UIImage in
+                guard let image = UIImage else { return }
+                
+                self?.viewModel.photoImageList.append(image)
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            print("END")
+            print("✏️", self.viewModel.photoImageList)
+            self.viewModel.photoImageObservableList.onNext(self.viewModel.photoImageList)
+            self.performSnapshot()
+        }
+    }
+    
+    private func configureNavigation() {
+        navigationItem.title = "게시글 수정"
+        let postCreateButton = UIBarButtonItem(
+            title: "수정",
+            style: .plain,
+            target: self,
+            action: #selector(plusButtonClicked)
+        )
+        navigationItem.rightBarButtonItem = postCreateButton
+        navigationItem.rightBarButtonItem?.tintColor = UIColor(resource: .tint)
+    }
+}
+
+/* 이동 */
+
 struct PostCreateModel: Hashable {
     let _id: String
     let content: String
     let imageList: [String]
 }
 
-final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
+class PostWriteViewController: UIViewController, UIScrollViewDelegate {
     
     private enum Section: CaseIterable {
         case main
@@ -53,49 +139,9 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
         configureView()
     }
     
-    func configurePostData() {
-        guard let post = self.viewModel.post else { return }
-        let postData = PostCreateModel(
-            _id: post._id,
-            content: post.content ?? "",
-            imageList: post.image
-        )
-        
-        createList.removeAll()
-        createList.append(postData)
-        
-        let group = DispatchGroup()
-        var postImageList = [UIImage]()
-        
-        
-        for imageString in post.image {
-            let urlString = "\(BaseURL.baseURL)/\(imageString)"
-            print("urlString: \(urlString)")
-            
-            group.enter()
-            urlString.downloadImage(urlString: urlString) { UIImage in
-                guard let image = UIImage else { return }
-                postImageList.append(image)
-                print("postImageList: \(postImageList)")
-                group.leave()
-            }
-        }
-        
-        group.notify(queue: .main) {
-            print("END")
-            print("✏️", postImageList)
-            self.viewModel.photoImageObservableList.onNext(postImageList)
-        }
-        
-    }
- 
-    private func bind() {
-        
-    }
+    private func bind() {}
     
-    private func configureView() {
-        
-    }
+    private func configureView() {}
 }
 
 
@@ -105,14 +151,11 @@ extension PostWriteViewController {
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<PostWriteCollectionViewCell, PostCreateModel> { [weak self] cell, indexPath, itemIdentifier in
             
+            print("cell registration")
             cell.configureTextView()
 
             guard let self else { return }
             guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
-            
-            print("cell registration")
-            
-            
             
             if !itemIdentifier.content.isEmpty {
                 cell.postContentTextView.text = itemIdentifier.content
@@ -251,12 +294,9 @@ extension PostWriteViewController {
         // 셀 더하기
 //        self.createList.append(PostCreateModel())
 //        self.performSnapshot()
-        
-        // 게시글 작성 Create
-//        viewModel.postCreateRequest()
-        
-        
     }
-
 }
+
+
+
 

@@ -72,10 +72,13 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
         updateButton.rx.tap
             .bind(with: self) { owner, _ in
                 print("updateButton did tap")
-                let vc = PostWriteViewController()
-                vc.viewModel.post = owner.post
+                let vc = PostUpdateViewController()
+                vc.postUpdateViewModel.post = owner.post
                 vc.configurePostData()
-                owner.transition(viewController: vc, style: .presentNavigation)
+                owner.transition(
+                    viewController: vc,
+                    style: .presentNavigation
+                )
             }
             .disposed(by: disposeBag)
         

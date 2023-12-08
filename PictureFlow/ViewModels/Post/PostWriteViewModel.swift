@@ -22,7 +22,6 @@ final class PostWriteViewModel: ViewModelType {
     }
     
     var disposeBag = DisposeBag()
-    
     var post: PostList?
     
     var postWriteRequestModel = PostWriteRequest(

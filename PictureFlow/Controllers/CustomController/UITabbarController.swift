@@ -45,7 +45,8 @@ final class CustomTabBarController: UITabBarController, UITabBarControllerDelega
     private func configureViewController() {
         let PostListVC = UINavigationController(rootViewController: PostListViewController())
         let SearchVC = UINavigationController(rootViewController: SearchViewController())
-        let PostWriteVC = UINavigationController(rootViewController: PostWriteViewController())
+//        let PostWriteVC = UINavigationController(rootViewController: PostWriteViewController())
+        let PostWriteVC = UINavigationController(rootViewController: NewPostWriteViewController())
         let LikeVC = UINavigationController(rootViewController: LikeViewController())
         let ProfileVC = UINavigationController(rootViewController: ProfileViewController())
         
