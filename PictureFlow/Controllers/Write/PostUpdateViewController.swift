@@ -17,18 +17,11 @@ final class PostUpdateViewController: NewPostWriteViewController {
         super.viewDidLoad()
         configureNavigation()
         bind()
-        
     }
 
     private func bind() {
         guard let rightBarPostUpdateButton = navigationItem.rightBarButtonItem else { return }
 
-//        let input = NewPostWriteViewModel.Input(
-//            postCreateButtonTap: rightBarPostUpdateButton.rx.tap,
-//            postContentText: self.mainView.postContentTextView.rx.text.orEmpty
-//        )
-//        let output = viewModel.transform(input: input)
-//        
         let PostUpdateViewModelInput = PostUpdateViewModel.Input(
             rightBarPostUpdateButtonTap: rightBarPostUpdateButton.rx.tap,
             postUpdateContentText: self.mainView.postContentTextView.rx.text.orEmpty,
