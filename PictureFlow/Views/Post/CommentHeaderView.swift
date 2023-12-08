@@ -52,8 +52,8 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
             collectionViewLayout: createLayout()
         )
         collectionView.register(
-            PostListCollectionViewCell.self,
-            forCellWithReuseIdentifier: PostListCollectionViewCell.description()
+            BasePostListImageCollectionViewCell.self,
+            forCellWithReuseIdentifier: BasePostListImageCollectionViewCell.description()
         )
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor(resource: .background).withAlphaComponent(0)

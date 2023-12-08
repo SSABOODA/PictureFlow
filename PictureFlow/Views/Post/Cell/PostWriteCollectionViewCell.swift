@@ -96,8 +96,8 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
             collectionViewLayout: createLayout()
         )
         collectionView.register(
-            PostListCollectionViewCell.self,
-            forCellWithReuseIdentifier: PostListCollectionViewCell.description()
+            PostListImageCancelCollectionViewCell.self,
+            forCellWithReuseIdentifier: PostListImageCancelCollectionViewCell.description()
         )
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor(resource: .background).withAlphaComponent(0)
@@ -152,7 +152,6 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
         
-//        postContentTextField.backgroundColor = .orange
         postContentTextField.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
             make.leading.equalTo(nicknameLabel.snp.leading)
@@ -160,7 +159,6 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(100)
         }
         
-//        collectionView.backgroundColor = .red
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(postContentTextField.snp.bottom).offset(5)
             make.leading.equalToSuperview()

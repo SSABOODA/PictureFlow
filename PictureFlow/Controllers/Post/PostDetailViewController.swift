@@ -203,7 +203,7 @@ extension PostDetailViewController {
                 cell.collectionView.dataSource = nil
                 
                 Observable.just(elements.image)
-                    .bind(to: cell.collectionView.rx.items(cellIdentifier: PostListCollectionViewCell.description(), cellType: PostListCollectionViewCell.self)) { (row, element, cell) in
+                    .bind(to: cell.collectionView.rx.items(cellIdentifier: BasePostListImageCollectionViewCell.description(), cellType: BasePostListImageCollectionViewCell.self)) { (row, element, cell) in
                         let imageURL = "\(BaseURL.baseURL)/\(element)"
                         imageURL.loadImageByKingfisher(imageView: cell.postImageView)
                     }

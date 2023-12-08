@@ -8,16 +8,7 @@
 import UIKit
 import RxSwift
 
-final class PostListCollectionViewCell: UICollectionViewCell {
-    
-    let postImageView = {
-        let view = UIImageView()
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 15
-        view.contentMode = .scaleAspectFill
-        return view
-    }()
-    
+final class PostListImageCancelCollectionViewCell: BasePostListImageCollectionViewCell {
     let cancelButtonView = {
         let view = UIView()
         view.backgroundColor = .black.withAlphaComponent(0.5)
@@ -32,6 +23,45 @@ final class PostListCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureHierarchy()
+        configureLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        cancelButtonView.layer.cornerRadius = cancelButtonView.frame.width / 2
+    }
+    
+    private func configureHierarchy() {
+        postImageView.addSubview(cancelButtonView)
+        cancelButtonView.addSubview(cancelButton)
+    }
+    
+    private func configureLayout() {
+        cancelButtonView.snp.makeConstraints { make in
+            make.top.trailing.equalToSuperview().inset(10)
+            make.size.equalTo(25)
+        }
+        
+        cancelButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(5)
+        }
+    }
+}
+
+class BasePostListImageCollectionViewCell: UICollectionViewCell {
+    
+    let postImageView = {
+        let view = UIImageView()
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 15
+        view.contentMode = .scaleAspectFill
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+
     var disposeBag = DisposeBag()
 
     override init(frame: CGRect) {
@@ -44,11 +74,6 @@ final class PostListCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         disposeBag = DisposeBag()
         postImageView.image = nil
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        cancelButtonView.layer.cornerRadius = cancelButtonView.frame.width / 2
     }
     
     @objc func imageTapped() {
@@ -68,22 +93,12 @@ final class PostListCollectionViewCell: UICollectionViewCell {
     
     private func configureHierarchy() {
         contentView.addSubview(postImageView)
-        postImageView.addSubview(cancelButtonView)
-        cancelButtonView.addSubview(cancelButton)
+        
     }
     
     private func configureLayout() {
         postImageView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
-        }
-        
-        cancelButtonView.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview().inset(10)
-            make.size.equalTo(25)
-        }
-        
-        cancelButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(5)
         }
     }
     

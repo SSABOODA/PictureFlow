@@ -67,7 +67,7 @@
 		F7B409542B07958F006CD373 /* PostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409532B07958F006CD373 /* PostListView.swift */; };
 		F7B409572B08D8B7006CD373 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = F7B409562B08D8B7006CD373 /* RxDataSources */; };
 		F7B4095C2B09D9BC006CD373 /* PostListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4095B2B09D9BC006CD373 /* PostListTableViewCell.swift */; };
-		F7B4095E2B09DA33006CD373 /* PostListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4095D2B09DA33006CD373 /* PostListCollectionViewCell.swift */; };
+		F7B4095E2B09DA33006CD373 /* BasePostListImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4095D2B09DA33006CD373 /* BasePostListImageCollectionViewCell.swift */; };
 		F7C031D62B1F7A05002EAF19 /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C031D52B1F7A05002EAF19 /* UserProfileModel.swift */; };
 		F7C031D82B205631002EAF19 /* LikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C031D72B205631002EAF19 /* LikeModel.swift */; };
 		F7C032072B209F28002EAF19 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */; };
@@ -133,7 +133,7 @@
 		F7B409512B078DA8006CD373 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		F7B409532B07958F006CD373 /* PostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListView.swift; sourceTree = "<group>"; };
 		F7B4095B2B09D9BC006CD373 /* PostListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListTableViewCell.swift; sourceTree = "<group>"; };
-		F7B4095D2B09DA33006CD373 /* PostListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListCollectionViewCell.swift; sourceTree = "<group>"; };
+		F7B4095D2B09DA33006CD373 /* BasePostListImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePostListImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		F7C031D52B1F7A05002EAF19 /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
 		F7C031D72B205631002EAF19 /* LikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeModel.swift; sourceTree = "<group>"; };
 		F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -386,6 +386,14 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		F7A375EA2B22D6B600810BD9 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F7B4095D2B09DA33006CD373 /* BasePostListImageCollectionViewCell.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		F7B409422B075A84006CD373 /* CustomController */ = {
 			isa = PBXGroup;
 			children = (
@@ -438,8 +446,8 @@
 		F7B4095A2B09D998006CD373 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				F7A375EA2B22D6B600810BD9 /* Base */,
 				F7B4095B2B09D9BC006CD373 /* PostListTableViewCell.swift */,
-				F7B4095D2B09DA33006CD373 /* PostListCollectionViewCell.swift */,
 				F7D6628D2B0DEDA70039E40F /* CommentCollectionViewCell.swift */,
 				F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */,
 			);
@@ -591,7 +599,7 @@
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
 				F7B4095C2B09D9BC006CD373 /* PostListTableViewCell.swift in Sources */,
-				F7B4095E2B09DA33006CD373 /* PostListCollectionViewCell.swift in Sources */,
+				F7B4095E2B09DA33006CD373 /* BasePostListImageCollectionViewCell.swift in Sources */,
 				F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
 				F7095A882B02340600F0218B /* Extension+Date.swift in Sources */,

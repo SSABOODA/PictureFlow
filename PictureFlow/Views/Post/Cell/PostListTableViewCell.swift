@@ -60,8 +60,8 @@ final class PostListTableViewCell: UITableViewCell {
             collectionViewLayout: createLayout()
         )
         collectionView.register(
-            PostListCollectionViewCell.self,
-            forCellWithReuseIdentifier: PostListCollectionViewCell.description()
+            BasePostListImageCollectionViewCell.self,
+            forCellWithReuseIdentifier: BasePostListImageCollectionViewCell.description()
         )
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor(resource: .background).withAlphaComponent(0)
@@ -277,8 +277,8 @@ final class PostListTableViewCell: UITableViewCell {
         Observable.just(imageList)
             .bind(
                 to: collectionView.rx.items(
-                    cellIdentifier: PostListCollectionViewCell.description(),
-                    cellType: PostListCollectionViewCell.self)
+                    cellIdentifier: BasePostListImageCollectionViewCell.description(),
+                    cellType: BasePostListImageCollectionViewCell.self)
             ) { (row, element, cell) in
                 let imageURL = "\(BaseURL.baseURL)/\(element)"
                 imageURL.loadImageByKingfisher(imageView: cell.postImageView)

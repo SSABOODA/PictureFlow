@@ -129,10 +129,18 @@ extension PostWriteViewController {
             
             output.photoImageObservableList
                 .bind(to: cell.collectionView.rx.items(
-                    cellIdentifier: PostListCollectionViewCell.description(),
-                    cellType: PostListCollectionViewCell.self)) { (row, element, innerCell) in
+                    cellIdentifier: PostListImageCancelCollectionViewCell.description(),
+                    cellType: PostListImageCancelCollectionViewCell.self)) { (row, element, innerCell) in
                         print("⭐️ rx element: \(element)")
                         innerCell.postImageView.image = element
+                        innerCell.cancelButton.rx.tap
+                            .bind(with: self) { owner, _ in
+                                print("cancel button did tap")
+                                
+                                owner.viewModel.photoImageList.remove(at: row)
+                                owner.viewModel.photoImageObservableList.onNext(owner.viewModel.photoImageList)
+                            }
+                            .disposed(by: innerCell.disposeBag)
                 }
                 .disposed(by: cell.disposeBag)
             
