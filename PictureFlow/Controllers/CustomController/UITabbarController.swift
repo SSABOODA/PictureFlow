@@ -7,12 +7,11 @@
 
 import UIKit
 
-final class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
+final class CustomTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
-        
         self.delegate = self
     }
     
@@ -59,7 +58,7 @@ final class CustomTabBarController: UITabBarController, UITabBarControllerDelega
                 ProfileVC
             ], animated: true
         )
-        
+
         createTabBarItem(
             viewContoller: PostListVC,
             imageString: "home",
@@ -88,22 +87,43 @@ final class CustomTabBarController: UITabBarController, UITabBarControllerDelega
             imageString: "person",
             selectedImageString: "person-select"
         )
-        modalPresentationStyle = .fullScreen
+//        modalPresentationStyle = .fullScreen
+        
+        PostListVC.tabBarItem.tag = 0
+        SearchVC.tabBarItem.tag = 1
+        PostWriteVC.tabBarItem.tag = 2
+        LikeVC.tabBarItem.tag = 3
+        ProfileVC.tabBarItem.tag = 4
+
     }
 }
 
-extension UITabBarController {
+extension CustomTabBarController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if viewController.tabBarItem.tag == 2 {
+            
+            let vc = NewPostWriteViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            present(nav, animated: true)
+            return false
+        } else {
+            return true
+        }
+    }
+    
     func createTabBarItem(
         viewContoller: UIViewController,
         titleString: String? = nil,
         imageString: String,
         selectedImageString: String = ""
     ) {
+        
         viewContoller.tabBarItem = UITabBarItem(
             title: titleString,
             image: UIImage(named: imageString),
             selectedImage: UIImage(named: selectedImageString)
-            
         )
     }
 }
+
+
