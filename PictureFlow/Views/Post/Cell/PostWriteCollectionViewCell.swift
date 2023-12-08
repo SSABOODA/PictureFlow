@@ -42,7 +42,7 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    let postContentTextField = {
+    let postContentTextView = {
         let tf = UITextView()
         tf.text = "이야기를 시작해보세요..."
         tf.font = .systemFont(ofSize: 15)
@@ -110,6 +110,8 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         configureHierarchy()
         configureLayout()
+        
+        configureTextView()
     }
 
     @available(*, unavailable)
@@ -123,17 +125,37 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
     }
     
-    func configureHierarchy() {
+    func configureTextView() {
+        self.postContentTextView.becomeFirstResponder()
+        self.postContentTextView.rx.didBeginEditing
+            .bind(with: self) { owner, _ in
+                if (owner.postContentTextView.text) == "이야기를 시작해보세요..." {
+                    owner.postContentTextView.text = nil
+                    owner.postContentTextView.textColor = UIColor(resource: .text)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        self.postContentTextView.rx.didEndEditing
+            .bind(with: self) { owner, _ in
+                if (owner.postContentTextView.text) == nil || (owner.postContentTextView.text) == "" {
+                    owner.postContentTextView.text = "이야기를 시작해보세요..."
+                    owner.postContentTextView.textColor = .lightGray
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func configureHierarchy() {
         addSubview(profileImageView)
         addSubview(leftDividLineView)
         addSubview(nicknameLabel)
-        addSubview(postContentTextField)
+        addSubview(postContentTextView)
         addSubview(functionButtonStackView)
         addSubview(collectionView)
-
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(10)
             make.leading.equalTo(safeAreaLayoutGuide).inset(5)
@@ -152,7 +174,7 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
         
-        postContentTextField.snp.makeConstraints { make in
+        postContentTextView.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.trailing.equalTo(safeAreaLayoutGuide).offset(-5)
@@ -160,7 +182,7 @@ final class PostWriteCollectionViewCell: UICollectionViewCell {
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(postContentTextField.snp.bottom).offset(5)
+            make.top.equalTo(postContentTextView.snp.bottom).offset(5)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(200)

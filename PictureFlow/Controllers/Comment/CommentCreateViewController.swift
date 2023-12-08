@@ -27,6 +27,11 @@ final class CommentCreateViewController: UIViewController {
         bind()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        mainView.commentTextView.becomeFirstResponder()
+    }
+    
     private func bind() {
         guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
         

@@ -18,6 +18,7 @@ final class PostWriteView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = UIColor(resource: .background)
         configureHierarchy()
         configureLayout()
     }
@@ -38,6 +39,7 @@ final class PostWriteView: UIView {
     }
 }
 
+// collection layout
 extension PostWriteView {
     func createLayout() -> UICollectionViewLayout {
         let sectionProvider = { (sectionIndex: Int,

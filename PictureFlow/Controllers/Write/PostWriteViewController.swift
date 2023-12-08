@@ -43,7 +43,6 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         mainView.collectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
@@ -99,19 +98,24 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
     }
 }
 
+
 // configureDataSource
 extension PostWriteViewController {
     
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<PostWriteCollectionViewCell, PostCreateModel> { [weak self] cell, indexPath, itemIdentifier in
             
+            cell.configureTextView()
+
             guard let self else { return }
             guard let rightBarButton = navigationItem.rightBarButtonItem else { return }
             
             print("cell registration")
             
+            
+            
             if !itemIdentifier.content.isEmpty {
-                cell.postContentTextField.text = itemIdentifier.content
+                cell.postContentTextView.text = itemIdentifier.content
             }
             
             cell.addImageButton.rx.tap
@@ -122,7 +126,7 @@ extension PostWriteViewController {
             
             let input = PostWriteViewModel.Input(
                 postCreateButtonTap: rightBarButton.rx.tap,
-                postContentText: cell.postContentTextField.rx.text.orEmpty
+                postContentText: cell.postContentTextView.rx.text.orEmpty
             )
             
             let output = viewModel.transform(input: input)
