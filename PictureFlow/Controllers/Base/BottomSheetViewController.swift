@@ -8,9 +8,6 @@
 import UIKit
 import RxSwift
 
-final class CustomPostStatusModifyButton: UIButton {
-}
-
 class BottomSheetViewController: UIViewController {
     
     let bottomHeight: CGFloat = UIScreen.main.bounds.height * 0.25 //359
@@ -26,7 +23,7 @@ class BottomSheetViewController: UIViewController {
     }()
     
     // 바텀 시트 뷰
-    private let bottomSheetView: UIView = {
+    let bottomSheetView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(resource: .bottomSheet)
         view.layer.cornerRadius = 27
@@ -43,98 +40,49 @@ class BottomSheetViewController: UIViewController {
         return view
     }()
     
-    let updateButton = {
-        let button = UIButton()
-        button.setTitle("수정", for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
-        button.setTitleColor(UIColor(resource: .text), for: .normal)
-        button.backgroundColor = UIColor(resource: .postStatusModify)
-        button.layer.cornerRadius = 20
-        button.clipsToBounds = true
-        return button
-    }()
-    
-    let deleteButton = {
-        let button = UIButton()
-        button.setTitle("삭제", for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
-        button.setTitleColor(.red, for: .normal)
-        button.backgroundColor = UIColor(resource: .postStatusModify)
-        button.layer.cornerRadius = 20
-        button.clipsToBounds = true
-        return button
-    }()
-    
-    var disposeBag = DisposeBag()
-    var postId: String = ""
-    var post: PostList?
-    var completion: ((Bool) -> Void)?
+//    let updateButton = {
+//        let button = UIButton()
+//        button.setTitle("수정", for: .normal)
+//        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+//        button.setTitleColor(UIColor(resource: .text), for: .normal)
+//        button.backgroundColor = UIColor(resource: .postStatusModify)
+//        button.layer.cornerRadius = 20
+//        button.clipsToBounds = true
+//        return button
+//    }()
+//    
+//    let deleteButton = {
+//        let button = UIButton()
+//        button.setTitle("삭제", for: .normal)
+//        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+//        button.setTitleColor(.red, for: .normal)
+//        button.backgroundColor = UIColor(resource: .postStatusModify)
+//        button.layer.cornerRadius = 20
+//        button.clipsToBounds = true
+//        return button
+//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupGestureRecognizer()
-        bind()
+//        bind()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showBottomSheet()
     }
     
-    private func bind() {
-        updateButton.rx.tap
-            .bind(with: self) { owner, _ in
-                print("updateButton did tap")
-                let vc = PostWriteViewController()
-                vc.viewModel.post = owner.post
-                vc.configurePostData() {_ in 
-//                    if owner.post?.image.count ==
-                }
-//                vc.performSnapshot()
-                owner.transition(viewController: vc, style: .presentNavigation)
-            }
-            .disposed(by: disposeBag)
-        
-        deleteButton.rx.tap
-            .bind(with: self) { owner, _ in
-                print("deleteButton did tap")
-                
-                owner.showAlertAction2(
-                    title: "게시물을 삭제하시겠어요?",
-                    message: "게시물을 삭제하면 복원할 수 없습니다.", cancelTitle: "취소", completeTitle: "삭제") {
-                        
-                    } _: {
-                        print("삭제")
-                        
-                        guard let post = owner.post else { return }
-                        guard let token = KeyChain.read(key: APIConstants.accessToken) else { return }
-
-                        Network.shared.requestConvertible(type: PostDeleteResponse.self, router: .postDelete(
-                            accessToken: token,
-                            postId: post._id)) { result in
-                            switch result {
-                            case .success(let data):
-                                print(data)
-                                owner.completion?(true)
-                                owner.dismiss(animated: true)
-                            case .failure(let error):
-                                print(error.localizedDescription)
-                            }
-                        }
-                        
-                    }
-            }
-            .disposed(by: disposeBag)
-    }
+    
 
     private func setupUI() {
         view.addSubview(dimmedBackView)
         view.addSubview(bottomSheetView)
         view.addSubview(dismissIndicatorView)
         
-        bottomSheetView.addSubview(updateButton)
-        bottomSheetView.addSubview(deleteButton)
+//        bottomSheetView.addSubview(updateButton)
+//        bottomSheetView.addSubview(deleteButton)
         
         dimmedBackView.alpha = 0.0
         setupLayout()
@@ -181,19 +129,19 @@ class BottomSheetViewController: UIViewController {
             dismissIndicatorView.centerXAnchor.constraint(equalTo: bottomSheetView.centerXAnchor)
         ])
         
-        updateButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(45)
-            make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.85)
-            make.height.equalToSuperview().multipliedBy(0.25)
-        }
-        
-        deleteButton.snp.makeConstraints { make in
-            make.top.equalTo(updateButton.snp.bottom).offset(10)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(updateButton.snp.width)
-            make.height.equalTo(updateButton.snp.height)
-        }
+//        updateButton.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(45)
+//            make.centerX.equalToSuperview()
+//            make.width.equalToSuperview().multipliedBy(0.85)
+//            make.height.equalToSuperview().multipliedBy(0.25)
+//        }
+//        
+//        deleteButton.snp.makeConstraints { make in
+//            make.top.equalTo(updateButton.snp.bottom).offset(10)
+//            make.centerX.equalToSuperview()
+//            make.width.equalTo(updateButton.snp.width)
+//            make.height.equalTo(updateButton.snp.height)
+//        }
     }
     
     // 바텀 시트 표출 애니메이션

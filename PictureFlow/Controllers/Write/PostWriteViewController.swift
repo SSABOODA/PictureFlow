@@ -54,7 +54,7 @@ final class PostWriteViewController: UIViewController, UIScrollViewDelegate {
         configureView()
     }
     
-    func configurePostData(completionHandler: ((Int) -> Void)? ) {
+    func configurePostData() {
         guard let post = self.viewModel.post else { return }
         let postData = PostCreateModel(
             _id: post._id,
@@ -110,8 +110,9 @@ extension PostWriteViewController {
             
             print("cell registration")
             
-            cell.postContentTextField.text = itemIdentifier.content
-            
+            if !itemIdentifier.content.isEmpty {
+                cell.postContentTextField.text = itemIdentifier.content
+            }
             
             cell.addImageButton.rx.tap
                 .bind(with: self) { owner, _ in

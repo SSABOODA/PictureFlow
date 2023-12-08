@@ -145,7 +145,6 @@ final class PostListTableViewCell: UITableViewCell {
         selectionStyle = .none
         configureHierarchy()
         configureLayout()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -276,7 +275,11 @@ final class PostListTableViewCell: UITableViewCell {
     
     private func configureCollectionView(with imageList: [String]) {
         Observable.just(imageList)
-            .bind(to: collectionView.rx.items(cellIdentifier: PostListCollectionViewCell.description(), cellType: PostListCollectionViewCell.self)) { (row, element, cell) in
+            .bind(
+                to: collectionView.rx.items(
+                    cellIdentifier: PostListCollectionViewCell.description(),
+                    cellType: PostListCollectionViewCell.self)
+            ) { (row, element, cell) in
                 let imageURL = "\(BaseURL.baseURL)/\(element)"
                 imageURL.loadImageByKingfisher(imageView: cell.postImageView)
             }

@@ -142,7 +142,7 @@ final class PostListViewController: UIViewController {
                         .observe(on: MainScheduler.instance)
                         .bind(with: self) { owner, _ in
                             print("more button did tap")
-                            let bottomSheetVC = BottomSheetViewController()
+                            let bottomSheetVC = PostListBottomSheetViewController()
                             bottomSheetVC.completion = { isDeleted in
                                 if isDeleted {
                                     owner.viewModel.updateDateSource()
@@ -204,5 +204,3 @@ final class PostListViewController: UIViewController {
     }
 }
 
-extension PostListViewController: UITableViewDelegate {
-}

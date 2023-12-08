@@ -54,6 +54,7 @@
 		F76EE9312B11DA27005C6106 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9302B11DA27005C6106 /* ProfileImageView.swift */; };
 		F76EE9412B1452D8005C6106 /* PostWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9402B1452D8005C6106 /* PostWriteView.swift */; };
 		F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */; };
+		F7A375B32B22A2AA00810BD9 /* PostListBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */; };
 		F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */; };
 		F7B409412B075730006CD373 /* UserVerificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409402B075730006CD373 /* UserVerificationModel.swift */; };
 		F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409432B076F9D006CD373 /* UITabbarController.swift */; };
@@ -120,6 +121,7 @@
 		F76EE9302B11DA27005C6106 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		F76EE9402B1452D8005C6106 /* PostWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteView.swift; sourceTree = "<group>"; };
 		F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewModel.swift; sourceTree = "<group>"; };
+		F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListBottomSheetViewController.swift; sourceTree = "<group>"; };
 		F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		F7B409402B075730006CD373 /* UserVerificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVerificationModel.swift; sourceTree = "<group>"; };
 		F7B409432B076F9D006CD373 /* UITabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabbarController.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 		F7095A112AFE1D2B00F0218B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F7A375B12B22A18200810BD9 /* Base */,
 				F72C69072B1AF077007B1F8F /* Comment */,
 				F7095A892B0239A600F0218B /* Post */,
 				F7D662852B0DC2E20039E40F /* Like */,
@@ -217,7 +220,6 @@
 				F7D662822B0DC2B10039E40F /* Search */,
 				F7B409422B075A84006CD373 /* CustomController */,
 				F7095A262AFE3D2600F0218B /* Sign */,
-				F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -373,6 +375,15 @@
 				F72C690E2B1C3EC9007B1F8F /* CommentCreateViewModel.swift */,
 			);
 			path = Comment;
+			sourceTree = "<group>";
+		};
+		F7A375B12B22A18200810BD9 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */,
+				F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		F7B409422B075A84006CD373 /* CustomController */ = {
@@ -618,6 +629,7 @@
 				F7B409502B078CE2006CD373 /* PostListViewModel.swift in Sources */,
 				F76EE9312B11DA27005C6106 /* ProfileImageView.swift in Sources */,
 				F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */,
+				F7A375B32B22A2AA00810BD9 /* PostListBottomSheetViewController.swift in Sources */,
 				F7B409542B07958F006CD373 /* PostListView.swift in Sources */,
 				F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */,
 			);
