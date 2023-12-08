@@ -5,7 +5,7 @@
 //  Created by 한성봉 on 11/11/23.
 //
 
-import Foundation
+import UIKit
 import Alamofire
 
 enum Router: URLRequestConvertible {
@@ -20,13 +20,10 @@ enum Router: URLRequestConvertible {
     
     // Post
     case post(accessToken: String, model: PostWriteRequest) // 게시글 작성
-    case postList(
-        accessToken: String,
-        next: String? = "",
-        limit: String? = "",
-        product_id: String? = ""
-    ) // 게시글 조회
+    case postList(accessToken: String, next: String? = "", limit: String? = "", product_id: String? = "") // 게시글 조회
+    case postUpdate(accessToken: String, postId: String, model: PostUpdateRequest)
     case postDelete(accessToken: String, postId: String) // 게시글 삭제
+    
     
     // Comment
     case commentCreate(postId: String, accessToken: String, model: CommentCreateRequest) // 댓글 작성
@@ -55,6 +52,7 @@ enum Router: URLRequestConvertible {
         // post
         case .post: return "post"
         case .postList: return "post"
+        case .postUpdate(_, let postId, _): return "post/\(postId)"
         case .postDelete(_, let postId): return "post/\(postId)"
             
         // comment
@@ -96,6 +94,9 @@ enum Router: URLRequestConvertible {
         case .postList(let accessToken, _, _, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+        case .postUpdate(let accessToken, _, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
         case .postDelete(let accessToken, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
@@ -130,6 +131,7 @@ enum Router: URLRequestConvertible {
         // post
         case .post: return .post
         case .postList: return .get
+        case .postUpdate: return .put
         case .postDelete: return .delete
             
         // comment
@@ -174,6 +176,7 @@ enum Router: URLRequestConvertible {
                 "limit": limit ?? "",
                 "product_id": product_id ?? "",
             ]
+        case .postUpdate: return nil
         case .postDelete: return nil
         
         // like
@@ -213,54 +216,93 @@ extension Router {
     var multipart: MultipartFormData {
         switch self {
         case .post(_, let model):
-            let multipartFormData = MultipartFormData()
-//            print("multipart model: \(model)")
-            
-            multipartFormData.append(Data(model.title.utf8), withName: "title")
-            multipartFormData.append(Data(model.productId.utf8), withName: "product_id")
-            multipartFormData.append(Data(model.content.utf8), withName: "content")
-            multipartFormData.append(Data(model.content1.utf8), withName: "content1")
-            multipartFormData.append(Data(model.content2.utf8), withName: "content2")
-            multipartFormData.append(Data(model.content3.utf8), withName: "content3")
-            multipartFormData.append(Data(model.content4.utf8), withName: "content4")
-            multipartFormData.append(Data(model.content5.utf8), withName: "content5")
-            
-            for image in model.file {
-                print("multipart image: \(image)")
-                multipartFormData.append(image.jpegData(compressionQuality: 0.1) ?? Data(),
-                                         withName: "file",
-                                         fileName: "image.jpeg",
-                                         mimeType: "image/jpeg")
-            }
-            return multipartFormData
+            let params: [String: Any] = [
+                "title": model.title,
+                "product_id": model.productId,
+                "content": model.content,
+                "content1": model.content1,
+                "content2": model.content2,
+                "content3": model.content3,
+                "content4": model.content4,
+                "content5": model.content5,
+                "file": model.file
+            ]
+            return makeMultipartFormdata(params: params)
+        case .postUpdate(_, _, let model):
+            let params: [String: Any] = [
+                "title": model.title,
+                "product_id": model.productId,
+                "content": model.content,
+                "content1": model.content1,
+                "content2": model.content2,
+                "content3": model.content3,
+                "content4": model.content4,
+                "content5": model.content5,
+                "file": model.file
+            ]
+            return makeMultipartFormdata(params: params)
         default: return MultipartFormData()
         }
     }
+    
+    func makeMultipartFormdata(params: [String:Any]) -> MultipartFormData {
+        
+        let multipartFormData = MultipartFormData()
+        
+        for (key, value) in params {
+            if let temp = value as? String {
+                multipartFormData.append(temp.data(using: .utf8)!, withName: key)
+            }
+            if let temp = value as? Int {
+                multipartFormData.append("\(temp)".data(using: .utf8)!, withName: key)
+            }
+            if let temp = value as? NSArray {
+                temp.forEach({ element in
+                    let keyObj = key + "[]"
+                    if let string = element as? String {
+                        multipartFormData.append(string.data(using: .utf8)!, withName: keyObj)
+                    } else
+                    if let num = element as? Int {
+                        let value = "\(num)"
+                        multipartFormData.append(value.data(using: .utf8)!, withName: keyObj)
+                    }
+                })
+            }
+            
+            if let temp = value as? [UIImage] {
+                for image in temp {
+                    print("multipart image: \(image)")
+                    multipartFormData.append(image.jpegData(compressionQuality: 0.1) ?? Data(),
+                                             withName: "file",
+                                             fileName: "image.jpeg",
+                                             mimeType: "image/jpeg")
+                }
+            }
+        }
+        
+        return multipartFormData
+    }
 }
 
+
 /*
- for (key, value) in params {
-     if let temp = value as? String {
-         multiPart.append(temp.data(using: .utf8)!, withName: key)
-     }
-     if let temp = value as? Int {
-         multiPart.append("\(temp)".data(using: .utf8)!, withName: key)
-     }
-     if let temp = value as? NSArray {
-         temp.forEach({ element in
-             let keyObj = key + "[]"
-             if let string = element as? String {
-                 multiPart.append(string.data(using: .utf8)!, withName: keyObj)
-             } else
-             if let num = element as? Int {
-                 let value = "\(num)"
-                 multiPart.append(value.data(using: .utf8)!, withName: keyObj)
-             }
-         })
-     }
- }
- multiPart.append(image, withName: "newsletter_image", fileName: "\(self.tfTitle.text ?? "")_logo.png", mimeType: "image/jpeg")
-
-  */
-
-
+ //            let multipartFormData = MultipartFormData()
+ //
+ //            multipartFormData.append(Data(model.title.utf8), withName: "title")
+ //            multipartFormData.append(Data(model.productId.utf8), withName: "product_id")
+ //            multipartFormData.append(Data(model.content.utf8), withName: "content")
+ //            multipartFormData.append(Data(model.content1.utf8), withName: "content1")
+ //            multipartFormData.append(Data(model.content2.utf8), withName: "content2")
+ //            multipartFormData.append(Data(model.content3.utf8), withName: "content3")
+ //            multipartFormData.append(Data(model.content4.utf8), withName: "content4")
+ //            multipartFormData.append(Data(model.content5.utf8), withName: "content5")
+ //
+ //            for image in model.file {
+ //                print("multipart image: \(image)")
+ //                multipartFormData.append(image.jpegData(compressionQuality: 0.1) ?? Data(),
+ //                                         withName: "file",
+ //                                         fileName: "image.jpeg",
+ //                                         mimeType: "image/jpeg")
+ //            }
+ //            return multipartFormData
+ */

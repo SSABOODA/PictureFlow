@@ -131,6 +131,41 @@ struct PostWriteResponse: Decodable {
     }
 }
 
+/*
+ 게시글 수정
+ */
+
+struct PostUpdateRequest {
+    var title: String
+    var content: String
+    var file: [UIImage] = []
+    var productId: String = "picture_flow"
+    var content1: String = ""
+    var content2: String = ""
+    var content3: String = ""
+    var content4: String = ""
+    var content5: String = ""
+}
+
+struct PostUpdateResponse: Decodable {
+    let _id: String
+    let likes: [String]
+    let image: [String]
+    let title: String?
+    let content: String?
+    let time: String
+    let productID: String?
+    let creator: Creator
+    let comments: [Comments]
+    
+    enum CodingKeys: String, CodingKey {
+        case _id, time, likes, image, title, content
+        case productID = "product_id"
+        case creator
+        case comments
+    }
+}
+
 
 /*
  게시글 삭제

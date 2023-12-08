@@ -56,6 +56,8 @@
 		F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */; };
 		F7A375B32B22A2AA00810BD9 /* PostListBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */; };
 		F7A375EC2B22F7D500810BD9 /* NewPostWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */; };
+		F7A375EE2B23411800810BD9 /* PostUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375ED2B23411800810BD9 /* PostUpdateViewController.swift */; };
+		F7A375F02B23427700810BD9 /* PostUpdateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375EF2B23427700810BD9 /* PostUpdateViewModel.swift */; };
 		F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */; };
 		F7B409412B075730006CD373 /* UserVerificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409402B075730006CD373 /* UserVerificationModel.swift */; };
 		F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B409432B076F9D006CD373 /* UITabbarController.swift */; };
@@ -124,6 +126,8 @@
 		F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewModel.swift; sourceTree = "<group>"; };
 		F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListBottomSheetViewController.swift; sourceTree = "<group>"; };
 		F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostWriteViewController.swift; sourceTree = "<group>"; };
+		F7A375ED2B23411800810BD9 /* PostUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUpdateViewController.swift; sourceTree = "<group>"; };
+		F7A375EF2B23427700810BD9 /* PostUpdateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUpdateViewModel.swift; sourceTree = "<group>"; };
 		F7B4093A2B0633EB006CD373 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		F7B409402B075730006CD373 /* UserVerificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVerificationModel.swift; sourceTree = "<group>"; };
 		F7B409432B076F9D006CD373 /* UITabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabbarController.swift; sourceTree = "<group>"; };
@@ -419,6 +423,7 @@
 				F7B4094F2B078CE2006CD373 /* PostListViewModel.swift */,
 				F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */,
 				F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */,
+				F7A375EF2B23427700810BD9 /* PostUpdateViewModel.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -477,6 +482,7 @@
 			children = (
 				F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */,
 				F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */,
+				F7A375ED2B23411800810BD9 /* PostUpdateViewController.swift */,
 			);
 			path = Write;
 			sourceTree = "<group>";
@@ -613,7 +619,9 @@
 				F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */,
 				F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
+				F7A375F02B23427700810BD9 /* PostUpdateViewModel.swift in Sources */,
 				F72C69062B1AEDB5007B1F8F /* Color.swift in Sources */,
+				F7A375EE2B23411800810BD9 /* PostUpdateViewController.swift in Sources */,
 				F7C031D62B1F7A05002EAF19 /* UserProfileModel.swift in Sources */,
 				F72C69042B1AED98007B1F8F /* Extension+UIColor.swift in Sources */,
 				F7095A2A2AFE3DE600F0218B /* Extension+UIViewController.swift in Sources */,

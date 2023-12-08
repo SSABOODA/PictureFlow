@@ -200,10 +200,11 @@ final class PostListTableViewCell: UITableViewCell {
             make.centerY.equalTo(nicknameLabel.snp.centerY)
             make.trailing.equalTo(moreInfoButton.snp.leading).offset(-10)
         }
-        
+
         moreInfoButton.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.top)
             make.trailing.equalToSuperview().offset(-15)
+            make.size.equalTo(25)
         }
         
         contentLabel.snp.makeConstraints { make in

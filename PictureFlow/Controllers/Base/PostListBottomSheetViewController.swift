@@ -75,10 +75,7 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
                 let vc = PostUpdateViewController()
                 vc.postUpdateViewModel.post = owner.post
                 vc.configurePostData()
-                owner.transition(
-                    viewController: vc,
-                    style: .presentNavigation
-                )
+                owner.transition(viewController: vc, style: .presentNavigation)
             }
             .disposed(by: disposeBag)
         

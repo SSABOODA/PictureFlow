@@ -32,10 +32,10 @@ final class CustomTabBarController: UITabBarController {
             shadowView.layer.cornerRadius = tabBar.layer.cornerRadius
             shadowView.layer.maskedCorners = tabBar.layer.maskedCorners
             shadowView.layer.masksToBounds = false
-            shadowView.layer.shadowColor = UIColor.black.cgColor
-            shadowView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-            shadowView.layer.shadowOpacity = 0.1
-            shadowView.layer.shadowRadius = 1
+//            shadowView.layer.shadowColor = UIColor.black.cgColor
+//            shadowView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+//            shadowView.layer.shadowOpacity = 0.1
+//            shadowView.layer.shadowRadius = 1
             view.addSubview(shadowView)
             view.bringSubviewToFront(tabBar)
         }
@@ -44,7 +44,6 @@ final class CustomTabBarController: UITabBarController {
     private func configureViewController() {
         let PostListVC = UINavigationController(rootViewController: PostListViewController())
         let SearchVC = UINavigationController(rootViewController: SearchViewController())
-//        let PostWriteVC = UINavigationController(rootViewController: PostWriteViewController())
         let PostWriteVC = UINavigationController(rootViewController: NewPostWriteViewController())
         let LikeVC = UINavigationController(rootViewController: LikeViewController())
         let ProfileVC = UINavigationController(rootViewController: ProfileViewController())
@@ -59,42 +58,17 @@ final class CustomTabBarController: UITabBarController {
             ], animated: true
         )
 
-        createTabBarItem(
-            viewContoller: PostListVC,
-            imageString: "home",
-            selectedImageString: "home-select"
-        )
-        
-        createTabBarItem(
-            viewContoller: SearchVC,
-            imageString: "search",
-            selectedImageString: "search-select"
-        )
-        
-        createTabBarItem(
-            viewContoller: PostWriteVC,
-            imageString: "post"
-        )
-        
-        createTabBarItem(
-            viewContoller: LikeVC,
-            imageString: "heart",
-            selectedImageString: "heart-select"
-        )
-        
-        createTabBarItem(
-            viewContoller: ProfileVC,
-            imageString: "person",
-            selectedImageString: "person-select"
-        )
-//        modalPresentationStyle = .fullScreen
+        createTabBarItem(viewContoller: PostListVC, imageString: "home", selectedImageString: "home-select")
+        createTabBarItem(viewContoller: SearchVC, imageString: "search", selectedImageString: "search-select")
+        createTabBarItem(viewContoller: PostWriteVC, imageString: "post")
+        createTabBarItem(viewContoller: LikeVC, imageString: "heart", selectedImageString: "heart-select")
+        createTabBarItem(viewContoller: ProfileVC, imageString: "person", selectedImageString: "person-select")
         
         PostListVC.tabBarItem.tag = 0
         SearchVC.tabBarItem.tag = 1
         PostWriteVC.tabBarItem.tag = 2
         LikeVC.tabBarItem.tag = 3
         ProfileVC.tabBarItem.tag = 4
-
     }
 }
 

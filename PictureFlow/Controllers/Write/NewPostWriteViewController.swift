@@ -222,7 +222,7 @@ extension NewPostWriteView {
  ///////////  분기점 ///////////
 */
 
-final class NewPostWriteViewModel: ViewModelType {
+class NewPostWriteViewModel: ViewModelType {
     struct Input {
         let postCreateButtonTap: ControlEvent<Void>
         let postContentText: ControlProperty<String>
@@ -306,9 +306,7 @@ class NewPostWriteViewController: UIViewController {
     let mainView = NewPostWriteView()
     var viewModel = NewPostWriteViewModel()
     var disposeBag = DisposeBag()
-    
-    var backViewHeight: ConstraintMakerExtendable?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
@@ -412,7 +410,29 @@ extension NewPostWriteViewController: PHPickerViewControllerDelegate {
 
 // Configure TextView
 extension NewPostWriteViewController {
-    private func configureTextView() {
+    @objc func configureTextView() {
+        mainView.postContentTextView.rx.didBeginEditing
+            .bind(with: self) { owner, _ in
+                if (owner.mainView.postContentTextView.text) == "이야기를 시작해보세요..." {
+                    owner.mainView.postContentTextView.text = nil
+                    owner.mainView.postContentTextView.textColor = UIColor(resource: .text)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.postContentTextView.rx.didEndEditing
+            .bind(with: self) { owner, _ in
+                if (owner.mainView.postContentTextView.text) == nil ||  (owner.mainView.postContentTextView.text) == "" {
+                    owner.mainView.postContentTextView.text = "이야기를 시작해보세요..."
+                    owner.mainView.postContentTextView.textColor = .lightGray
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        textViewDynamicHeight()
+    }
+    
+    func textViewDynamicHeight() {
         mainView.postContentTextView.becomeFirstResponder()
         mainView.postContentTextView.rx.didChange
             .withLatestFrom(mainView.postContentTextView.rx.text)
@@ -432,25 +452,9 @@ extension NewPostWriteViewController {
                 }
             }
             .disposed(by: disposeBag)
-        
-        mainView.postContentTextView.rx.didBeginEditing
-            .bind(with: self) { owner, _ in
-                if (owner.mainView.postContentTextView.text) == "이야기를 시작해보세요..." {
-                    owner.mainView.postContentTextView.text = nil
-                    owner.mainView.postContentTextView.textColor = UIColor(resource: .text)
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        mainView.postContentTextView.rx.didEndEditing
-            .bind(with: self) { owner, _ in
-                if (owner.mainView.postContentTextView.text) == nil ||  (owner.mainView.postContentTextView.text) == "" {
-                    owner.mainView.postContentTextView.text = "이야기를 시작해보세요..."
-                    owner.mainView.postContentTextView.textColor = .lightGray
-                }
-            }
-            .disposed(by: disposeBag)
     }
+    
+    
 }
 
 // Navigation
@@ -485,16 +489,11 @@ extension NewPostWriteViewController {
         self.showAlertAction2(title: "게시글 작성을 취소하시겠습니까?") {
             print("")
         } _: {
-            let vc = CustomTabBarController()
-            self.changeRootViewController(viewController: vc)
+            self.dismiss(animated: true)
         }
     }
     
-    @objc func plusButtonClicked() {
-        // 셀 더하기
-//        self.createList.append(PostCreateModel())
-//        self.performSnapshot()
-    }
+    @objc func plusButtonClicked() { }
 }
 
 
