@@ -99,22 +99,19 @@ final class PostListViewController: UIViewController {
                         }
                         .observe(on: MainScheduler.instance)
                         .bind(with: self) { owner, result in
-                            print("like button tap")
                             switch result {
                             case .success(let data):
                                 
-                                if data.likeStatus {
-                                    cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                                    cell.likeButton.tintColor = .red
-                                    
-                                    likeCount += 1
-                                } else {
-                                    cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                                    cell.likeButton.tintColor = UIColor(resource: .tint)
-                                    
-                                    likeCount -= 1
-                                }
+                                owner.viewModel.postListDataSource[row].likes.append(UserDefaultsManager.userID)
+                                owner.viewModel.postListItem.onNext(                                owner.viewModel.postListDataSource)
+    
+                                let likeImageName = data.likeStatus ? "heart.fill" : "heart"
+                                let likeTintColor: UIColor = data.likeStatus ? .red : .tint
+                                cell.likeButton.setImage(UIImage(systemName: likeImageName), for: .normal)
+                                cell.likeButton.tintColor = likeTintColor
                                 cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
+                                data.likeStatus ? (likeCount += 1) : (likeCount -= 1)
+
                                 print("likeCount: \(likeCount)")
                             case .failure(let error):
                                 print(error)
@@ -128,7 +125,10 @@ final class PostListViewController: UIViewController {
                             print("comment button tap")
                             let vc = CommentCreateViewController()
                             vc.completionHandler = { _ in
-                                // TODO: 답글 수 올리기?
+                                // TODO: 답글 수 올리기
+                                
+                                let newCommetCount = element.comments.count + 1
+                                cell.commentCountButton.setTitle("\(newCommetCount) 답글", for: .normal)
                             }
                             let _id = owner.viewModel.postListDataSource[row]._id
                             vc.viewModel.postId = _id
@@ -158,24 +158,6 @@ final class PostListViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        mainView.tableView.rx.prefetchRows
-            .compactMap(\.last?.row)
-            .withUnretained(self)
-            .bind(with: self) { owner, rowSet in
-                let row = rowSet.1
-                guard row == owner.viewModel.postListDataSource.count - 1 else { return }
-                
-                let nextCursor = owner.viewModel.nextCursor
-                if nextCursor != "0" {
-                    owner.viewModel.prefetchData(next: nextCursor)
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        output.refreshLoading
-            .bind(to: mainView.refreshControl.rx.isRefreshing)
-            .disposed(by: disposeBag)
-        
         Observable.zip(
             mainView.tableView.rx.itemSelected,
             mainView.tableView.rx.modelSelected(PostList.self)
@@ -195,12 +177,35 @@ final class PostListViewController: UIViewController {
                 )
             }
             .subscribe(with: self) { owner, value in
-                print("clicked")
+                print("cell clicked")
+                print("value : \(value)")
                 let vc = PostDetailViewController()
                 vc.viewModel.postList = value
                 owner.transition(viewController: vc, style: .push)
             }
             .disposed(by: disposeBag)
+        
+        // pagination
+        mainView.tableView.rx.prefetchRows
+            .compactMap(\.last?.row)
+            .withUnretained(self)
+            .bind(with: self) { owner, rowSet in
+                let row = rowSet.1
+                guard row == owner.viewModel.postListDataSource.count - 1 else { return }
+                
+                let nextCursor = owner.viewModel.nextCursor
+                if nextCursor != "0" {
+                    owner.viewModel.prefetchData(next: nextCursor)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        // pull to refresh
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+        
+        
     }
 }
 

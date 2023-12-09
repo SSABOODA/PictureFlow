@@ -7,6 +7,7 @@
 
 import UIKit
 
+// @deprecated
 final class PostWriteView: UIView {
     lazy var collectionView = {
         let collectionView = UICollectionView(

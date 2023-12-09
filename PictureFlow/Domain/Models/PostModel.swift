@@ -65,7 +65,7 @@ struct PostListResponse: Decodable {
 
 struct PostList: Decodable {
     let _id: String
-    let likes: [String]
+    var likes: [String]
     let image: [String]
     let title: String?
     let content: String?
