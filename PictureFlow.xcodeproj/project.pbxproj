@@ -9,12 +9,10 @@
 /* Begin PBXBuildFile section */
 		F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70959F82AFE191900F0218B /* AppDelegate.swift */; };
 		F70959FB2AFE191900F0218B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70959FA2AFE191900F0218B /* SceneDelegate.swift */; };
-		F70959FD2AFE191900F0218B /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70959FC2AFE191900F0218B /* JoinViewController.swift */; };
 		F7095A022AFE191A00F0218B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7095A012AFE191A00F0218B /* Assets.xcassets */; };
 		F7095A052AFE191A00F0218B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7095A032AFE191A00F0218B /* LaunchScreen.storyboard */; };
 		F7095A0E2AFE1A0A00F0218B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F7095A0D2AFE1A0A00F0218B /* .gitignore */; };
 		F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A0F2AFE1A6600F0218B /* APIKey.swift */; };
-		F7095A142AFE374D00F0218B /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A132AFE374D00F0218B /* JoinView.swift */; };
 		F7095A172AFE37B200F0218B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7095A162AFE37B200F0218B /* SnapKit */; };
 		F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A192AFE3B0700F0218B /* JoinButton.swift */; };
 		F7095A232AFE3CC100F0218B /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7095A222AFE3CC100F0218B /* SignInViewController.swift */; };
@@ -84,13 +82,11 @@
 		F70959F52AFE191900F0218B /* PictureFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PictureFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F70959F82AFE191900F0218B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F70959FA2AFE191900F0218B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F70959FC2AFE191900F0218B /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
 		F7095A012AFE191A00F0218B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7095A042AFE191A00F0218B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F7095A062AFE191A00F0218B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7095A0D2AFE1A0A00F0218B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F7095A0F2AFE1A6600F0218B /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
-		F7095A132AFE374D00F0218B /* JoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinView.swift; sourceTree = "<group>"; };
 		F7095A192AFE3B0700F0218B /* JoinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinButton.swift; sourceTree = "<group>"; };
 		F7095A222AFE3CC100F0218B /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		F7095A242AFE3CFC00F0218B /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -255,7 +251,6 @@
 		F7095A262AFE3D2600F0218B /* Sign */ = {
 			isa = PBXGroup;
 			children = (
-				F70959FC2AFE191900F0218B /* JoinViewController.swift */,
 				F7095A242AFE3CFC00F0218B /* SignUpViewController.swift */,
 				F7095A222AFE3CC100F0218B /* SignInViewController.swift */,
 			);
@@ -431,7 +426,6 @@
 		F7B409582B09D980006CD373 /* Sign */ = {
 			isa = PBXGroup;
 			children = (
-				F7095A132AFE374D00F0218B /* JoinView.swift */,
 				F7095A302AFE513A00F0218B /* SignUpView.swift */,
 				F7095A322AFE514300F0218B /* SignInView.swift */,
 			);
@@ -595,7 +589,6 @@
 				F7B4094B2B07714F006CD373 /* LikeViewController.swift in Sources */,
 				F7095A662B00F82200F0218B /* APIConstants.swift in Sources */,
 				F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */,
-				F70959FD2AFE191900F0218B /* JoinViewController.swift in Sources */,
 				F72C69132B1C7148007B1F8F /* Extension+CALyer.swift in Sources */,
 				F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */,
 				F7B4094D2B07715A006CD373 /* ProfileViewController.swift in Sources */,
@@ -633,7 +626,6 @@
 				F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */,
 				F72C690F2B1C3EC9007B1F8F /* CommentCreateViewModel.swift in Sources */,
 				F7095A4A2AFF89A600F0218B /* Network.swift in Sources */,
-				F7095A142AFE374D00F0218B /* JoinView.swift in Sources */,
 				F7095A332AFE514300F0218B /* SignInView.swift in Sources */,
 				F7C031D82B205631002EAF19 /* LikeModel.swift in Sources */,
 				F7B409492B077146006CD373 /* PostDetailViewController.swift in Sources */,

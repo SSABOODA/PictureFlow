@@ -94,8 +94,9 @@ final class SignInViewController: UIViewController {
         // SignUpButton
         mainView.signUpButton.rx.tap
             .bind(with: self) { owner, _ in
+                print("signUpButton did tap")
                 let vc = SignUpViewController()
-                owner.transition(viewController: vc, style: .push)
+                owner.transition(viewController: vc, style: .present)
             }
             .disposed(by: disposeBag)
     }

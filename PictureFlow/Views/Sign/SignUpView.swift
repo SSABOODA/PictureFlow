@@ -14,6 +14,7 @@ final class SignUpView: UIView {
         let label = UILabel()
         label.text = "회원가입"
         label.font = .boldSystemFont(ofSize: 35)
+        label.textColor = UIColor(resource: .text)
         return label
     }()
     
@@ -24,6 +25,7 @@ final class SignUpView: UIView {
     
     let emailTextField = {
         let tf = LoginTextField(placeholderText: "이메일")
+        tf.textColor = UIColor(resource: .text)
         return tf
     }()
     
@@ -35,6 +37,7 @@ final class SignUpView: UIView {
     let passwordTextField = {
         let tf = LoginTextField(placeholderText: "비밀번호")
         tf.isSecureTextEntry = true
+        tf.textColor = UIColor(resource: .text)
         return tf
     }()
     
@@ -45,6 +48,7 @@ final class SignUpView: UIView {
     
     let nicknameTextField = {
         let tf = LoginTextField(placeholderText: "닉네임")
+        tf.textColor = UIColor(resource: .text)
         return tf
     }()
     
@@ -55,6 +59,8 @@ final class SignUpView: UIView {
     
     let phoneNumberTextField = {
         let tf = LoginTextField(placeholderText: "전화번호")
+        tf.keyboardType = .numberPad
+        tf.textColor = UIColor(resource: .text)
         return tf
     }()
     
@@ -72,6 +78,7 @@ final class SignUpView: UIView {
     
     let birthdayTextField = {
         let tf = LoginTextField(placeholderText: "생년월일")
+        tf.textColor = UIColor(resource: .text)
         return tf
     }()
     
@@ -87,7 +94,7 @@ final class SignUpView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = UIColor(resource: .background)
         configureHierarchy()
         configureDatePicker()
     }
@@ -186,7 +193,7 @@ final class SignUpView: UIView {
             make.top.equalTo(birthdayView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.9)
-            make.height.equalToSuperview().multipliedBy(0.06)
+            make.height.equalToSuperview().multipliedBy(0.065)
         }
         
     }
