@@ -101,17 +101,24 @@ final class PostListViewController: UIViewController {
                         .bind(with: self) { owner, result in
                             switch result {
                             case .success(let data):
-                                
-                                owner.viewModel.postListDataSource[row].likes.append(UserDefaultsManager.userID)
-                                owner.viewModel.postListItem.onNext(                                owner.viewModel.postListDataSource)
-    
-                                let likeImageName = data.likeStatus ? "heart.fill" : "heart"
-                                let likeTintColor: UIColor = data.likeStatus ? .red : .tint
-                                cell.likeButton.setImage(UIImage(systemName: likeImageName), for: .normal)
-                                cell.likeButton.tintColor = likeTintColor
-                                cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
-                                data.likeStatus ? (likeCount += 1) : (likeCount -= 1)
+                                print("like network data: \(data)")
 
+                                if data.likeStatus {
+                                    owner.viewModel.postListDataSource[row].likes.append(UserDefaultsManager.userID)
+                                    cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                                    cell.likeButton.tintColor = .red
+                                    likeCount += 1
+                                } else {
+                                    if let index = owner.viewModel.postListDataSource[row].likes.firstIndex(of: UserDefaultsManager.userID) {
+                                        owner.viewModel.postListDataSource[row].likes.remove(at: index)
+                                    }
+                                    
+                                    cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                                    cell.likeButton.tintColor = UIColor(resource: .tint)
+                                    likeCount -= 1
+                                }
+                                owner.viewModel.postListItem.onNext(owner.viewModel.postListDataSource)
+                                cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                             case .failure(let error):
                                 print(error)
                             }
@@ -124,8 +131,6 @@ final class PostListViewController: UIViewController {
                             print("comment button tap")
                             let vc = CommentCreateViewController()
                             vc.completionHandler = { _ in
-                                // TODO: 답글 수 올리기
-                                
                                 let newCommetCount = element.comments.count + 1
                                 cell.commentCountButton.setTitle("\(newCommetCount) 답글", for: .normal)
                             }

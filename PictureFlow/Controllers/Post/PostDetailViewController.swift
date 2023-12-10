@@ -107,10 +107,20 @@ extension PostDetailViewController {
                  */
                 let elements = dataSource[indexPath.section].header
                 
-                print("elements.content: \(elements.content)")
-                
                 // 시간 작업
                 let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
+                
+                cell.nicknameLabel.text = elements.creator.nick
+                cell.postCreatedTimeLabel.text = timeContent
+                cell.contentLabel.text = elements.content
+                
+                if !elements.image.isEmpty {
+                    let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
+                    imageURL.loadImageByKingfisher(imageView: cell.profileImageView)
+                }
+                
+                cell.commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
+                cell.likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
                 
                 // 좋아요
                 var likeCount = elements.likes.count
@@ -125,18 +135,6 @@ extension PostDetailViewController {
                 }
                 
                 cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
-                
-                cell.nicknameLabel.text = elements.creator.nick
-                cell.postCreatedTimeLabel.text = timeContent
-                cell.contentLabel.text = elements.content
-                
-                if !elements.image.isEmpty {
-                    let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
-                    imageURL.loadImageByKingfisher(imageView: cell.profileImageView)
-                }
-                
-                cell.commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
-                cell.likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
                 
                 // 좋아요 버튼
                 cell.likeButton.rx.tap
