@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class CommentCreateViewController: UIViewController {
+class CommentCreateViewController: UIViewController {
     
     let mainView = CommentCreateView()
     let viewModel = CommentCreateViewModel()
@@ -50,7 +50,30 @@ final class CommentCreateViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func configureTextView() {
+    @objc func configureTextView() {
+        mainView.commentTextView.rx.didBeginEditing
+            .bind(with: self) { owner, _ in
+                if (owner.mainView.commentTextView.text) == "답글을 남겨보세요..." {
+                    owner.mainView.commentTextView.text = nil
+                    owner.mainView.commentTextView.textColor = UIColor(resource: .text)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.commentTextView.rx.didEndEditing
+            .bind(with: self) { owner, _ in
+                if (owner.mainView.commentTextView.text) == nil ||  (owner.mainView.commentTextView.text) == "" {
+                    owner.mainView.commentTextView.text = "답글을 남겨보세요..."
+                    owner.mainView.commentTextView.textColor = .lightGray
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        textViewDynamicHeight()
+    }
+    
+    func textViewDynamicHeight() {
+        mainView.commentTextView.becomeFirstResponder()
         mainView.commentTextView.rx.didChange
             .withLatestFrom(mainView.commentTextView.rx.text)
             .bind(with: self) { owner, text in
@@ -66,24 +89,6 @@ final class CommentCreateViewController: UIViewController {
                             constraint.constant = estimatedSize.height
                         }
                     }
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        mainView.commentTextView.rx.didBeginEditing
-            .bind(with: self) { owner, _ in
-                if (owner.mainView.commentTextView.text) == "답글을 남겨보세요..." {
-                    owner.mainView.commentTextView.text = nil
-                    owner.mainView.commentTextView.textColor = UIColor(resource: .text)
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        mainView.commentTextView.rx.didEndEditing
-            .bind(with: self) { owner, _ in
-                if (owner.mainView.commentTextView.text) == nil ||  (owner.mainView.commentTextView.text) == "" {
-                    owner.mainView.commentTextView.text = "답글을 남겨보세요..."
-                    owner.mainView.commentTextView.textColor = .lightGray
                 }
             }
             .disposed(by: disposeBag)

@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class CommentCreateViewModel: ViewModelType {
+class CommentCreateViewModel: ViewModelType {
     struct Input {
         let commentCreateButtonTap: ControlEvent<Void>
         let commentCreateContentText: ControlProperty<String>

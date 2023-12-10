@@ -53,7 +53,7 @@ class NewPostWriteView: UIView {
     let postContentTextView = {
         let tv = UITextView()
         tv.text = "이야기를 시작해보세요..."
-        tv.textColor = .lightGray
+        tv.textColor = UIColor(resource: .text)
         tv.font = .systemFont(ofSize: 17)
         tv.isScrollEnabled = false
         tv.sizeToFit()
@@ -398,7 +398,7 @@ extension NewPostWriteViewController: PHPickerViewControllerDelegate {
                         guard let image = image as? UIImage else { return }
                         DispatchQueue.main.async {
                             self?.viewModel.photoImageList.append(image)
-                            print("🔥 self?.viewModel.photoImageList: \(self?.viewModel.photoImageList)")
+//                            print("🔥 self?.viewModel.photoImageList: \(self?.viewModel.photoImageList)")
                             self?.viewModel.photoImageObservableList.onNext(self?.viewModel.photoImageList ?? [])
                         }
                     }

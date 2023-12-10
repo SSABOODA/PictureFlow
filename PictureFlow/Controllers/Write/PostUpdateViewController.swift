@@ -11,6 +11,7 @@ import RxCocoa
 
 
 final class PostUpdateViewController: NewPostWriteViewController {
+    
     var postUpdateViewModel = PostUpdateViewModel()
     
     override func viewDidLoad() {
@@ -27,7 +28,8 @@ final class PostUpdateViewController: NewPostWriteViewController {
             postUpdateContentText: self.mainView.postContentTextView.rx.text.orEmpty,
             image: self.viewModel.photoImageObservableList
         )
-        let PostUpdateViewModelOutput = postUpdateViewModel.transform(input: PostUpdateViewModelInput)
+        
+        _ = postUpdateViewModel.transform(input: PostUpdateViewModelInput)
         
         self.postUpdateViewModel.postUpdateResponse
             .subscribe(with: self) { owner, value in
@@ -68,7 +70,7 @@ final class PostUpdateViewController: NewPostWriteViewController {
         
         mainView.postContentTextView.rx.didBeginEditing
             .bind(with: self) { owner, _ in
-                if (owner.mainView.postContentTextView.text) == "게시글 수정하기..." {
+                if (owner.mainView.postContentTextView.text) == "게시글을 수정해보세요..." {
                     owner.mainView.postContentTextView.text = nil
                     owner.mainView.postContentTextView.textColor = UIColor(resource: .text)
                 }
@@ -78,7 +80,7 @@ final class PostUpdateViewController: NewPostWriteViewController {
         mainView.postContentTextView.rx.didEndEditing
             .bind(with: self) { owner, _ in
                 if (owner.mainView.postContentTextView.text) == nil ||  (owner.mainView.postContentTextView.text) == "" {
-                    owner.mainView.postContentTextView.text = "게시글 수정하기..."
+                    owner.mainView.postContentTextView.text = "게시글을 수정해보세요..."
                     owner.mainView.postContentTextView.textColor = .lightGray
                 }
             }

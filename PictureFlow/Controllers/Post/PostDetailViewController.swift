@@ -93,7 +93,8 @@ extension PostDetailViewController {
                     if let postInfo = owner.viewModel.postDataList.first {
                         bottomSheetVC.postId = postInfo.header._id
                         bottomSheetVC.commentId = postInfo.items[indexPath.row]._id
-                        
+                        bottomSheetVC.post = postInfo.header
+                        bottomSheetVC.comment = postInfo.items[indexPath.row]
                         bottomSheetVC.completionHandler = { commentDeleteResponse in
                             for (idx, item) in self.viewModel.postDataList[0].items.enumerated() {
                                 if item._id == commentDeleteResponse.commentId {
@@ -102,6 +103,13 @@ extension PostDetailViewController {
                                 }
                             }
                         }
+                        
+                        NotificationCenter.default.addObserver(
+                            self,
+                            selector: #selector(owner.observeCommentUpdate(_:)),
+                            name: NSNotification.Name("observeCommentUpdate"),
+                            object: nil
+                        )
                         
                         bottomSheetVC.modalPresentationStyle = .overFullScreen
                         self.present(bottomSheetVC, animated: false)
@@ -147,10 +155,7 @@ extension PostDetailViewController {
                 
                 // 좋아요
                 var likeCount = elements.likes.count
-                
-                print("cell likeCount: \(likeCount)")
-                print("elemnet: \(elements)")
-                
+
                 let userId = UserDefaultsManager.userID
                 if elements.likes.contains(userId) {
                     cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -293,5 +298,16 @@ extension PostDetailViewController {
         self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
     }
     
+    @objc func observeCommentUpdate(_ notification:NSNotification) {
+        guard let passedCommentData = notification.userInfo else { return }
+        guard let commentData = passedCommentData["commentData"] as? Comments else { return }
+        
+        for (idx, item) in self.viewModel.postDataList[0].items.enumerated() {
+            if item._id == commentData._id {
+                self.viewModel.postDataList[0].items[idx].content = commentData.content
+            }
+        }
+        
+        self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
+    }
 }
-

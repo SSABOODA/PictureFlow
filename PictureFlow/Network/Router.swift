@@ -27,6 +27,7 @@ enum Router: URLRequestConvertible {
     
     // Comment
     case commentCreate(postId: String, accessToken: String, model: CommentCreateRequest) // 댓글 작성
+    case commentUpdate(accessToken: String, postId: String, commentId: String, model: CommentUpdateRequest) // 댓글 수정
     case commentDelete(accessToken: String, postId: String, commentId: String) // 댓글 삭제
     
     // Like
@@ -58,6 +59,7 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
+        case .commentUpdate(_, let postId, let commentId, _): return "post/\(postId)/comment/\(commentId)"
         case .commentDelete(_, let postId, let commentId): return "post/\(postId)/comment/\(commentId)"
             
         // like
@@ -107,6 +109,9 @@ enum Router: URLRequestConvertible {
         case .commentCreate(_, let accessToken, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+        case .commentUpdate(let accessToken, _, _, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
         case .commentDelete(let accessToken, _, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
@@ -141,6 +146,7 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate: return .post
+        case .commentUpdate: return .put
         case .commentDelete: return .delete
             
         // like
@@ -193,6 +199,10 @@ enum Router: URLRequestConvertible {
             return [
                 "content": model.content
             ]
+        case .commentUpdate(_, _, _, let model):
+            return [
+                "content": model.content
+            ]
         case .commentDelete: return nil
             
         // user profile
@@ -204,13 +214,13 @@ enum Router: URLRequestConvertible {
     
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appendingPathComponent(path)
-//        print("url: \(url)")
+        print("url: \(url)")
 
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
         
-//        let re = try URLEncoding.default.encode(request, with: parameters)
+        let re = try URLEncoding.default.encode(request, with: parameters)
 //        print("re: \(re)")
 //        print("method: \(re.httpMethod)")
 //        print("header: \(re.headers)")

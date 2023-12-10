@@ -90,7 +90,7 @@ struct Creator: Decodable {
 
 struct Comments: Decodable {
     let _id: String
-    let content: String
+    var content: String
     let time: String
     let creator: Creator
 }

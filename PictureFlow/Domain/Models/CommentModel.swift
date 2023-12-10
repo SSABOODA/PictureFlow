@@ -23,6 +23,20 @@ struct CommentCreateResponse: Decodable {
 }
 
 /*
+ 댓글 수정
+ */
+struct CommentUpdateRequest: Codable {
+    let content: String
+}
+
+struct CommentUpdateResponse: Decodable {
+    let _id: String
+    let content: String
+    let time: String
+    let creator: Creator
+}
+
+/*
  댓글 삭제
  */
 

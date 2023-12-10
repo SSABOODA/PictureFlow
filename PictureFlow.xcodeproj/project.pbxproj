@@ -77,6 +77,7 @@
 		F7D6628A2B0DE7ED0039E40F /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */; };
 		F7D6628E2B0DEDA70039E40F /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D6628D2B0DEDA70039E40F /* CommentCollectionViewCell.swift */; };
 		F7E33D4B2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D4A2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift */; };
+		F7E33D4D2B25CCB500ACB8D9 /* CommentUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D4C2B25CCB500ACB8D9 /* CommentUpdateViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,6 +146,7 @@
 		F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		F7D6628D2B0DEDA70039E40F /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		F7E33D4A2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStatusModifyBottomSheetController.swift; sourceTree = "<group>"; };
+		F7E33D4C2B25CCB500ACB8D9 /* CommentUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentUpdateViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,6 +362,7 @@
 			isa = PBXGroup;
 			children = (
 				F72C69082B1AF086007B1F8F /* CommentCreateViewController.swift */,
+				F7E33D4C2B25CCB500ACB8D9 /* CommentUpdateViewController.swift */,
 			);
 			path = Comment;
 			sourceTree = "<group>";
@@ -595,6 +598,7 @@
 				F72C69132B1C7148007B1F8F /* Extension+CALyer.swift in Sources */,
 				F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */,
 				F7B4094D2B07715A006CD373 /* ProfileViewController.swift in Sources */,
+				F7E33D4D2B25CCB500ACB8D9 /* CommentUpdateViewController.swift in Sources */,
 				F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */,
 				F7095A602B00C41000F0218B /* KeyChain.swift in Sources */,
 				F7A375EC2B22F7D500810BD9 /* NewPostWriteViewController.swift in Sources */,

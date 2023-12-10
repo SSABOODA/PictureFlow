@@ -34,6 +34,8 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
     var disposeBag = DisposeBag()
     var postId: String? = ""
     var commentId: String? = ""
+    var post: PostList? = nil
+    var comment: Comments? = nil
     var completionHandler: ((CommentDeleteResponse) -> Void)?
 
     override func viewDidLoad() {
@@ -69,6 +71,10 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
         updateButton.rx.tap
             .bind(with: self) { owner, _ in
                 print("comment update button did tap")
+                let vc = CommentUpdateViewController()
+                vc.commentUpdateViewModel.post = owner.post
+                vc.commentUpdateViewModel.comment = owner.comment
+                owner.transition(viewController: vc, style: .presentNavigation)
             }
             .disposed(by: disposeBag)
         
