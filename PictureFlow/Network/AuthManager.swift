@@ -10,7 +10,7 @@ import Alamofire
 
 final class AuthManager: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        print(#function)
+//        print(#function)
         guard urlRequest.url?.absoluteString.hasPrefix(BaseURL.baseURL) == true,
               let accessToken = KeyChain.read(key: APIConstants.accessToken) else {
             completion(.success(urlRequest))

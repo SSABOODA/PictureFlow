@@ -112,10 +112,9 @@ final class PostListViewController: UIViewController {
                                     if let index = owner.viewModel.postListDataSource[row].likes.firstIndex(of: UserDefaultsManager.userID) {
                                         owner.viewModel.postListDataSource[row].likes.remove(at: index)
                                     }
-                                    
                                     cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
                                     cell.likeButton.tintColor = UIColor(resource: .tint)
-                                    likeCount -= 1
+                                    if likeCount >= 1 { likeCount -= 1 }
                                 }
                                 owner.viewModel.postListItem.onNext(owner.viewModel.postListDataSource)
                                 cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)

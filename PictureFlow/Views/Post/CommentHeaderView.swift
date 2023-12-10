@@ -155,6 +155,11 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
+    
     func configureHierarchy() {
         addSubview(profileImageView)
         addSubview(nicknameLabel)

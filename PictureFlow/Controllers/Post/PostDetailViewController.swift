@@ -148,6 +148,9 @@ extension PostDetailViewController {
                 // 좋아요
                 var likeCount = elements.likes.count
                 
+                print("cell likeCount: \(likeCount)")
+                print("elemnet: \(elements)")
+                
                 let userId = UserDefaultsManager.userID
                 if elements.likes.contains(userId) {
                     cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -176,7 +179,7 @@ extension PostDetailViewController {
                         print("like button tap")
                         switch result {
                         case .success(let data):
-                            
+                            print("like network data: \(data.likeStatus)")
                             if data.likeStatus {
                                 cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
                                 cell.likeButton.tintColor = .red
@@ -184,7 +187,7 @@ extension PostDetailViewController {
                             } else {
                                 cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
                                 cell.likeButton.tintColor = UIColor(resource: .tint)
-                                likeCount -= 1
+                                if likeCount >= 1 { likeCount -= 1 }
                             }
                             cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                         case .failure(let error):
