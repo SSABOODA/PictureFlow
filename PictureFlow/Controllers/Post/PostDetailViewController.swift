@@ -12,8 +12,8 @@ import RxDataSources
 
 final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     
-    var viewModel = PostDetailViewModel()
     let mainView = PostDetailView()
+    var viewModel = PostDetailViewModel()
     var disposeBag = DisposeBag()
     
     override func loadView() {
@@ -46,8 +46,6 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         output.postObservableItem.onNext(viewModel.postDataList)
-        
-//        dump(viewModel.postDataList)
         
         mainView.collectionView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
@@ -92,7 +90,6 @@ extension PostDetailViewController {
             return cell
             
         } configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) in
-            print("indexPath.section: \(indexPath.section)")
             /*
              HeaderView 작업
              */
@@ -109,6 +106,8 @@ extension PostDetailViewController {
                  Cell 데이터 작업
                  */
                 let elements = dataSource[indexPath.section].header
+                
+                print("elements.content: \(elements.content)")
                 
                 // 시간 작업
                 let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
@@ -130,6 +129,7 @@ extension PostDetailViewController {
                 cell.nicknameLabel.text = elements.creator.nick
                 cell.postCreatedTimeLabel.text = timeContent
                 cell.contentLabel.text = elements.content
+                
                 if !elements.image.isEmpty {
                     let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
                     imageURL.loadImageByKingfisher(imageView: cell.profileImageView)
@@ -159,16 +159,13 @@ extension PostDetailViewController {
                             if data.likeStatus {
                                 cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
                                 cell.likeButton.tintColor = .red
-                                
                                 likeCount += 1
                             } else {
                                 cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
                                 cell.likeButton.tintColor = UIColor(resource: .tint)
-                                
                                 likeCount -= 1
                             }
                             cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
-                            print("likeCount: \(likeCount)")
                         case .failure(let error):
                             print(error)
                         }
@@ -189,21 +186,49 @@ extension PostDetailViewController {
                     }
                     .disposed(by: cell.disposeBag)
                 
+                // 더보기 버튼
+                cell.moreInfoButton.rx.tap
+                    .observe(on: MainScheduler.instance)
+                    .bind(with: self) { owner, _ in
+                        print("post detail view more button did tap")
+                        let bottomSheetVC = PostListBottomSheetViewController()
+                        bottomSheetVC.modalPresentationStyle = .overFullScreen
+                        self.present(bottomSheetVC, animated: false)
+                        
+                        bottomSheetVC.completion = { isDeleted in
+                            if isDeleted {
+                                owner.navigationController?.popViewController(animated: true)
+                            }
+                        }
+                        
+                        NotificationCenter.default.addObserver(
+                            self,
+                            selector: #selector(owner.oberservePostUpdate(_:)),
+                            name: NSNotification.Name("oberservePostUpdate"),
+                            object: nil
+                        )
+
+                        let post = owner.viewModel.postDataList[indexPath.row].header
+                        bottomSheetVC.post = post
+                        bottomSheetVC.postId = post._id
+                    }
+                    .disposed(by: cell.disposeBag)
+                
                 /*
                  collectionView 작업
                  */
                 
-                let height = elements.image.isEmpty ? 0 : 200
-                
                 cell.collectionView.snp.updateConstraints { make in
-                    make.height.equalTo(height)
+                    make.height.equalTo(elements.image.isEmpty ? 0 : 200)
                 }
                 
                 cell.collectionView.delegate = nil
                 cell.collectionView.dataSource = nil
                 
                 Observable.just(elements.image)
-                    .bind(to: cell.collectionView.rx.items(cellIdentifier: BasePostListImageCollectionViewCell.description(), cellType: BasePostListImageCollectionViewCell.self)) { (row, element, cell) in
+                    .bind(to: cell.collectionView.rx.items(
+                        cellIdentifier: BasePostListImageCollectionViewCell.description(),
+                        cellType: BasePostListImageCollectionViewCell.self)) { (row, element, cell) in
                         let imageURL = "\(BaseURL.baseURL)/\(element)"
                         imageURL.loadImageByKingfisher(imageView: cell.postImageView)
                     }
@@ -222,6 +247,26 @@ extension PostDetailViewController {
             }
         }
         return dataSource
+    }
+    
+    @objc func oberservePostUpdate(_ notification:NSNotification) {
+        guard let passedPostData = notification.userInfo else { return }
+        guard let postData = passedPostData["postData"] as? PostUpdateResponse else { return }
+        
+        let postListItem = PostList(
+            _id: postData._id,
+            likes: postData.likes,
+            image: postData.image,
+            content: postData.content,
+            time: postData.time,
+            productID: postData.productID,
+            creator: postData.creator,
+            comments: postData.comments
+        )
+        
+        self.viewModel.postDataList[0].header = postListItem
+        self.viewModel.postDataList[0].items = postListItem.comments
+        self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
     }
     
 }

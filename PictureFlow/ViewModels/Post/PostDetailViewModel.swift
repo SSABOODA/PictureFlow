@@ -15,7 +15,10 @@ struct PostDetailModel {
 }
 
 extension PostDetailModel: SectionModelType {
-    init(original: PostDetailModel, items: [Comments]) {
+    init(
+        original: PostDetailModel,
+        items: [Comments]
+    ) {
         self = original
         self.items = items
     }
@@ -39,9 +42,7 @@ final class PostDetailViewModel: ViewModelType {
     let commentCreateSuccess = BehaviorSubject(value: false)
 
     func transform(input: Input) -> Output {
-        
-//        print("DETAIL postList: \(postList)")
-        
+
         if let postList {
             postDataList.insert(
                 PostDetailModel(

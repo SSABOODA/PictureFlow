@@ -66,6 +66,7 @@ final class PostWriteViewModel: ViewModelType {
             .withLatestFrom(postWriteRequestObservable)
             .flatMap {
                 Network.shared.requestFormDataConvertible(
+                    type: PostWriteResponse.self,
                     router: .post(
                         accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
                         model: $0

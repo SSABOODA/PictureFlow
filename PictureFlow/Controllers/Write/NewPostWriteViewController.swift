@@ -259,8 +259,8 @@ class NewPostWriteViewModel: ViewModelType {
                 title: "",
                 content: postCreateData.0,
                 file: postCreateData.1,
-                content1: "test1",
-                content2: "test2"
+                content1: "",
+                content2: ""
             )
             owner.postWriteRequestObservable.onNext(model)
         }
@@ -276,6 +276,7 @@ class NewPostWriteViewModel: ViewModelType {
             .withLatestFrom(postWriteRequestObservable)
             .flatMap {
                 Network.shared.requestFormDataConvertible(
+                    type: PostWriteResponse.self,
                     router: .post(
                         accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
                         model: $0

@@ -112,7 +112,6 @@ final class PostListViewController: UIViewController {
                                 cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                                 data.likeStatus ? (likeCount += 1) : (likeCount -= 1)
 
-                                print("likeCount: \(likeCount)")
                             case .failure(let error):
                                 print(error)
                             }
@@ -141,7 +140,7 @@ final class PostListViewController: UIViewController {
                     cell.moreInfoButton.rx.tap
                         .observe(on: MainScheduler.instance)
                         .bind(with: self) { owner, _ in
-                            print("more button did tap")
+                            print("post list view more button did tap")
                             let bottomSheetVC = PostListBottomSheetViewController()
                             bottomSheetVC.completion = { isDeleted in
                                 if isDeleted {
@@ -178,7 +177,6 @@ final class PostListViewController: UIViewController {
             }
             .subscribe(with: self) { owner, value in
                 print("cell clicked")
-                print("value : \(value)")
                 let vc = PostDetailViewController()
                 vc.viewModel.postList = value
                 owner.transition(viewController: vc, style: .push)

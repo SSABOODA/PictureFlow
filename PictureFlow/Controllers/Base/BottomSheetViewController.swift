@@ -73,8 +73,6 @@ class BottomSheetViewController: UIViewController {
         super.viewDidAppear(animated)
         showBottomSheet()
     }
-    
-    
 
     private func setupUI() {
         view.addSubview(dimmedBackView)

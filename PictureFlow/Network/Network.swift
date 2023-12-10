@@ -211,25 +211,22 @@ final class Network {
             }
     }
     
-    // single ImageUpload
-    func requestFormDataConvertible(
+    // single Multipart Formdata
+    func requestFormDataConvertible<T: Decodable>(
+        type: T.Type? = nil,
         router: Router
-    ) -> Single<Result<Data, CustomErrorResponse>> {
-        
+    ) -> Single<Result<T, CustomErrorResponse>> {
         return Single.create { single in
             let request = AF.upload(
                 multipartFormData: router.multipart,
                 with: router,
                 interceptor: AuthManager()
-            ).responseData { response in
-                print("REQUEST START", response.response?.statusCode ?? 999)
-                
+            ).responseDecodable(of: T.self) { response in
                 switch response.result {
                 case .success(let data):
-                    print(data)
+//                    print(data)
                     single(.success(.success(data)))
                 case .failure(let error):
-                    
                     let statusCode = response.response?.statusCode ?? 500
                     print(statusCode, error.localizedDescription)
                     let error = self.makeCustomErrorResponse(
@@ -239,11 +236,12 @@ final class Network {
                     single(.success(.failure(error)))
                 }
             }
-        
-            return Disposables.create() {
+            
+            return Disposables.create {
                 request.cancel()
             }
         }
+
     }
     
     // Single Observable

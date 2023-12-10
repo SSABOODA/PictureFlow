@@ -38,6 +38,13 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         return label
     }()
     
+    let moreInfoButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = UIColor(resource: .text)
+        return button
+    }()
+    
     let contentLabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -152,6 +159,7 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         addSubview(profileImageView)
         addSubview(nicknameLabel)
         addSubview(postCreatedTimeLabel)
+        addSubview(moreInfoButton)
         addSubview(contentLabel)
         addSubview(collectionView)
         addSubview(functionButtonStackView)
@@ -172,11 +180,17 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         
         postCreatedTimeLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.top)
+            make.trailing.equalTo(moreInfoButton.snp.leading).offset(-10)
+        }
+        
+        moreInfoButton.snp.makeConstraints { make in
+            make.top.equalTo(nicknameLabel.snp.top)
             make.trailing.equalToSuperview().offset(-15)
+            make.size.equalTo(25)
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.bottom).offset(10)
+            make.top.equalTo(profileImageView.snp.bottom).offset(15)
             make.leading.equalTo(profileImageView.snp.leading)
             make.trailing.equalToSuperview().offset(-15)
         }

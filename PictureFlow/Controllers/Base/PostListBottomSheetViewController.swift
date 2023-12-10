@@ -46,7 +46,6 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
         bind()
     }
     
-    
     private func configureHierarchy() {
         bottomSheetView.addSubview(updateButton)
         bottomSheetView.addSubview(deleteButton)

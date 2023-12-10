@@ -29,15 +29,16 @@ final class PostUpdateViewController: NewPostWriteViewController {
         )
         let PostUpdateViewModelOutput = postUpdateViewModel.transform(input: PostUpdateViewModelInput)
         
-        PostUpdateViewModelOutput.successPostCreate
-            .bind(with: self) { owner, isCreated in
-                if isCreated {
-                    owner.dismiss(animated: true)
-                }
+        self.postUpdateViewModel.postUpdateResponse
+            .subscribe(with: self) { owner, value in
+                owner.dismiss(animated: true)
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("oberservePostUpdate"),
+                    object: nil,
+                    userInfo: ["postData": value]
+                )
             }
             .disposed(by: disposeBag)
-        
-        
     }
     
     func configurePostData() {
