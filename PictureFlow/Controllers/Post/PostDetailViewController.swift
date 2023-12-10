@@ -80,13 +80,36 @@ extension PostDetailViewController {
                 return UICollectionViewCell()
             }
             
-//            print("🔥 \(data)", data)
-            
             cell.nicknameLabel.text = data.creator.nick
             cell.commentContentLabel.text = data.content
-            
             let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: data.time)
             cell.commentCreatedTimeLabel.text = timeContent
+            
+            cell.moreInfoButton.rx.tap
+                .bind(with: self) { owner, _ in
+                    print("more button did tap")
+                    let bottomSheetVC = CommentStatusModifyBottomSheetController()
+                    
+                    if let postInfo = owner.viewModel.postDataList.first {
+                        bottomSheetVC.postId = postInfo.header._id
+                        bottomSheetVC.commentId = postInfo.items[indexPath.row]._id
+                        
+                        bottomSheetVC.completionHandler = { commentDeleteResponse in
+                            for (idx, item) in self.viewModel.postDataList[0].items.enumerated() {
+                                if item._id == commentDeleteResponse.commentId {
+                                    self.viewModel.postDataList[0].items.remove(at: idx)
+                                    self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
+                                }
+                            }
+                        }
+                        
+                        bottomSheetVC.modalPresentationStyle = .overFullScreen
+                        self.present(bottomSheetVC, animated: false)
+                    }
+
+                }
+                .disposed(by: cell.disposeBag)
+            
             return cell
             
         } configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) in

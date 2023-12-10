@@ -31,7 +31,6 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
         return button
     }()
     
-    
     var disposeBag = DisposeBag()
     var postId: String = ""
     var post: PostList?

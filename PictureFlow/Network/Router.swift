@@ -27,6 +27,7 @@ enum Router: URLRequestConvertible {
     
     // Comment
     case commentCreate(postId: String, accessToken: String, model: CommentCreateRequest) // 댓글 작성
+    case commentDelete(accessToken: String, postId: String, commentId: String) // 댓글 삭제
     
     // Like
     case like(accessToken: String, postId: String)
@@ -57,6 +58,7 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
+        case .commentDelete(_, let postId, let commentId): return "post/\(postId)/comment/\(commentId)"
             
         // like
         case .like(_, let postId): return "post/like/\(postId)"
@@ -105,6 +107,9 @@ enum Router: URLRequestConvertible {
         case .commentCreate(_, let accessToken, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+        case .commentDelete(let accessToken, _, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
             
         // like
         case .like(let accessToken, _):
@@ -136,6 +141,7 @@ enum Router: URLRequestConvertible {
             
         // comment
         case .commentCreate: return .post
+        case .commentDelete: return .delete
             
         // like
         case .like: return .post
@@ -187,6 +193,7 @@ enum Router: URLRequestConvertible {
             return [
                 "content": model.content
             ]
+        case .commentDelete: return nil
             
         // user profile
         case .userProfileRetrieve: return nil

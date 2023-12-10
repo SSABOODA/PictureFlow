@@ -76,6 +76,7 @@
 		F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */; };
 		F7D6628A2B0DE7ED0039E40F /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */; };
 		F7D6628E2B0DEDA70039E40F /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D6628D2B0DEDA70039E40F /* CommentCollectionViewCell.swift */; };
+		F7E33D4B2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D4A2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -143,6 +144,7 @@
 		F7D662872B0DC6B10039E40F /* PostWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewController.swift; sourceTree = "<group>"; };
 		F7D662892B0DE7ED0039E40F /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		F7D6628D2B0DEDA70039E40F /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
+		F7E33D4A2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStatusModifyBottomSheetController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +215,7 @@
 		F7095A112AFE1D2B00F0218B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F7A375B12B22A18200810BD9 /* Base */,
+				F7A375B12B22A18200810BD9 /* BottomSheet */,
 				F72C69072B1AF077007B1F8F /* Comment */,
 				F7095A892B0239A600F0218B /* Post */,
 				F7D662852B0DC2E20039E40F /* Like */,
@@ -378,13 +380,14 @@
 			path = Comment;
 			sourceTree = "<group>";
 		};
-		F7A375B12B22A18200810BD9 /* Base */ = {
+		F7A375B12B22A18200810BD9 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
 				F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */,
 				F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */,
+				F7E33D4A2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift */,
 			);
-			path = Base;
+			path = BottomSheet;
 			sourceTree = "<group>";
 		};
 		F7A375EA2B22D6B600810BD9 /* Base */ = {
@@ -631,6 +634,7 @@
 				F7B409492B077146006CD373 /* PostDetailViewController.swift in Sources */,
 				F76EE9412B1452D8005C6106 /* PostWriteView.swift in Sources */,
 				F7095A422AFF7D9600F0218B /* ViewModelType.swift in Sources */,
+				F7E33D4B2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift in Sources */,
 				F72C69112B1C4146007B1F8F /* CommentModel.swift in Sources */,
 				F7D6628E2B0DEDA70039E40F /* CommentCollectionViewCell.swift in Sources */,
 				F70959FB2AFE191900F0218B /* SceneDelegate.swift in Sources */,

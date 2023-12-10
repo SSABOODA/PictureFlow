@@ -38,6 +38,13 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    let moreInfoButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = UIColor(resource: .text)
+        return button
+    }()
+    
     var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
@@ -74,6 +81,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(commentContentLabel)
         contentView.addSubview(commentCreatedTimeLabel)
+        contentView.addSubview(moreInfoButton)
     }
     
     private func configureLayout() {
@@ -100,7 +108,13 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         
         commentCreatedTimeLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.top)
+            make.trailing.equalTo(moreInfoButton.snp.leading).offset(-10)
+        }
+        
+        moreInfoButton.snp.makeConstraints { make in
+            make.centerY.equalTo(commentCreatedTimeLabel.snp.centerY)
             make.trailing.equalToSuperview().offset(-15)
+            make.size.equalTo(25)
         }
     }
 }

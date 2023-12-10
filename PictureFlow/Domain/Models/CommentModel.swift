@@ -22,4 +22,17 @@ struct CommentCreateResponse: Decodable {
     let creator: Creator
 }
 
+/*
+ 댓글 삭제
+ */
+
+struct CommentDeleteResponse: Decodable {
+    let postId: String
+    let commentId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case postId = "postID"
+        case commentId = "commentID"
+    }
+}
 

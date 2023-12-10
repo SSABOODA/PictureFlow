@@ -13,10 +13,10 @@ class BottomSheetViewController: UIViewController {
     let bottomHeight: CGFloat = UIScreen.main.bounds.height * 0.25 //359
     
     // bottomSheet가 view의 상단에서 떨어진 거리
-    private var bottomSheetViewTopConstraint: NSLayoutConstraint!
+    var bottomSheetViewTopConstraint: NSLayoutConstraint!
     
     // 기존 화면을 흐려지게 만들기 위한 뷰
-    private let dimmedBackView: UIView = {
+    let dimmedBackView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         return view
@@ -39,39 +39,16 @@ class BottomSheetViewController: UIViewController {
         view.layer.cornerRadius = 3
         return view
     }()
-    
-//    let updateButton = {
-//        let button = UIButton()
-//        button.setTitle("수정", for: .normal)
-//        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
-//        button.setTitleColor(UIColor(resource: .text), for: .normal)
-//        button.backgroundColor = UIColor(resource: .postStatusModify)
-//        button.layer.cornerRadius = 20
-//        button.clipsToBounds = true
-//        return button
-//    }()
-//    
-//    let deleteButton = {
-//        let button = UIButton()
-//        button.setTitle("삭제", for: .normal)
-//        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
-//        button.setTitleColor(.red, for: .normal)
-//        button.backgroundColor = UIColor(resource: .postStatusModify)
-//        button.layer.cornerRadius = 20
-//        button.clipsToBounds = true
-//        return button
-//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupGestureRecognizer()
-//        bind()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showBottomSheet()
+        showBottomSheet(bottomHeight: self.bottomHeight)
     }
 
     private func setupUI() {
@@ -143,7 +120,7 @@ class BottomSheetViewController: UIViewController {
     }
     
     // 바텀 시트 표출 애니메이션
-    private func showBottomSheet() {
+    func showBottomSheet(bottomHeight: CGFloat) {
         let safeAreaHeight: CGFloat = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding: CGFloat = view.safeAreaInsets.bottom
         
