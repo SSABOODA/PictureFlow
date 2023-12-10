@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 /*
  화면 전환
@@ -54,7 +55,9 @@ extension UIViewController {
         preferredStyle: UIAlertController.Style = .alert,
         title: String = "",
         message: String = "",
-        completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil) {
+        completeTitle: String = "확인",
+        _ completeHandler:(() -> Void)? = nil
+    ) {
             
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
@@ -74,7 +77,10 @@ extension UIViewController {
         title: String = "",
         message: String = "",
         cancelTitle: String = "취소",
-        completeTitle: String = "확인",  _ cancelHandler: (() -> Void)? = nil, _ completeHandler: (() -> Void)? = nil) {
+        completeTitle: String = "확인",
+        _ cancelHandler: (() -> Void)? = nil,
+        _ completeHandler: (() -> Void)? = nil
+    ) {
             
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
@@ -109,5 +115,42 @@ extension UIViewController {
         )
         backBarButtonItem.tintColor = color
         self.navigationItem.backBarButtonItem = backBarButtonItem
+    }
+}
+
+
+/*
+ Rx Alert
+ */
+
+
+extension UIViewController {
+    func showObservableAlert2(
+        preferredStyle: UIAlertController.Style = .alert,
+        title: String = "",
+        message: String = "",
+        cancelTitle: String = "취소",
+        completeTitle: String = "확인",
+        _ cancelHandler: (() -> Void)? = nil,
+        _ completeHandler: (() -> Void)? = nil
+    ) -> Observable<UIAlertController> {
+        
+        var alert = UIAlertController()
+        DispatchQueue.main.async {
+            alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+            
+            let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel) { action in
+                cancelHandler?()
+            }
+            
+            let completeAction = UIAlertAction(title: completeTitle, style: .destructive) { action in
+                completeHandler?()
+            }
+            
+            alert.addAction(cancelAction)
+            alert.addAction(completeAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+        return Observable.just(alert)
     }
 }

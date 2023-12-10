@@ -73,28 +73,35 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
             .disposed(by: disposeBag)
         
         deleteButton.rx.tap
-            .flatMap {
-                Network.shared.requestObservableConvertible(
-                    type: CommentDeleteResponse.self,
-                    router: .commentDelete(
-                        accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
-                        postId: self.postId ?? "",
-                        commentId: self.commentId ?? ""
-                    )
-                )
-            }
-            .subscribe(with: self) { owner, response in
-                switch response {
-                case .success(let data):
-                    print(data)
-                    owner.completionHandler?(data)
-                case .failure(let error):
-                    print(error)
-//                    owner.completionHandler?(false)
-                }
+            .bind(with: self) { owner, _ in
+                print("deleteButton did tap")
+                
+                owner.showAlertAction2(
+                    title: "작성하신 댓글을 삭제하시겠어요?",
+                    message: "댓글을 삭제하면 복원할 수 없습니다.", cancelTitle: "취소", completeTitle: "삭제") {
+                    } _: {
+                        print("삭제")
+                        Network.shared.requestConvertible(
+                            type: CommentDeleteResponse.self,
+                            router: .commentDelete(
+                                accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
+                                postId: self.postId ?? "",
+                                commentId: self.commentId ?? ""
+                            )
+                        ) { response in
+                            switch response {
+                            case .success(let data):
+                                print(data)
+                                owner.completionHandler?(data)
+                            case .failure(let error):
+                                print(error)
+//                                owner.completionHandler?(false)
+                            }
+                        }
+                        
+                    }
             }
             .disposed(by: disposeBag)
-  
     }
     
 }
