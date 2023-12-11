@@ -26,7 +26,7 @@ final class ProfileUpdateViewModel: ViewModelType {
     var profile: UserProfileRetrieveResponse? = nil
     var profileUpdateRequestObservable = PublishSubject<UserProfileUpdateRequest>()
     var profileUpdateResponseObservable = PublishSubject<UserProfileUpdateResponse>()
-    var profileImage = PublishSubject<UIImage>()
+    var profileImage = BehaviorSubject<UIImage>(value: UIImage())
     
     func transform(input: Input) -> Output {
         
@@ -38,6 +38,7 @@ final class ProfileUpdateViewModel: ViewModelType {
 
         )
         .subscribe(with: self) { owner, profile in
+            print("⭐️ profile: \(profile)")
             let profile = UserProfileUpdateRequest(
                 nick: profile.0,
                 phoneNum: profile.1,
@@ -61,7 +62,7 @@ final class ProfileUpdateViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print(data)
+                    print("🔥 profile update data", data)
                     owner.profileUpdateResponseObservable.onNext(data)
                 case .failure(let error):
                     print(error)

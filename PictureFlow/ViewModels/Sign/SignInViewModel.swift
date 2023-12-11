@@ -68,7 +68,6 @@ final class SignInViewModel: ViewModelType {
                     UserDefaultsManager.isLoggedIn = true
                     UserDefaultsManager.userID = success._id
                     loginSuccess.accept(true)
-
                 case .failure(let error):
                     print("subscribe errorResponse: \(error)")
 //                    errorResponse.accept(error)

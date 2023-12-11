@@ -26,6 +26,11 @@ final class ProfileViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchProfileData()
+    }
+    
     private func bind() {
         barButtonBind()
         
@@ -85,6 +90,7 @@ final class ProfileViewController: UIViewController {
         view.nickNameLabel.text = data.nick
         view.followerLabel.text = "팔로워 \(data.followers.count)명"
         
+        print("data.profile: \(data.profile)")
         if let profile = data.profile {
             "\(BaseURL.baseURL)/\(profile)".loadImageByKingfisher(imageView: view.profileImageView)
         }

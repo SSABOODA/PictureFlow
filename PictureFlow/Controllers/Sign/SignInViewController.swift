@@ -23,6 +23,8 @@ final class SignInViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBarBackButtonItem(color: .black)
         bind()
+        
+        mainView.emailTextField.becomeFirstResponder()
     
     }
 

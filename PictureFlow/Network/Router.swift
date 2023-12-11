@@ -253,7 +253,7 @@ extension Router {
                 "content5": model.content5,
                 "file": model.file
             ]
-            return makeMultipartFormdata(params: params)
+            return makeMultipartFormdata(params: params, with: "file")
         case .postUpdate(_, _, let model):
             let params: [String: Any] = [
                 "title": model.title,
@@ -266,7 +266,7 @@ extension Router {
                 "content5": model.content5,
                 "file": model.file
             ]
-            return makeMultipartFormdata(params: params)
+            return makeMultipartFormdata(params: params, with: "file")
             
         case .userProfileUpdate(_, let model):
             let params: [String: Any] = [
@@ -275,13 +275,13 @@ extension Router {
                 "birthDay": model.birthDay,
                 "profile": model.profile,
             ]
-            return makeMultipartFormdata(params: params)
+            return makeMultipartFormdata(params: params, with: "profile")
             
         default: return MultipartFormData()
         }
     }
     
-    func makeMultipartFormdata(params: [String:Any]) -> MultipartFormData {
+    func makeMultipartFormdata(params: [String:Any], with imageFileName: String) -> MultipartFormData {
         
         let multipartFormData = MultipartFormData()
         
@@ -305,11 +305,19 @@ extension Router {
                 })
             }
             
+            if let temp = value as? UIImage {
+                print("multipart image: \(temp)")
+                multipartFormData.append(temp.jpegData(compressionQuality: 0.1) ?? Data(),
+                                         withName: imageFileName,
+                                         fileName: "image.jpeg",
+                                         mimeType: "image/jpeg")
+            }
+            
             if let temp = value as? [UIImage] {
                 for image in temp {
                     print("multipart image: \(image)")
                     multipartFormData.append(image.jpegData(compressionQuality: 0.1) ?? Data(),
-                                             withName: "file",
+                                             withName: imageFileName,
                                              fileName: "image.jpeg",
                                              mimeType: "image/jpeg")
                 }
@@ -318,27 +326,29 @@ extension Router {
         
         return multipartFormData
     }
+    
+
 }
 
 
 /*
- //            let multipartFormData = MultipartFormData()
- //
- //            multipartFormData.append(Data(model.title.utf8), withName: "title")
- //            multipartFormData.append(Data(model.productId.utf8), withName: "product_id")
- //            multipartFormData.append(Data(model.content.utf8), withName: "content")
- //            multipartFormData.append(Data(model.content1.utf8), withName: "content1")
- //            multipartFormData.append(Data(model.content2.utf8), withName: "content2")
- //            multipartFormData.append(Data(model.content3.utf8), withName: "content3")
- //            multipartFormData.append(Data(model.content4.utf8), withName: "content4")
- //            multipartFormData.append(Data(model.content5.utf8), withName: "content5")
- //
- //            for image in model.file {
- //                print("multipart image: \(image)")
- //                multipartFormData.append(image.jpegData(compressionQuality: 0.1) ?? Data(),
- //                                         withName: "file",
- //                                         fileName: "image.jpeg",
- //                                         mimeType: "image/jpeg")
- //            }
- //            return multipartFormData
+ let multipartFormData = MultipartFormData()
+
+ multipartFormData.append(Data(model.title.utf8), withName: "title")
+ multipartFormData.append(Data(model.productId.utf8), withName: "product_id")
+ multipartFormData.append(Data(model.content.utf8), withName: "content")
+ multipartFormData.append(Data(model.content1.utf8), withName: "content1")
+ multipartFormData.append(Data(model.content2.utf8), withName: "content2")
+ multipartFormData.append(Data(model.content3.utf8), withName: "content3")
+ multipartFormData.append(Data(model.content4.utf8), withName: "content4")
+ multipartFormData.append(Data(model.content5.utf8), withName: "content5")
+
+ for image in model.file {
+     print("multipart image: \(image)")
+     multipartFormData.append(image.jpegData(compressionQuality: 0.1) ?? Data(),
+                              withName: "file",
+                              fileName: "image.jpeg",
+                              mimeType: "image/jpeg")
+ }
+ return multipartFormData
  */
