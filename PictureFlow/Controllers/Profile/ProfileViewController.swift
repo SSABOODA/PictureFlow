@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class ProfileViewController: UIViewController {
     let mainView = ProfileView()
-    
+    var disposeBag = DisposeBag()
     override func loadView() {
         view = mainView
     }
@@ -18,8 +20,24 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         makeContainerViewController()
+        
+        bind()
     }
     
+    private func bind() {
+        guard let profileUpdateBarButton = navigationItem.rightBarButtonItems?[1] else { return }
+        profileUpdateBarButton.rx.tap
+            .bind(with: self) { owner, _ in
+                let vc = ProfileUpdateViewController()
+                owner.transition(viewController: vc, style: .presentNavigation)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+}
+
+extension ProfileViewController {
     func makeContainerViewController() {
         let childViewController = ProfileChildViewController()
         addChild(childViewController)
@@ -39,14 +57,14 @@ extension ProfileViewController {
             image: UIImage(named: "setting"),
             style: .plain,
             target: self,
-            action: #selector(settingButtonClicked)
+            action: nil
         )
         
         let profileUpdateButton = UIBarButtonItem(
             image: UIImage(named: "profile-update"),
             style: .plain,
             target: self,
-            action: #selector(settingButtonClicked)
+            action: nil
         )
         
         navigationItem.rightBarButtonItems = [
@@ -56,9 +74,5 @@ extension ProfileViewController {
         navigationItem.rightBarButtonItems?.forEach({ item in
             item.tintColor = UIColor(resource: .tint)
         })
-    }
-    
-    @objc func settingButtonClicked() {
-        print("setting button did tap")
     }
 }

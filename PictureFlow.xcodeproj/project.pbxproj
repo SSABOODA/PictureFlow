@@ -83,6 +83,8 @@
 		F7E33D5D2B27010100ACB8D9 /* ProfileChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D5C2B27010100ACB8D9 /* ProfileChildViewController.swift */; };
 		F7E33D5F2B27017300ACB8D9 /* ProfileChileMyPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D5E2B27017300ACB8D9 /* ProfileChileMyPostListViewController.swift */; };
 		F7E33D612B27018700ACB8D9 /* ProfileChileMaPostCommentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D602B27018700ACB8D9 /* ProfileChileMaPostCommentListViewController.swift */; };
+		F7E33D632B2705EE00ACB8D9 /* ProfileUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D622B2705EE00ACB8D9 /* ProfileUpdateViewController.swift */; };
+		F7E33D652B27085500ACB8D9 /* ProfileUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D642B27085500ACB8D9 /* ProfileUpdateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +158,8 @@
 		F7E33D5C2B27010100ACB8D9 /* ProfileChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChildViewController.swift; sourceTree = "<group>"; };
 		F7E33D5E2B27017300ACB8D9 /* ProfileChileMyPostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostListViewController.swift; sourceTree = "<group>"; };
 		F7E33D602B27018700ACB8D9 /* ProfileChileMaPostCommentListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMaPostCommentListViewController.swift; sourceTree = "<group>"; };
+		F7E33D622B2705EE00ACB8D9 /* ProfileUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdateViewController.swift; sourceTree = "<group>"; };
+		F7E33D642B27085500ACB8D9 /* ProfileUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -505,6 +509,7 @@
 				F7E33D5C2B27010100ACB8D9 /* ProfileChildViewController.swift */,
 				F7E33D5E2B27017300ACB8D9 /* ProfileChileMyPostListViewController.swift */,
 				F7E33D602B27018700ACB8D9 /* ProfileChileMaPostCommentListViewController.swift */,
+				F7E33D622B2705EE00ACB8D9 /* ProfileUpdateViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -521,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				F7E33D4F2B26191B00ACB8D9 /* ProfileView.swift */,
+				F7E33D642B27085500ACB8D9 /* ProfileUpdateView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -618,6 +624,7 @@
 				F7095A232AFE3CC100F0218B /* SignInViewController.swift in Sources */,
 				F7B4094B2B07714F006CD373 /* LikeViewController.swift in Sources */,
 				F7E33D5F2B27017300ACB8D9 /* ProfileChileMyPostListViewController.swift in Sources */,
+				F7E33D632B2705EE00ACB8D9 /* ProfileUpdateViewController.swift in Sources */,
 				F7095A662B00F82200F0218B /* APIConstants.swift in Sources */,
 				F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */,
 				F72C69132B1C7148007B1F8F /* Extension+CALyer.swift in Sources */,
@@ -668,6 +675,7 @@
 				F7E33D4B2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift in Sources */,
 				F7E33D5D2B27010100ACB8D9 /* ProfileChildViewController.swift in Sources */,
 				F72C69112B1C4146007B1F8F /* CommentModel.swift in Sources */,
+				F7E33D652B27085500ACB8D9 /* ProfileUpdateView.swift in Sources */,
 				F7D6628E2B0DEDA70039E40F /* CommentCollectionViewCell.swift in Sources */,
 				F70959FB2AFE191900F0218B /* SceneDelegate.swift in Sources */,
 				F7095A352AFE662E00F0218B /* LoginInputView.swift in Sources */,

@@ -32,7 +32,7 @@ final class ProfileChildViewController: TabmanViewController {
         
         let bar = TMBar.ButtonBar()
         bar.layout.transitionStyle = .snap // Customize
-        bar.layout.contentInset = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+        bar.layout.contentInset = UIEdgeInsets(top: 5.0, left: 20.0, bottom: 0.0, right: 20.0)
         bar.buttons.customize { button in
             button.tintColor = .lightGray
             button.selectedTintColor = UIColor(resource: .text)

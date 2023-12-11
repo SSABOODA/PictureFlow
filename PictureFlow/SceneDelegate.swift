@@ -21,16 +21,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var isLoggedIn =  UserDefaultsManager.isLoggedIn
 //        isLoggedIn = false
 //        print("isLoggedIn: \(isLoggedIn)")
-        if !isLoggedIn {
-            // 로그인 상태 X
-            let vc = SignInViewController()
-            window?.rootViewController = vc
-        } else {
-            // 로그인 상태 O
-            let tabbarVC = CustomTabBarController()
-            window?.rootViewController = tabbarVC
-        }
+        
+        let vc = ProfileUpdateViewController()
+        window?.rootViewController = UINavigationController(rootViewController: vc)
         window?.makeKeyAndVisible()
+        
+//        if !isLoggedIn {
+//            // 로그인 상태 X
+//            let vc = SignInViewController()
+//            window?.rootViewController = vc
+//        } else {
+//            // 로그인 상태 O
+//            let tabbarVC = CustomTabBarController()
+//            window?.rootViewController = tabbarVC
+//        }
+//        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
