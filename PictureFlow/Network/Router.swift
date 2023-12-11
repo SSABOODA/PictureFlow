@@ -34,7 +34,8 @@ enum Router: URLRequestConvertible {
     case like(accessToken: String, postId: String)
     
     // User Profile
-    case userProfileRetrieve(accessToken: String)
+    case userProfileRetrieve(accessToken: String) // 유저 프로필 조회
+    case userProfileUpdate(accessToken: String, model: UserProfileUpdateRequest)
     
     
     /* baseURL */
@@ -67,6 +68,7 @@ enum Router: URLRequestConvertible {
             
         // user profile
         case .userProfileRetrieve: return "profile/me"
+        case .userProfileUpdate: return "profile/me"
         }
     }
     
@@ -125,6 +127,10 @@ enum Router: URLRequestConvertible {
         case .userProfileRetrieve(let accessToken):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+        case .userProfileUpdate(let accessToken, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            defaultHeader["Content-Type"] = "multipart/form-data"
+            return defaultHeader
         }
     }
     
@@ -154,6 +160,7 @@ enum Router: URLRequestConvertible {
             
         // user profile
         case .userProfileRetrieve: return .get
+        case .userProfileUpdate: return .put
         }
     }
     
@@ -207,6 +214,8 @@ enum Router: URLRequestConvertible {
             
         // user profile
         case .userProfileRetrieve: return nil
+        
+        default: return nil
         }
     }
     
@@ -220,7 +229,7 @@ enum Router: URLRequestConvertible {
         request.headers = header
         request.method = method
         
-        let re = try URLEncoding.default.encode(request, with: parameters)
+//        let re = try URLEncoding.default.encode(request, with: parameters)
 //        print("re: \(re)")
 //        print("method: \(re.httpMethod)")
 //        print("header: \(re.headers)")
@@ -258,6 +267,16 @@ extension Router {
                 "file": model.file
             ]
             return makeMultipartFormdata(params: params)
+            
+        case .userProfileUpdate(_, let model):
+            let params: [String: Any] = [
+                "nick": model.nick,
+                "phoneNum": model.phoneNum,
+                "birthDay": model.birthDay,
+                "profile": model.profile,
+            ]
+            return makeMultipartFormdata(params: params)
+            
         default: return MultipartFormData()
         }
     }

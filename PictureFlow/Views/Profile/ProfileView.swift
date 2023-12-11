@@ -23,26 +23,34 @@ final class ProfileView: UIView {
     
     let profileImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person")
-        view.contentMode = .scaleToFill
+        view.image = UIImage(named: "add-user")
+        view.tintColor = UIColor(resource: .tint)
+        view.backgroundColor = .lightGray
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
     let followerUserProfileImageView1 = {
         let view = UIImageView()
         view.image = UIImage(systemName: "person")
+        view.tintColor = UIColor(resource: .tint)
+        view.contentMode = .scaleToFill
         return view
     }()
     
     let followerUserProfileImageView2 = {
         let view = UIImageView()
         view.image = UIImage(systemName: "person")
+        view.tintColor = UIColor(resource: .tint)
+        view.contentMode = .scaleToFill
         return view
     }()
     
     let followerUserProfileImageView3 = {
         let view = UIImageView()
         view.image = UIImage(systemName: "person")
+        view.tintColor = UIColor(resource: .tint)
+        view.contentMode = .scaleToFill
         return view
     }()
 
@@ -65,9 +73,10 @@ final class ProfileView: UIView {
         configureHierarchy()
         configureLayout()
         
+        // 코난
         let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU1vlLWxAULVL6qo3QVjH9-c5KxHWJgk7U3eZWReHeig&s"
         if let imageURL = URL(string: urlString) {
-            profileImageView.kf.setImage(with: imageURL)
+            followerUserProfileImageView2.kf.setImage(with: imageURL)
         }
     }
     

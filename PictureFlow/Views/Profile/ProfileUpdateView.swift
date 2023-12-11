@@ -11,8 +11,11 @@ final class ProfileUpdateView: UIView {
     
     let profileImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person.fill")
+        view.image = UIImage(named: "add-user")
+        view.tintColor = UIColor(resource: .tint)
+        view.backgroundColor = .lightGray
         view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
@@ -26,7 +29,7 @@ final class ProfileUpdateView: UIView {
     
     let nicknameTextField = {
         let tf = UITextField()
-        tf.text = "ssabooda"
+        tf.placeholder = "닉네임을 입력해주세요"
         tf.textColor = UIColor(resource: .text)
         tf.font = .boldSystemFont(ofSize: 30)
         return tf
@@ -43,7 +46,7 @@ final class ProfileUpdateView: UIView {
     let phoneNumberTextField = {
         let tf = UITextField()
         tf.keyboardType = .numberPad
-        tf.text = "01012341234"
+        tf.placeholder = "전화번호을 입력해주세요"
         tf.textColor = UIColor(resource: .text)
         tf.font = .boldSystemFont(ofSize: 30)
         return tf
@@ -60,6 +63,7 @@ final class ProfileUpdateView: UIView {
     let birthdayTextField = {
         let tf = UITextField()
         tf.text = "1992.08.28"
+        tf.placeholder = "생년월일을 입력해주세요"
         tf.textColor = UIColor(resource: .text)
         tf.font = .boldSystemFont(ofSize: 30)
         return tf
@@ -71,10 +75,12 @@ final class ProfileUpdateView: UIView {
         configureHierarchy()
         configureLayout()
         
-        let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU1vlLWxAULVL6qo3QVjH9-c5KxHWJgk7U3eZWReHeig&s"
-        if let imageURL = URL(string: urlString) {
-            profileImageView.kf.setImage(with: imageURL)
-        }
+        
+        // 코난
+//        let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU1vlLWxAULVL6qo3QVjH9-c5KxHWJgk7U3eZWReHeig&s"
+//        if let imageURL = URL(string: urlString) {
+//            profileImageView.kf.setImage(with: imageURL)
+//        }
     }
     
     @available(*, unavailable)
@@ -99,7 +105,6 @@ final class ProfileUpdateView: UIView {
     }
     
     private func configureLayout() {
-        profileImageView.backgroundColor = .gray
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide).offset(30)

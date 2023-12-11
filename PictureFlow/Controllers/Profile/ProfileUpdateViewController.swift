@@ -6,28 +6,16 @@
 //
 
 import UIKit
+import PhotosUI
 import RxSwift
 import RxCocoa
 
-final class ProfileUpdateViewModel: ViewModelType {
-    struct Input {
-        
-    }
-    
-    struct Output {
-        
-    }
-    
-    var disposeBag = DisposeBag()
-    
-    func transform(input: Input) -> Output {
-        return Output()
-    }
-}
 
 final class ProfileUpdateViewController: UIViewController {
     let mainView = ProfileUpdateView()
     let viewModel = ProfileUpdateViewModel()
+    var disposeBag = DisposeBag()
+    var completionHandler: ((UserProfileUpdateResponse) -> Void)?
     
     override func loadView() {
         view = mainView
@@ -36,6 +24,123 @@ final class ProfileUpdateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
+        configureTextField()
+        configureView()
+        setupTapGestures()
+        bind()
+    }
+    
+    private func configureView() {
+        guard let profile = viewModel.profile else { return }
+        if let profile = profile.profile {
+            "\(BaseURL.baseURL)/\(profile)".loadImageByKingfisher(imageView: mainView.profileImageView)
+        }
+        mainView.nicknameTextField.text = profile.nick
+        mainView.phoneNumberTextField.text = profile.phoneNum
+        mainView.birthdayTextField.text = profile.birthDay
+    }
+    
+    private func bind() {
+        barButtonBind()
+        guard let successBarButton = navigationItem.rightBarButtonItem else { return }
+        let input = ProfileUpdateViewModel.Input(
+            nicknameTextFieldText: mainView.nicknameTextField.rx.text.orEmpty,
+            phoneNumberTextFieldText: mainView.phoneNumberTextField.rx.text.orEmpty,
+            birthDayTextFieldText: mainView.birthdayTextField.rx.text.orEmpty,
+            updateSuccessBarButtonTap: successBarButton.rx.tap
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.profileUpdateResponseObservable
+            .subscribe(with: self) { owner, profile in
+                owner.completionHandler?(profile)
+                owner.dismiss(animated: true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func barButtonBind() {
+        guard let cancelBarButton = navigationItem.leftBarButtonItem else { return }
+        cancelBarButton.rx.tap
+            .bind(with: self) { owner, _ in
+                owner.dismiss(animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+//        successBarButton.rx.tap
+//            .bind(with: self) { owner, _ in
+//                owner.dismiss(animated: true)
+//            }
+//            .disposed(by: disposeBag)
+    }
+    
+    private func configureTextField() {
+        mainView.nicknameTextField.becomeFirstResponder()
+    }
+}
+
+extension ProfileUpdateViewController: PHPickerViewControllerDelegate {
+    
+    func setupTapGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchUpImageView))
+        mainView.profileImageView.addGestureRecognizer(tapGesture)
+        mainView.profileImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc func touchUpImageView() {
+        print("이미지 뷰 터치")
+        
+        let alert = UIAlertController(
+            title: nil,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        
+        let library = UIAlertAction(title: "라이브러리에서 선택", style: .default) { [weak self] _ in
+            self?.setupImagePicker()
+        }
+        let remove = UIAlertAction(title: "현재 사진 삭제", style: .destructive) { [weak self] _ in
+            self?.mainView.profileImageView.image = UIImage(named: "add-user")
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in }
+        alert.addAction(library)
+        alert.addAction(remove)
+        alert.addAction(cancel)
+        present(alert, animated: true)
+    }
+    
+    func setupImagePicker() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .any(of: [.images])
+        
+        // 기본 설정을 가지고, 피커뷰컨트롤러 생성
+        let picker = PHPickerViewController(configuration: configuration)
+        
+        // 피커뷰 컨트롤러의 대리자 설정
+        picker.delegate = self
+        
+        // 피커뷰 띄우기
+        self.present(picker, animated: true, completion: nil)
+    }
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        // PickerView dismiss
+        picker.dismiss(animated: true)
+        let itemProvider = results.first?.itemProvider
+        
+        if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                DispatchQueue.main.async {
+                    guard let applyImage = image as? UIImage else { return }
+                    self.mainView.profileImageView.image = applyImage
+                    self.viewModel.profileImage.onNext(applyImage)
+                }
+            }
+        } else {
+            print("이미지 불러오기 실패")
+        }
     }
 }
 

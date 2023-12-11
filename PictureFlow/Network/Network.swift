@@ -204,7 +204,7 @@ final class Network {
                     completion(.success(data))
                 case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
-                    print("statusCode : \(statusCode)")
+                    print("statusCode: \(statusCode)")
                     let error = self.makeCustomErrorResponse(response: response, statusCode: statusCode)
                     completion(.failure(error))
                 }
@@ -224,7 +224,6 @@ final class Network {
             ).responseDecodable(of: T.self) { response in
                 switch response.result {
                 case .success(let data):
-//                    print(data)
                     single(.success(.success(data)))
                 case .failure(let error):
                     let statusCode = response.response?.statusCode ?? 500
@@ -266,7 +265,7 @@ final class Network {
 
 extension Network {
     private func makeCustomErrorResponse<T>(response: DataResponse<T, AFError>, statusCode: Int) -> CustomErrorResponse {
-        
+
         var customErrorResponse = CustomErrorResponse(statusCode: 500, message: "ServerError")
         guard let data = response.data else { return customErrorResponse }
         
@@ -284,36 +283,3 @@ extension Network {
         return customErrorResponse
     }
 }
-
-
-
-/*
- { multipartFormData in
-     // 기본타입 처리
-     multipartFormData.append(Data(model.title.utf8), withName: "title")
-     multipartFormData.append(Data(model.productId.utf8), withName: "product_id")
-     multipartFormData.append(Data(model.content.utf8), withName: "content")
-     multipartFormData.append(Data(model.content1.utf8), withName: "content1")
-     multipartFormData.append(Data(model.content2.utf8), withName: "content2")
-     multipartFormData.append(Data(model.content3.utf8), withName: "content3")
-     multipartFormData.append(Data(model.content4.utf8), withName: "content4")
-     multipartFormData.append(Data(model.content5.utf8), withName: "content5")
-     
-     // Date 처리
-//                    multipartFormData.append(Data(model.time?.toString().utf8 ?? "".utf8), withName: "time")
-
-     for image in images {
-         // UIImage 처리
-         print("multipart di image: \(image)")
-         multipartFormData.append(image.jpegData(compressionQuality: 1) ?? Data(),
-                                  withName: "file",
-                                  fileName: "image.jpeg",
-                                  mimeType: "image/jpeg")
-     }
-
-     // 배열 처리
-//                    let keywords =  try! JSONSerialization.data(withJSONObject: model.keywords, options: .prettyPrinted)
-//                    multipartFormData.append(keywords, withName: "keywords")
-
- },
- */
