@@ -17,6 +17,7 @@ final class ProfileView: UIView {
         let label = UILabel()
         label.text = "ssabooda"
         label.font = .boldSystemFont(ofSize: 30)
+        label.textColor = UIColor(resource: .text)
         return label
     }()
     
@@ -60,7 +61,7 @@ final class ProfileView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .black
+        backgroundColor = UIColor(resource: .bottomSheet)
         configureHierarchy()
         configureLayout()
         
@@ -105,7 +106,7 @@ final class ProfileView: UIView {
     private func configureLayout() {
         profileInfoView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            make.height.equalToSuperview().multipliedBy(0.13)
+            make.height.equalToSuperview().multipliedBy(0.15)
         }
         
         nickNameLabel.snp.makeConstraints { make in
