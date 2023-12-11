@@ -78,6 +78,8 @@
 		F7D6628E2B0DEDA70039E40F /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D6628D2B0DEDA70039E40F /* CommentCollectionViewCell.swift */; };
 		F7E33D4B2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D4A2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift */; };
 		F7E33D4D2B25CCB500ACB8D9 /* CommentUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D4C2B25CCB500ACB8D9 /* CommentUpdateViewController.swift */; };
+		F7E33D502B26191B00ACB8D9 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E33D4F2B26191B00ACB8D9 /* ProfileView.swift */; };
+		F7E33D5B2B26DE9400ACB8D9 /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = F7E33D5A2B26DE9400ACB8D9 /* Tabman */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,6 +149,7 @@
 		F7D6628D2B0DEDA70039E40F /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		F7E33D4A2B25968700ACB8D9 /* CommentStatusModifyBottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStatusModifyBottomSheetController.swift; sourceTree = "<group>"; };
 		F7E33D4C2B25CCB500ACB8D9 /* CommentUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentUpdateViewController.swift; sourceTree = "<group>"; };
+		F7E33D4F2B26191B00ACB8D9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7095A2F2AFE3EAC00F0218B /* RxSwift in Frameworks */,
+				F7E33D5B2B26DE9400ACB8D9 /* Tabman in Frameworks */,
 				F7095A3C2AFF713800F0218B /* IQKeyboardManagerSwift in Frameworks */,
 				F7095A2D2AFE3EAC00F0218B /* RxCocoa in Frameworks */,
 				F7095A482AFF887C00F0218B /* Alamofire in Frameworks */,
@@ -233,6 +237,7 @@
 		F7095A122AFE372100F0218B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F7E33D4E2B26191300ACB8D9 /* Profile */,
 				F72C690A2B1AF2D8007B1F8F /* Comment */,
 				F7B409592B09D992006CD373 /* Post */,
 				F7B409582B09D980006CD373 /* Sign */,
@@ -503,6 +508,14 @@
 			path = Like;
 			sourceTree = "<group>";
 		};
+		F7E33D4E2B26191300ACB8D9 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F7E33D4F2B26191B00ACB8D9 /* ProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -527,6 +540,7 @@
 				F7095A442AFF887100F0218B /* Kingfisher */,
 				F7095A472AFF887C00F0218B /* Alamofire */,
 				F7B409562B08D8B7006CD373 /* RxDataSources */,
+				F7E33D5A2B26DE9400ACB8D9 /* Tabman */,
 			);
 			productName = PictureFlow;
 			productReference = F70959F52AFE191900F0218B /* PictureFlow.app */;
@@ -563,6 +577,7 @@
 				F7095A432AFF887100F0218B /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F7095A462AFF887B00F0218B /* XCRemoteSwiftPackageReference "Alamofire" */,
 				F7B409552B08D8B6006CD373 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				F7E33D592B26DE9400ACB8D9 /* XCRemoteSwiftPackageReference "Tabman" */,
 			);
 			productRefGroup = F70959F62AFE191900F0218B /* Products */;
 			projectDirPath = "";
@@ -609,6 +624,7 @@
 				F7095A252AFE3CFC00F0218B /* SignUpViewController.swift in Sources */,
 				F7095A372AFE663E00F0218B /* LoginTextField.swift in Sources */,
 				F7B4095C2B09D9BC006CD373 /* PostListTableViewCell.swift in Sources */,
+				F7E33D502B26191B00ACB8D9 /* ProfileView.swift in Sources */,
 				F7B4095E2B09DA33006CD373 /* BasePostListImageCollectionViewCell.swift in Sources */,
 				F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
@@ -928,6 +944,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		F7E33D592B26DE9400ACB8D9 /* XCRemoteSwiftPackageReference "Tabman" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uias/Tabman.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -965,6 +989,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F7B409552B08D8B6006CD373 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		F7E33D5A2B26DE9400ACB8D9 /* Tabman */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7E33D592B26DE9400ACB8D9 /* XCRemoteSwiftPackageReference "Tabman" */;
+			productName = Tabman;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
