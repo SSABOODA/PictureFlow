@@ -82,7 +82,8 @@ final class PostUpdateViewModel: NewPostWriteViewModel {
         return Output(
             photoImageObservableList: photoImageObservableList,
             postWriteRequestObservable: postWriteRequestObservable,
-            successPostCreate: successPostCreate
+            successPostCreate: successPostCreate, 
+            userProfileObservable: userProfileObservable
         )
     }
    

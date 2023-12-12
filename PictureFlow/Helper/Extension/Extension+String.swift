@@ -58,6 +58,7 @@ extension String {
             imageView.kf.indicatorType = .activity
             imageView.kf.setImage(
                 with: imageURL,
+//                placeholder: UIImage(named: "user"),
                 options: [.requestModifier(self.imageDownloadRequest())]
             )
         }

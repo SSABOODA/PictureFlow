@@ -232,6 +232,7 @@ class NewPostWriteViewModel: ViewModelType {
         let photoImageObservableList: BehaviorSubject<[UIImage]>
         let postWriteRequestObservable: PublishSubject<PostWriteRequest>
         let successPostCreate: BehaviorRelay<Bool>
+        let userProfileObservable: PublishSubject<UserInfo>
     }
     
     var disposeBag = DisposeBag()
@@ -244,12 +245,48 @@ class NewPostWriteViewModel: ViewModelType {
         content2: ""
     )
     
+    var initTokenObservable = PublishSubject<String>()
+    
+    var userProfileObservable = PublishSubject<UserInfo>()
+    
     var photoImageList = [UIImage]()
     var photoImageObservableList = BehaviorSubject<[UIImage]>(value: [])
     var postWriteRequestObservable = PublishSubject<PostWriteRequest>()
     var successPostCreate = BehaviorRelay(value: false)
+
+    func fetchProfilData() {
+        if let token = KeyChain.read(key: APIConstants.accessToken) {
+            print("🔑 토큰 확인: \(token)")
+            initTokenObservable.onNext(token)
+        } else {
+            print("토큰 확인 실패")
+        }
+    }
     
     func transform(input: Input) -> Output {
+        initTokenObservable
+            .flatMap { token in
+                Network.shared.requestObservableConvertible(
+                    type: UserProfileRetrieveResponse.self,
+                    router: .userProfileRetrieve(accessToken: token)
+                )
+            }
+            .subscribe(with: self) { owner, response in
+                switch response {
+                case .success(let data):
+                    print(data)
+                    let userInfo = UserInfo(
+                        _id: data._id,
+                        nick: data.nick,
+                        profile: data.profile
+                    )
+                    owner.userProfileObservable.onNext(userInfo)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         Observable.combineLatest(
             input.postContentText,
             photoImageObservableList
@@ -297,7 +334,8 @@ class NewPostWriteViewModel: ViewModelType {
         return Output(
             photoImageObservableList: photoImageObservableList, 
             postWriteRequestObservable: postWriteRequestObservable,
-            successPostCreate: successPostCreate
+            successPostCreate: successPostCreate,
+            userProfileObservable: userProfileObservable
         )
     }
 }
@@ -313,10 +351,15 @@ class NewPostWriteViewController: UIViewController {
         configureNavigationBar()
         configureTextView()
         bind()
+        updateDataSource()
     }
     
     override func loadView() {
         view = mainView
+    }
+    
+    private func updateDataSource() {
+        viewModel.fetchProfilData()
     }
     
     private func bind() {
@@ -335,6 +378,17 @@ class NewPostWriteViewController: UIViewController {
         )
         
         let output = viewModel.transform(input: input)
+        
+        output.userProfileObservable
+            .subscribe(with: self) { owner, userProfile in
+                owner.mainView.nicknameLabel.text = userProfile.nick
+                
+                if let profileImageURL = userProfile.profile {
+                    "\(BaseURL.baseURL)/\(profileImageURL)".loadImageByKingfisher(imageView: owner.mainView.profileImageView)
+                }
+                
+            }
+            .disposed(by: disposeBag)
         
         output.photoImageObservableList
             .subscribe(with: self) { owner, imageList in
