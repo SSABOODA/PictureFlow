@@ -11,7 +11,7 @@ import RxCocoa
 import RxDataSources
 import Kingfisher
 
-final class PostListViewController: UIViewController {
+class PostListViewController: UIViewController {
     
     let mainView = PostListView()
     let viewModel = PostListViewModel()

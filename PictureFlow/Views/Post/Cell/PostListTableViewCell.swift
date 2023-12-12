@@ -181,7 +181,7 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(10)
             make.trailing.equalTo(nicknameLabel.snp.leading).offset(-10)
-            make.size.equalTo(30)
+            make.size.equalTo(40)
         }
         
         leftDividLineView.snp.makeConstraints { make in
