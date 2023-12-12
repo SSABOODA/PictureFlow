@@ -38,7 +38,6 @@ final class ProfileUpdateViewModel: ViewModelType {
 
         )
         .subscribe(with: self) { owner, profile in
-            print("⭐️ profile: \(profile)")
             let profile = UserProfileUpdateRequest(
                 nick: profile.0,
                 phoneNum: profile.1,

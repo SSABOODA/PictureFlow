@@ -48,6 +48,8 @@ extension ProfileChildViewController: PageboyViewControllerDataSource, TMBarData
     func barItem(for bar: Tabman.TMBar, at index: Int) -> Tabman.TMBarItemable {
         let item = TMBarItem(title: "")
         
+        print("tab man index: \(index)")
+        
         if index == 0 {
             item.title = "게시글"
         } else if index == 1 {
@@ -56,7 +58,6 @@ extension ProfileChildViewController: PageboyViewControllerDataSource, TMBarData
             item.title = "기타"
         }
     
-        item.image = UIImage(named: "image.png")
         return item
     }
     

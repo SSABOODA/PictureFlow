@@ -10,10 +10,11 @@ import UIKit
 final class ProfileChileMyPostListEmptyView: UIView {
     let firstStartButton = {
         let button = UIButton()
-        button.setTitle("  첫 이야기를 시작해보세요...  ", for: .normal)
+        button.setTitle("  첫 이야기 시작...  ", for: .normal)
         button.backgroundColor = UIColor(resource: .background)
+        button.setTitleColor(UIColor(resource: .text), for: .normal)
+        button.layer.borderColor = UIColor.lightGray.cgColor
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor(resource: .tint).cgColor
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
         return button
@@ -37,22 +38,33 @@ final class ProfileChileMyPostListEmptyView: UIView {
     func configureLayout() {
         firstStartButton.snp.makeConstraints { make in
             make.center.equalToSuperview()
-//            make.width.equalToSuperview().multipliedBy(0.7)
             make.height.equalTo(35)
         }
     }
 }
 
 final class ProfileChileMyPostListView: UIView {
+    let firstStartButton = {
+        let button = UIButton()
+        button.setTitle("  첫 이야기 시작...  ", for: .normal)
+        button.backgroundColor = UIColor(resource: .background)
+        button.setTitleColor(UIColor(resource: .text), for: .normal)
+        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
+        return button
+    }()
+    
     let tableView = {
         let view = UITableView()
         view.register(
-            ProfileChileMyPostListTableViewCell.self,
-            forCellReuseIdentifier: ProfileChileMyPostListTableViewCell.description()
+            PostListTableViewCell.self,
+            forCellReuseIdentifier: PostListTableViewCell.description()
         )
-        view.backgroundColor = .orange
-        view.rowHeight = 80
-//        view.separatorStyle = .none
+        view.backgroundColor = UIColor(resource: .background)
+        view.rowHeight = UITableView.automaticDimension
+        view.estimatedRowHeight = 100
         return view
     }()
     
@@ -70,11 +82,17 @@ final class ProfileChileMyPostListView: UIView {
     
     func configureHierarchy() {
         addSubview(tableView)
+        tableView.addSubview(firstStartButton)
     }
     
     func configureLayout() {
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
+        }
+        
+        firstStartButton.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalTo(35)
         }
     }
     

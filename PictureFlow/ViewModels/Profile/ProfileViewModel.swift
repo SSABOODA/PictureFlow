@@ -37,7 +37,6 @@ final class ProfileViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print(data)
                     owner.UserProfile = data
                     owner.UserProfileObservableData.onNext(data)
                 case .failure(let error):

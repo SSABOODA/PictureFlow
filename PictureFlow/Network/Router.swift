@@ -35,7 +35,8 @@ enum Router: URLRequestConvertible {
     
     // User Profile
     case userProfileRetrieve(accessToken: String) // 유저 프로필 조회
-    case userProfileUpdate(accessToken: String, model: UserProfileUpdateRequest)
+    case userProfileUpdate(accessToken: String, model: UserProfileUpdateRequest) // 유저 프로필 업데이트
+    case userProfileMyPostList(accessToken: String, userId: String, next: String? = "", limit: String? = "", product_id: String? = "") // 유저별 작성한 게시글 조회
     
     
     /* baseURL */
@@ -69,6 +70,7 @@ enum Router: URLRequestConvertible {
         // user profile
         case .userProfileRetrieve: return "profile/me"
         case .userProfileUpdate: return "profile/me"
+        case .userProfileMyPostList(_, let userId, _, _, _): return "post/user/\(userId)"
         }
     }
     
@@ -131,6 +133,9 @@ enum Router: URLRequestConvertible {
             defaultHeader[APIConstants.authorization] = accessToken
             defaultHeader["Content-Type"] = "multipart/form-data"
             return defaultHeader
+        case .userProfileMyPostList(let accessToken, _, _, _, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
         }
     }
     
@@ -161,6 +166,7 @@ enum Router: URLRequestConvertible {
         // user profile
         case .userProfileRetrieve: return .get
         case .userProfileUpdate: return .put
+        case .userProfileMyPostList: return .get
         }
     }
     
@@ -214,6 +220,12 @@ enum Router: URLRequestConvertible {
             
         // user profile
         case .userProfileRetrieve: return nil
+        case .userProfileMyPostList(_, _, let next, let limit, let product_id):
+            return [
+                "next": next ?? "",
+                "limit": limit ?? "",
+                "product_id": product_id ?? "",
+            ]
         
         default: return nil
         }

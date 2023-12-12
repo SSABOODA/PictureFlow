@@ -72,6 +72,14 @@ struct UserProfileUpdateResponse: Decodable {
 }
 
 
+/*
+ 유저별 작성한 게시글 조회
+ */
+
+struct UserProfileMyPostListResponse: Decodable {
+    let data: [PostList]
+}
+
 
 
 

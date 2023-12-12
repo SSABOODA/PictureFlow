@@ -27,4 +27,15 @@ extension UIColor {
     }
 }
 
-
+// Dark Mode
+extension UIColor {
+    static var labelColor: UIColor {
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            if traitCollection.userInterfaceStyle == .light {
+                return .black
+            } else {
+                return .white
+            }
+        }
+    }
+}
