@@ -19,7 +19,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         label.font = .boldSystemFont(ofSize: 18)
         label.numberOfLines = 1
         label.textColor = UIColor(resource: .text)
-        label.text = "sssabooda"
+        label.text = "Unknown"
         return label
     }()
     

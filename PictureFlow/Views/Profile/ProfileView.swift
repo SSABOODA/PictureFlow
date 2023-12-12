@@ -68,10 +68,9 @@ final class ProfileView: UIView {
         return view
     }()
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .bottomSheet)
+        backgroundColor = UIColor(resource: .postStatusModify)
         configureHierarchy()
         configureLayout()
         
@@ -133,7 +132,8 @@ final class ProfileView: UIView {
         }
 
         followerUserProfileImageView1.snp.makeConstraints { make in
-            make.bottom.equalTo(profileImageView.snp.bottom)
+//            make.bottom.equalTo(profileImageView.snp.bottom) // 이미지 뷰 아래랑 같게
+            make.top.equalTo(nickNameLabel.snp.bottom).offset(10)
             make.leading.equalTo(nickNameLabel.snp.leading)
             make.size.equalTo(20)
         }

@@ -147,5 +147,15 @@ extension ProfileViewController {
         navigationItem.rightBarButtonItems?.forEach({ item in
             item.tintColor = UIColor(resource: .tint)
         })
+        
+        let backBarButtonItem = UIBarButtonItem(
+            title: self.navigationItem.title,
+            style: .plain,
+            target: self,
+            action: nil
+        )
+        backBarButtonItem.tintColor = .black
+        self.navigationItem.backBarButtonItem = backBarButtonItem
     }
 }
+

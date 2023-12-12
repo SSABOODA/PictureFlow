@@ -6,11 +6,24 @@
 //
 
 import UIKit
+import RxSwift
 
 final class ProfileChileMaPostCommentListViewController: UIViewController {
+    let mainView = ProfileChileMyPostCommentListView()
+    let viewModel = ProfileChileMaPostCommentListViewModel()
+    
+    override func loadView() {
+        view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(resource: .background)
+        print(#function, "ProfileChileMaPostCommentListViewController")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // update datasource
     }
 }
 

@@ -61,5 +61,36 @@ final class ProfileChileMyPostListViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.fetchProfileMyPostListData()
+        
+        
+        Observable.zip(
+            mainView.tableView.rx.itemSelected,
+            mainView.tableView.rx.modelSelected(PostList.self)
+        )
+            .map {
+                let item = $0.1
+                return PostList(
+                    _id: item._id,
+                    likes: item.likes,
+                    image: item.image,
+                    title: item.title,
+                    content: item.content,
+                    time: item.time,
+                    productID: item.productID,
+                    creator: item.creator,
+                    comments: item.comments
+                )
+            }
+            .subscribe(with: self) { owner, value in
+                print("cell clicked")
+                let vc = PostDetailViewController()
+                vc.viewModel.postList = value
+                owner.transition(viewController: vc, style: .push)
+            }
+            .disposed(by: disposeBag)
     }
+}
+
+extension ProfileChileMyPostListViewController {
+    
 }
