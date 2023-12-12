@@ -307,6 +307,7 @@ extension Router {
             
             if let temp = value as? UIImage {
                 print("multipart image: \(temp)")
+                let a = temp.jpegData(compressionQuality: 0.1)
                 multipartFormData.append(temp.jpegData(compressionQuality: 0.1) ?? Data(),
                                          withName: imageFileName,
                                          fileName: "image.jpeg",

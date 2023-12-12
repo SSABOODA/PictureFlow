@@ -238,11 +238,13 @@ final class PostListTableViewCell: UITableViewCell {
         updateCollectionViewHeight(isEmpty: elements.image.isEmpty)
         
         // Profile Image
-        if !elements.image.isEmpty {
-            let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
+        if let profileImageURL = elements.creator.profile {
+            let imageURL = "\(BaseURL.baseURL)/\(profileImageURL)"
             imageURL.loadImageByKingfisher(imageView: profileImageView)
+        } else {
+            profileImageView.image = UIImage(named: "user")
         }
-        
+
         // 시간 작업
         let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
         

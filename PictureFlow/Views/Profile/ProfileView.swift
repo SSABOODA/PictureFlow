@@ -27,6 +27,8 @@ final class ProfileView: UIView {
         view.tintColor = UIColor(resource: .tint)
         view.backgroundColor = .lightGray
         view.contentMode = .scaleAspectFill
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.clear.cgColor
         return view
     }()
     

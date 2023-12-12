@@ -16,6 +16,8 @@ final class ProfileUpdateView: UIView {
         view.backgroundColor = .lightGray
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.clear.cgColor
         return view
     }()
     
