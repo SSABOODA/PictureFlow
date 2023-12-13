@@ -15,20 +15,23 @@ final class FollowViewController: UIViewController {
     let viewModel = FollowViewModel()
     var disposeBag = DisposeBag()
     
+    
     override func loadView() {
         view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
         bind()
         self.viewModel.fetchProfilData()
     }
     
     private func bind() {
-        let input = FollowViewModel.Input()
+        let input = FollowViewModel.Input(
+            followButtonTap: mainView.followButton.rx.tap
+        )
         let output = viewModel.transform(input: input)
+
         output.userProfileObservableData
             .subscribe(with: self) { owner, profileData in
                 owner.mainView.nickNameLabel.text = profileData.nick
@@ -52,21 +55,8 @@ final class FollowViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        
     }
     
 }
-
-extension FollowViewController {
-    private func configureNavigationBar() {
-        let followButton = UIBarButtonItem(
-            title: "팔로우",
-            style: .plain,
-            target: self,
-            action: nil
-        )
-        
-        navigationItem.rightBarButtonItem = followButton
-        navigationItem.rightBarButtonItem?.tintColor = UIColor(resource: .text)
-    }
-}
-

@@ -34,6 +34,10 @@ enum Router: URLRequestConvertible {
     // Like
     case like(accessToken: String, postId: String)
     
+    // follow
+    case follow(accessToken: String, userId: String)
+    case unfollow(accessToken: String, userId: String)
+    
     // User Profile
     case userProfileRetrieve(accessToken: String) // 유저 프로필 조회
     case userProfileUpdate(accessToken: String, model: UserProfileUpdateRequest) // 유저 프로필 업데이트
@@ -69,6 +73,10 @@ enum Router: URLRequestConvertible {
             
         // like
         case .like(_, let postId): return "post/like/\(postId)"
+            
+        // follow
+        case .follow(_, let userId): return "follow/\(userId)"
+        case .unfollow(_, let userId): return "follow/\(userId)"
             
         // user profile
         case .userProfileRetrieve: return "profile/me"
@@ -132,6 +140,14 @@ enum Router: URLRequestConvertible {
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
             
+        // follow
+        case .follow(let accessToken, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
+        case .unfollow(let accessToken, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
+            
         // user profile
         case .userProfileRetrieve(let accessToken):
             defaultHeader[APIConstants.authorization] = accessToken
@@ -170,6 +186,10 @@ enum Router: URLRequestConvertible {
             
         // like
         case .like: return .post
+            
+        // follow
+        case .follow: return .post
+        case .unfollow: return .delete
             
         // user profile
         case .userProfileRetrieve: return .get

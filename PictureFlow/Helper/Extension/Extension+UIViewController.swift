@@ -7,6 +7,22 @@
 
 import UIKit
 import RxSwift
+
+/*
+ activity indicator
+ */
+
+extension UIViewController {
+    func setVisibleWithAnimation(_ v: UIView?, _ s: Bool) {
+        guard let v = v else { return }
+        UIView.animate(withDuration: 0.3, animations: { [weak v] in
+            v?.isHidden = !s
+        }, completion: { [weak self] _ in
+            self?.view.layoutIfNeeded()
+        })
+    }
+}
+
 /*
  UISheetPresentationController
  */
@@ -14,9 +30,9 @@ import RxSwift
 extension UIViewController {
     func makeCustomSheetPresentationController(sheetVC: UIViewController) {
         if #available(iOS 16.0, *) {
-            let detentIdentifier = UISheetPresentationController.Detent.Identifier("customDetent")
+            let _ = UISheetPresentationController.Detent.Identifier("customDetent")
             let customDetent = UISheetPresentationController.Detent.custom(identifier: .init("customDetent")) { _ in
-                return UIScreen.main.bounds.width * 0.4
+                return UIScreen.main.bounds.width * 0.45
             }
             
             if let sheet = sheetVC.sheetPresentationController {
@@ -26,7 +42,7 @@ extension UIViewController {
 
         } else {
             if let sheet = sheetVC.sheetPresentationController {
-                sheet.prefersGrabberVisible = true
+//                sheet.prefersGrabberVisible = true
                 sheet.detents = [.medium()]
             }
         }

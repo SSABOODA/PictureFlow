@@ -110,7 +110,6 @@ class ProfileView: UIView {
         profileInfoView.addSubview(followerUserProfileImageView2)
         profileInfoView.addSubview(followerUserProfileImageView3)
         profileInfoView.addSubview(followerLabel)
-//        addSubview(bottomView)
     }
     
     func configureLayoutView() {

@@ -22,11 +22,13 @@ final class PostListView: UIView {
     }()
     
     let refreshControl: UIRefreshControl = UIRefreshControl()
+    let activityIndicator = UIActivityIndicatorView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(resource: .background)
         configureHierarchy()
+        configureLayout()
     }
     
     @available(*, unavailable)
@@ -36,9 +38,18 @@ final class PostListView: UIView {
     
     private func configureHierarchy() {
         addSubview(tableView)
+        tableView.addSubview(activityIndicator)
+        
+    }
+    
+    private func configureLayout() {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide)
             make.horizontalEdges.bottom.equalToSuperview()
+        }
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }

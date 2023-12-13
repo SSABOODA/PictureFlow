@@ -25,7 +25,7 @@ class ProfileImageView: UIImageView {
         layer.masksToBounds = true
         layer.borderWidth = 1
         layer.borderColor = UIColor.clear.cgColor
-        backgroundColor = UIColor(resource: .tint)
+        backgroundColor = .white
         tintColor = UIColor(resource: .background)
         contentMode = .scaleAspectFill
         isUserInteractionEnabled = true

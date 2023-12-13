@@ -7,9 +7,13 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 final class FollowViewModel: ViewModelType {
-    struct Input {}
+    struct Input {
+        let followButtonTap: ControlEvent<Void>
+    }
+    
     struct Output {
         let initTokenObservable: PublishSubject<String>
         let userProfileObservableData: PublishSubject<OtherUserProfileRetrieve>
@@ -23,6 +27,35 @@ final class FollowViewModel: ViewModelType {
     var postUserId: String = ""
     
     func transform(input: Input) -> Output {
+        input.followButtonTap
+            .scan(false) { lastState, newState in !lastState }
+            .map { isFollow in
+                print("isFollow: \(isFollow)")
+            }
+            .bind(with: self) { owner, _ in
+                print(123)
+            }
+            .disposed(by: disposeBag)
+//            .flatMap {
+//                Network.shared.requestObservableConvertible(
+//                    type: FollowResponse.self,
+//                    router: .follow(
+//                        accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
+//                        userId: self.postUserId
+//                    )
+//                )
+//            }
+//            .subscribe(with: self) { owner, response in
+//                switch response {
+//                case .success(let data):
+//                    print(data)
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//            .disposed(by: disposeBag)
+        
+        
         initTokenObservable
             .flatMap { token in
                 Network.shared.requestObservableConvertible(
@@ -36,7 +69,6 @@ final class FollowViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    dump(data)
                     owner.userProfile = data
                     owner.userProfileObservableData.onNext(data)
                 case .failure(let error):

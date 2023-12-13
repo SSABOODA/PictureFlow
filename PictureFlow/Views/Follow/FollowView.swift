@@ -8,14 +8,32 @@
 import UIKit
 
 final class FollowView: ProfileView {
+    
+    let followButton = {
+        let button = UIButton()
+        button.setTitle("팔로우", for: .normal)
+        button.setTitleColor(UIColor(resource: .text), for: .normal)
+        button.layer.cornerRadius = 15
+        button.clipsToBounds = true
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.backgroundColor = UIColor(resource: .postStatusModify)
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .background)
+        backgroundColor = UIColor(resource: .bottomSheet)
+    }
+
+    override func configureHierarchyView() {
+        super.configureHierarchyView()
+        profileInfoView.addSubview(followButton)
     }
    
     override func configureLayoutView() {
         profileInfoView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
+            make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.height.equalToSuperview()
         }
         
@@ -26,7 +44,7 @@ final class FollowView: ProfileView {
         }
         
         profileImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.top.equalTo(profileInfoView.snp.top).offset(30)
             make.trailing.equalToSuperview().offset(-20)
             make.size.equalTo(80)
         }
@@ -52,6 +70,13 @@ final class FollowView: ProfileView {
         followerLabel.snp.makeConstraints { make in
             make.centerY.equalTo(followerUserProfileImageView3.snp.centerY)
             make.leading.equalTo(followerUserProfileImageView3.snp.trailing).offset(10)
+        }
+        
+        followButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalToSuperview().multipliedBy(0.2)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-5)
         }
     }
 }

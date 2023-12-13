@@ -24,10 +24,9 @@ class PostListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function, PostListViewController.description())
-        navigationItem.title = "FLOW"
+        configureNavigationBar()
         bind()
         configureRefreshControl()
-        setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .tint))
         
         printAccessToken() // @Deprecated
     }
@@ -45,7 +44,7 @@ class PostListViewController: UIViewController {
 //        print("refreshToken: \(refreshToken)")
     }
     
-    func configureRefreshControl() {
+    private func configureRefreshControl() {
         mainView.refreshControl.endRefreshing()
         mainView.tableView.refreshControl = mainView.refreshControl
         
@@ -65,13 +64,22 @@ class PostListViewController: UIViewController {
         let input = PostListViewModel.Input()
         let output = viewModel.transform(input: input)
         
-        output.refreshLoading
-            .bind(to: mainView.refreshControl.rx.isRefreshing)
-            .disposed(by: disposeBag)
-        
         output.errorResponse
             .subscribe(with: self) { owner, error in
                 print("postListVC error: \(error.message) \(error.statusCode)")
+            }
+            .disposed(by: disposeBag)
+        
+        // pull to refresh
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+
+        // activityIndicator
+        output.activityLoaing
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, visible in
+                owner.setVisibleWithAnimation(owner.mainView.activityIndicator, visible)
             }
             .disposed(by: disposeBag)
         
@@ -84,28 +92,25 @@ class PostListViewController: UIViewController {
                     cell.configureCell(with: element)
                     
                     // 팔로우 버튼
-                    if element.creator._id == UserDefaultsManager.userID {
-                        cell.profileFlollowCheckButtonView.isHidden = true
-                    }
+                    cell.profileFlollowCheckButtonView.isHidden = element.creator._id == UserDefaultsManager.userID ? true : false
                     
                     // 게시글이 나이면 +, v 버튼 hidden true하고 간단한 프로필 바터시트 띄우기
                     // 게시글이 내가 아니면 +, v 버튼 hidden false하고 간단한 프로필 띄우면서 팔로우 버튼 만들기
-                    
                     let tapGesture = UITapGestureRecognizer()
                     cell.profileImageView.addGestureRecognizer(tapGesture)
                     
                     tapGesture.rx.event.bind(with: self) { owner, tap in
                         print("image view did tapppp")
-                        if element.creator._id == UserDefaultsManager.userID {}
-                        let follwSheetVC = FollowViewController()
-                        follwSheetVC.viewModel.postUserId = element.creator._id
-                        let nav = UINavigationController(rootViewController: follwSheetVC)
-                        owner.makeCustomSheetPresentationController(sheetVC: nav)
-                        
+                        if element.creator._id == UserDefaultsManager.userID {
+                            let vc = ProfileViewController()
+                            owner.transition(viewController: vc, style: .push)
+                        } else {
+                            let follwSheetVC = FollowViewController()
+                            follwSheetVC.viewModel.postUserId = element.creator._id
+                            owner.makeCustomSheetPresentationController(sheetVC: follwSheetVC)
+                        }
                     }
                     .disposed(by: cell.disposeBag)
-                    
-
                     
                     // 좋아요 버튼
                     var likeCount = element.likes.count
@@ -237,5 +242,14 @@ class PostListViewController: UIViewController {
             .disposed(by: disposeBag)
         
         
+    }
+}
+
+
+
+extension PostListViewController {
+    private func configureNavigationBar() {
+        navigationItem.title = "FLOW"
+        setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .tint))
     }
 }

@@ -17,6 +17,7 @@ final class PostListViewModel: ViewModelType {
         let postListItem: PublishSubject<[PostList]>
         let errorResponse: PublishSubject<CustomErrorResponse>
         let refreshLoading: PublishRelay<Bool>
+        let activityLoaing: BehaviorRelay<Bool>
     }
     
     var disposeBag = DisposeBag()
@@ -28,11 +29,12 @@ final class PostListViewModel: ViewModelType {
     let tokenObservable = BehaviorSubject<String>(value: "")
     let errorResponse = PublishSubject<CustomErrorResponse>()
     let refreshLoading = PublishRelay<Bool>()
+    let activityLoaing = BehaviorRelay(value: true)
     
     func transform(input: Input) -> Output {
         
         self.updateDateSource()
-        
+
         tokenObservable
             .flatMap {
                 Network.shared.requestObservableConvertible(
@@ -48,6 +50,7 @@ final class PostListViewModel: ViewModelType {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let data):
+                    owner.activityLoaing.accept(false)
                     owner.nextCursor = data.nextCursor
                     owner.postListDataSource = data.data
                     owner.postListItem.onNext(owner.postListDataSource)
@@ -61,7 +64,8 @@ final class PostListViewModel: ViewModelType {
         return Output(
             postListItem: postListItem,
             errorResponse: errorResponse,
-            refreshLoading: refreshLoading
+            refreshLoading: refreshLoading,
+            activityLoaing: activityLoaing
         )
     }
     
