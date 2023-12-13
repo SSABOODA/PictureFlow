@@ -17,6 +17,7 @@ final class FollowViewModel: ViewModelType {
     struct Output {
         let initTokenObservable: PublishSubject<String>
         let userProfileObservableData: PublishSubject<OtherUserProfileRetrieve>
+        let isFollow: BehaviorRelay<Bool>
     }
     var disposeBag = DisposeBag()
     
@@ -24,25 +25,40 @@ final class FollowViewModel: ViewModelType {
     var userProfile: OtherUserProfileRetrieve? = nil
     var userProfileObservableData = PublishSubject<OtherUserProfileRetrieve>()
     
+    var isFollow = BehaviorRelay(value: false)
+    
     var postUserId: String = ""
     
     func transform(input: Input) -> Output {
         input.followButtonTap
+            .withLatestFrom(isFollow)
             .scan(false) { lastState, newState in !lastState }
             .map { isFollow in
+                // true: 팔로우, false: 언팔로우
                 print("isFollow: \(isFollow)")
+                print("isFollowRelay: \(self.isFollow.value)")
+                
+                if isFollow == self.isFollow.value {
+                    self.isFollow.accept(!isFollow)
+                    return !isFollow
+                }
+                
+                self.isFollow.accept(isFollow)
+                return isFollow
             }
-            .bind(with: self) { owner, _ in
-                print(123)
-            }
+            .bind(with: self, onNext: { owner, _ in
+            })
             .disposed(by: disposeBag)
+        
+        
+//            .map { v -> Router in
+//                let token = KeyChain.read(key: APIConstants.accessToken) ?? ""
+//                return v ? .follow(accessToken: token, userId: self.postUserId) : .unfollow(accessToken: token, userId: self.postUserId)
+//            }
 //            .flatMap {
 //                Network.shared.requestObservableConvertible(
 //                    type: FollowResponse.self,
-//                    router: .follow(
-//                        accessToken: KeyChain.read(key: APIConstants.accessToken) ?? "",
-//                        userId: self.postUserId
-//                    )
+//                    router: $0
 //                )
 //            }
 //            .subscribe(with: self) { owner, response in
@@ -54,7 +70,7 @@ final class FollowViewModel: ViewModelType {
 //                }
 //            }
 //            .disposed(by: disposeBag)
-        
+            
         
         initTokenObservable
             .flatMap { token in
@@ -79,7 +95,8 @@ final class FollowViewModel: ViewModelType {
         
         return Output(
             initTokenObservable: initTokenObservable,
-            userProfileObservableData: userProfileObservableData
+            userProfileObservableData: userProfileObservableData,
+            isFollow: isFollow
         )
     }
     

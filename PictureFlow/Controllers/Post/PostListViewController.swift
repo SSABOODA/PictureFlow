@@ -94,8 +94,8 @@ class PostListViewController: UIViewController {
                     // 팔로우 버튼
                     cell.profileFlollowCheckButtonView.isHidden = element.creator._id == UserDefaultsManager.userID ? true : false
                     
-                    // 게시글이 나이면 +, v 버튼 hidden true하고 간단한 프로필 바터시트 띄우기
-                    // 게시글이 내가 아니면 +, v 버튼 hidden false하고 간단한 프로필 띄우면서 팔로우 버튼 만들기
+                    // TODO: 게시글이 나이면 +, v 버튼 hidden true하고 간단한 프로필 바터시트 띄우기
+                    // TODO: 게시글이 내가 아니면 +, v 버튼 hidden false하고 간단한 프로필 띄우면서 팔로우 버튼 만들기
                     let tapGesture = UITapGestureRecognizer()
                     cell.profileImageView.addGestureRecognizer(tapGesture)
                     

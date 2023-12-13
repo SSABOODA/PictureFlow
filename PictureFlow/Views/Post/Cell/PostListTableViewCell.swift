@@ -24,14 +24,13 @@ final class PostListTableViewCell: UITableViewCell {
     
     let profileFlollowCheckButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark"), for: .normal) // checkmark
+        button.setImage(UIImage(systemName: "plus"), for: .normal) // checkmark
         button.backgroundColor = UIColor(resource: .text)
         button.tintColor = UIColor(resource: .background)
         button.clipsToBounds = true
         button.isUserInteractionEnabled = false
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 13, left: 13, bottom: 13, right: 13)
-        
         return button
     }()
     

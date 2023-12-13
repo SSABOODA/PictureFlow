@@ -17,13 +17,13 @@ final class FollowView: ProfileView {
         button.clipsToBounds = true
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.lightGray.cgColor
-        button.backgroundColor = UIColor(resource: .postStatusModify)
+        button.backgroundColor = UIColor(resource: .bottomSheet)
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(resource: .bottomSheet)
+        backgroundColor = UIColor(resource: .background)
     }
 
     override func configureHierarchyView() {
@@ -75,8 +75,9 @@ final class FollowView: ProfileView {
         followButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-15)
-            make.height.equalToSuperview().multipliedBy(0.2)
-            make.bottom.equalTo(safeAreaLayoutGuide).offset(-5)
+            make.height.equalTo(UIScreen.main.bounds.height * 0.05)
+            make.top.equalTo(profileImageView.snp.bottom).offset(15)
+//            make.bottom.equalTo(safeAreaLayoutGuide).offset(-5)
         }
     }
 }

@@ -36,8 +36,8 @@ extension UIViewController {
             }
             
             if let sheet = sheetVC.sheetPresentationController {
-//                sheet.prefersGrabberVisible = true
-                sheet.detents = [customDetent]
+                sheet.prefersGrabberVisible = true
+                sheet.detents = [customDetent, .medium()]
             }
 
         } else {
