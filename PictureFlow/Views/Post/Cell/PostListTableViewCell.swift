@@ -96,6 +96,7 @@ final class PostListTableViewCell: UITableViewCell {
         return button
     }()
     
+    
     lazy var functionButtonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             likeButton,
@@ -104,10 +105,11 @@ final class PostListTableViewCell: UITableViewCell {
             shareButton,
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 20
+        stackView.spacing = 15
         stackView.distribution = .fillEqually
         return stackView
     }()
+    
     
     let commentCountButton = {
         let button = UIButton()
@@ -214,7 +216,7 @@ final class PostListTableViewCell: UITableViewCell {
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(5)
+            make.top.equalTo(contentLabel.snp.bottom).offset(15)
             make.leading.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(200)
@@ -223,7 +225,8 @@ final class PostListTableViewCell: UITableViewCell {
         functionButtonStackView.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom).offset(10)
             make.leading.equalTo(nicknameLabel.snp.leading)
-            make.width.equalToSuperview().multipliedBy(0.4)
+            make.width.equalToSuperview().multipliedBy(0.35)
+            make.height.equalTo(30)
         }
         
         countButtonStackView.snp.makeConstraints { make in
@@ -295,7 +298,7 @@ final class PostListTableViewCell: UITableViewCell {
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
         layout.itemSize = CGSize(width: 200, height: 200)
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 60, bottom: 10, right: 10)
         return layout
     }
 }

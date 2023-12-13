@@ -58,8 +58,8 @@ final class ProfileView: UIView {
 
     let followerLabel = {
         let label = UILabel()
-        label.textColor = .lightGray
-        label.text = "팔로워 9명"
+        label.textColor = .darkGray
+        label.text = ""
         return label
     }()
     

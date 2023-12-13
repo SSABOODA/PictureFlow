@@ -139,22 +139,27 @@ class PostListViewController: UIViewController {
                         }
                         .disposed(by: cell.disposeBag)
                     
-                    
                     // 더보기 버튼
                     cell.moreInfoButton.rx.tap
                         .observe(on: MainScheduler.instance)
                         .bind(with: self) { owner, _ in
                             print("post list view more button did tap")
-                            let bottomSheetVC = PostListBottomSheetViewController()
-                            bottomSheetVC.completion = { isDeleted in
-                                if isDeleted {
-                                    owner.viewModel.updateDateSource()
+                            if element.creator._id == UserDefaultsManager.userID {
+                                let bottomSheetVC = PostListBottomSheetViewController()
+                                bottomSheetVC.completion = { isDeleted in
+                                    if isDeleted {
+                                        owner.viewModel.updateDateSource()
+                                    }
                                 }
+                                bottomSheetVC.post = owner.viewModel.postListDataSource[row]
+                                bottomSheetVC.postId = owner.viewModel.postListDataSource[row]._id
+                                bottomSheetVC.modalPresentationStyle = .overFullScreen
+                                self.present(bottomSheetVC, animated: false)
+                            } else {
+                                let bottomSheetVC = OtherUserPostBottomSheetViewController()
+                                bottomSheetVC.modalPresentationStyle = .overFullScreen
+                                self.present(bottomSheetVC, animated: false)
                             }
-                            bottomSheetVC.post = owner.viewModel.postListDataSource[row]
-                            bottomSheetVC.postId = owner.viewModel.postListDataSource[row]._id
-                            bottomSheetVC.modalPresentationStyle = .overFullScreen
-                            self.present(bottomSheetVC, animated: false)
                         }
                         .disposed(by: cell.disposeBag)
 

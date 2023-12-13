@@ -9,7 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-
 final class ProfileChileMyPostListViewController: UIViewController {
     
     let emptyView = ProfileChileMyPostListEmptyView()
@@ -130,12 +129,10 @@ final class ProfileChileMyPostListViewController: UIViewController {
                             self.present(bottomSheetVC, animated: false)
                         }
                         .disposed(by: cell.disposeBag)
-                    
             }
             .disposed(by: disposeBag)
         
         viewModel.fetchProfileMyPostListData()
-        
         
         Observable.zip(
             mainView.tableView.rx.itemSelected,

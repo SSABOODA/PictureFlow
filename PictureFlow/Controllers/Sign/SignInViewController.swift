@@ -89,6 +89,7 @@ final class SignInViewController: UIViewController {
         output.errorResponse
             .subscribe(with: self) { owner, error in
                 print("message: \(error.message)")
+                owner.showAlertAction1(message: error.message)
             }
             .disposed(by: disposeBag)
         

@@ -70,7 +70,7 @@ final class SignInViewModel: ViewModelType {
                     loginSuccess.accept(true)
                 case .failure(let error):
                     print("subscribe errorResponse: \(error)")
-//                    errorResponse.accept(error)
+                    errorResponse.accept(error)
                 }
             } onDisposed: { owner in
                 print("onDisposed")
