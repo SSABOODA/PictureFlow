@@ -146,7 +146,7 @@ extension PostDetailViewController {
                 cell.contentLabel.text = elements.content
                 
                 if !elements.image.isEmpty {
-                    let imageURL = "\(BaseURL.baseURL)/\(elements.image[0])"
+                    let imageURL = elements.image[0]
                     imageURL.loadImageByKingfisher(imageView: cell.profileImageView)
                 }
                 
@@ -258,8 +258,7 @@ extension PostDetailViewController {
                     .bind(to: cell.collectionView.rx.items(
                         cellIdentifier: BasePostListImageCollectionViewCell.description(),
                         cellType: BasePostListImageCollectionViewCell.self)) { (row, element, cell) in
-                        let imageURL = "\(BaseURL.baseURL)/\(element)"
-                        imageURL.loadImageByKingfisher(imageView: cell.postImageView)
+                            element.loadImageByKingfisher(imageView: cell.postImageView)
                     }
                     .disposed(by: self.disposeBag)
                 

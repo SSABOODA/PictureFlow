@@ -49,9 +49,8 @@ final class PostUpdateViewController: NewPostWriteViewController {
         
         let group = DispatchGroup()
         for imageString in post.image {
-            let urlString = "\(BaseURL.baseURL)/\(imageString)"
             group.enter()
-            urlString.downloadImage(urlString: urlString) { [weak self] UIImage in
+            imageString.downloadImage(urlString: imageString) { [weak self] UIImage in
                 guard let image = UIImage else { return }
                 
                 self?.viewModel.photoImageList.append(image)

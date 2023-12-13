@@ -73,17 +73,15 @@ struct UserProfileUpdateResponse: Decodable {
 
 
 /*
- 유저별 작성한 게시글 조회
+ 다른 유저 프로필 조회
  */
 
-struct UserProfileMyPostListResponse: Decodable {
-    let data: [PostList]
+struct OtherUserProfileRetrieve: Decodable {
+    let posts: [String]
+    let followers: [UserInfo]
+    let following: [UserInfo]
+    let _id: String
+    let nick: String
+    let profile: String?
 }
-
-
-
-
-
-
-
 

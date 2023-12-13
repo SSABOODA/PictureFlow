@@ -58,6 +58,9 @@
 		F79D69F02B28507C0059678E /* ProfileChileMyPostCommentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69EF2B28507C0059678E /* ProfileChileMyPostCommentListView.swift */; };
 		F79D69F22B2850C70059678E /* ProfileChileMaPostCommentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69F12B2850C70059678E /* ProfileChileMaPostCommentListViewModel.swift */; };
 		F79D69FD2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69FC2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift */; };
+		F79D6A002B29A6790059678E /* FollowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69FF2B29A6790059678E /* FollowViewController.swift */; };
+		F79D6A032B29B7B60059678E /* FollowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D6A022B29B7B60059678E /* FollowViewModel.swift */; };
+		F79D6A062B29B7D90059678E /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D6A052B29B7D90059678E /* FollowView.swift */; };
 		F7A375B32B22A2AA00810BD9 /* PostListBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */; };
 		F7A375EC2B22F7D500810BD9 /* NewPostWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */; };
 		F7A375EE2B23411800810BD9 /* PostUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A375ED2B23411800810BD9 /* PostUpdateViewController.swift */; };
@@ -143,6 +146,9 @@
 		F79D69EF2B28507C0059678E /* ProfileChileMyPostCommentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostCommentListView.swift; sourceTree = "<group>"; };
 		F79D69F12B2850C70059678E /* ProfileChileMaPostCommentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMaPostCommentListViewModel.swift; sourceTree = "<group>"; };
 		F79D69FC2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserPostBottomSheetViewController.swift; sourceTree = "<group>"; };
+		F79D69FF2B29A6790059678E /* FollowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowViewController.swift; sourceTree = "<group>"; };
+		F79D6A022B29B7B60059678E /* FollowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowViewModel.swift; sourceTree = "<group>"; };
+		F79D6A052B29B7D90059678E /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
 		F7A375B22B22A2AA00810BD9 /* PostListBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListBottomSheetViewController.swift; sourceTree = "<group>"; };
 		F7A375EB2B22F7D500810BD9 /* NewPostWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostWriteViewController.swift; sourceTree = "<group>"; };
 		F7A375ED2B23411800810BD9 /* PostUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUpdateViewController.swift; sourceTree = "<group>"; };
@@ -248,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				F7A375B12B22A18200810BD9 /* BottomSheet */,
+				F79D69FE2B29A6640059678E /* Follow */,
 				F72C69072B1AF077007B1F8F /* Comment */,
 				F7095A892B0239A600F0218B /* Post */,
 				F7D662852B0DC2E20039E40F /* Like */,
@@ -263,6 +270,7 @@
 		F7095A122AFE372100F0218B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F79D6A042B29B7D20059678E /* Follow */,
 				F7E33D4E2B26191300ACB8D9 /* Profile */,
 				F72C690A2B1AF2D8007B1F8F /* Comment */,
 				F7B409592B09D992006CD373 /* Post */,
@@ -319,6 +327,7 @@
 		F7095A3D2AFF7D1800F0218B /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				F79D6A012B29B7AB0059678E /* Follow */,
 				F7E33D662B2720E700ACB8D9 /* Profile */,
 				F72C690D2B1C3EBF007B1F8F /* Comment */,
 				F7B4094E2B078CD8006CD373 /* Post */,
@@ -421,6 +430,30 @@
 				F79D69EB2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift */,
 			);
 			path = cell;
+			sourceTree = "<group>";
+		};
+		F79D69FE2B29A6640059678E /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				F79D69FF2B29A6790059678E /* FollowViewController.swift */,
+			);
+			path = Follow;
+			sourceTree = "<group>";
+		};
+		F79D6A012B29B7AB0059678E /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				F79D6A022B29B7B60059678E /* FollowViewModel.swift */,
+			);
+			path = Follow;
+			sourceTree = "<group>";
+		};
+		F79D6A042B29B7D20059678E /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				F79D6A052B29B7D90059678E /* FollowView.swift */,
+			);
+			path = Follow;
 			sourceTree = "<group>";
 		};
 		F7A375B12B22A18200810BD9 /* BottomSheet */ = {
@@ -696,6 +729,7 @@
 				F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */,
 				F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */,
 				F79D69FD2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift in Sources */,
+				F79D6A002B29A6790059678E /* FollowViewController.swift in Sources */,
 				F7E33D682B2720EF00ACB8D9 /* ProfileViewModel.swift in Sources */,
 				F7E33D612B27018700ACB8D9 /* ProfileChileMaPostCommentListViewController.swift in Sources */,
 				F7095A102AFE1A6600F0218B /* APIKey.swift in Sources */,
@@ -727,11 +761,13 @@
 				F7095A352AFE662E00F0218B /* LoginInputView.swift in Sources */,
 				F7095A3F2AFF7D4B00F0218B /* SignInViewModel.swift in Sources */,
 				F7B409472B07713B006CD373 /* SearchViewController.swift in Sources */,
+				F79D6A062B29B7D90059678E /* FollowView.swift in Sources */,
 				F7D6627A2B0CA4CA0039E40F /* DateHelper.swift in Sources */,
 				F7B409502B078CE2006CD373 /* PostListViewModel.swift in Sources */,
 				F76EE9312B11DA27005C6106 /* ProfileImageView.swift in Sources */,
 				F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */,
 				F79D69E92B2821600059678E /* ProfileChileMyPostListView.swift in Sources */,
+				F79D6A032B29B7B60059678E /* FollowViewModel.swift in Sources */,
 				F7A375B32B22A2AA00810BD9 /* PostListBottomSheetViewController.swift in Sources */,
 				F7B409542B07958F006CD373 /* PostListView.swift in Sources */,
 				F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */,

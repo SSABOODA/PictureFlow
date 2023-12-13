@@ -54,7 +54,8 @@ extension String {
     }
     
     func loadImageByKingfisher(imageView: UIImageView) {
-        if let imageURL = URL(string: self) {
+        let fullImageURL = "\(BaseURL.baseURL)/\(self)"
+        if let imageURL = URL(string: fullImageURL) {
             imageView.kf.indicatorType = .activity
             imageView.kf.setImage(
                 with: imageURL,

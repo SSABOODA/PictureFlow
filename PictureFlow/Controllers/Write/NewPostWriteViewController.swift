@@ -384,7 +384,7 @@ class NewPostWriteViewController: UIViewController {
                 owner.mainView.nicknameLabel.text = userProfile.nick
                 
                 if let profileImageURL = userProfile.profile {
-                    "\(BaseURL.baseURL)/\(profileImageURL)".loadImageByKingfisher(imageView: owner.mainView.profileImageView)
+                    profileImageURL.loadImageByKingfisher(imageView: owner.mainView.profileImageView)
                 }
                 
             }

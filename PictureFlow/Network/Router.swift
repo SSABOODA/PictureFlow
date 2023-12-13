@@ -23,6 +23,7 @@ enum Router: URLRequestConvertible {
     case postList(accessToken: String, next: String? = "", limit: String? = "", product_id: String? = "") // 게시글 조회
     case postUpdate(accessToken: String, postId: String, model: PostWriteRequest) // 게시글 수정
     case postDelete(accessToken: String, postId: String) // 게시글 삭제
+    case userProfileMyPostList(accessToken: String, userId: String, next: String? = "", limit: String? = "", product_id: String? = "") // 유저별 작성한 게시글 조회
     
     
     // Comment
@@ -36,7 +37,8 @@ enum Router: URLRequestConvertible {
     // User Profile
     case userProfileRetrieve(accessToken: String) // 유저 프로필 조회
     case userProfileUpdate(accessToken: String, model: UserProfileUpdateRequest) // 유저 프로필 업데이트
-    case userProfileMyPostList(accessToken: String, userId: String, next: String? = "", limit: String? = "", product_id: String? = "") // 유저별 작성한 게시글 조회
+    case otherUserProfileRetrieve(accessToken: String, userId: String)
+    
     
     
     /* baseURL */
@@ -58,6 +60,7 @@ enum Router: URLRequestConvertible {
         case .postList: return "post"
         case .postUpdate(_, let postId, _): return "post/\(postId)"
         case .postDelete(_, let postId): return "post/\(postId)"
+        case .userProfileMyPostList(_, let userId, _, _, _): return "post/user/\(userId)"
             
         // comment
         case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
@@ -70,7 +73,8 @@ enum Router: URLRequestConvertible {
         // user profile
         case .userProfileRetrieve: return "profile/me"
         case .userProfileUpdate: return "profile/me"
-        case .userProfileMyPostList(_, let userId, _, _, _): return "post/user/\(userId)"
+        case .otherUserProfileRetrieve(_, let userId): return "profile/\(userId)"
+        
         }
     }
     
@@ -108,6 +112,9 @@ enum Router: URLRequestConvertible {
         case .postDelete(let accessToken, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+        case .userProfileMyPostList(let accessToken, _, _, _, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
             
         // comment
         case .commentCreate(_, let accessToken, _):
@@ -133,7 +140,7 @@ enum Router: URLRequestConvertible {
             defaultHeader[APIConstants.authorization] = accessToken
             defaultHeader["Content-Type"] = "multipart/form-data"
             return defaultHeader
-        case .userProfileMyPostList(let accessToken, _, _, _, _):
+        case .otherUserProfileRetrieve(let accessToken, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
         }
@@ -154,6 +161,7 @@ enum Router: URLRequestConvertible {
         case .postList: return .get
         case .postUpdate: return .put
         case .postDelete: return .delete
+        case .userProfileMyPostList: return .get
             
         // comment
         case .commentCreate: return .post
@@ -166,7 +174,7 @@ enum Router: URLRequestConvertible {
         // user profile
         case .userProfileRetrieve: return .get
         case .userProfileUpdate: return .put
-        case .userProfileMyPostList: return .get
+        case .otherUserProfileRetrieve: return .get
         }
     }
     
@@ -203,6 +211,12 @@ enum Router: URLRequestConvertible {
             ]
         case .postUpdate: return nil
         case .postDelete: return nil
+        case .userProfileMyPostList(_, _, let next, let limit, let product_id):
+            return [
+                "next": next ?? "",
+                "limit": limit ?? "",
+                "product_id": product_id ?? "",
+            ]
         
         // like
         case .like: return nil
@@ -220,13 +234,7 @@ enum Router: URLRequestConvertible {
             
         // user profile
         case .userProfileRetrieve: return nil
-        case .userProfileMyPostList(_, _, let next, let limit, let product_id):
-            return [
-                "next": next ?? "",
-                "limit": limit ?? "",
-                "product_id": product_id ?? "",
-            ]
-        
+
         default: return nil
         }
     }
@@ -319,7 +327,6 @@ extension Router {
             
             if let temp = value as? UIImage {
                 print("multipart image: \(temp)")
-                let a = temp.jpegData(compressionQuality: 0.1)
                 multipartFormData.append(temp.jpegData(compressionQuality: 0.1) ?? Data(),
                                          withName: imageFileName,
                                          fileName: "image.jpeg",

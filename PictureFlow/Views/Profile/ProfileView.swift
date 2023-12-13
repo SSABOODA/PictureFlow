@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ProfileView: UIView {
+class ProfileView: UIView {
     let profileInfoView = {
         let view = UIView()
         return view
@@ -15,7 +15,7 @@ final class ProfileView: UIView {
     
     let nickNameLabel = {
         let label = UILabel()
-        label.text = "ssabooda"
+        label.text = "unknown"
         label.font = .boldSystemFont(ofSize: 30)
         label.textColor = UIColor(resource: .text)
         return label
@@ -59,7 +59,7 @@ final class ProfileView: UIView {
     let followerLabel = {
         let label = UILabel()
         label.textColor = .darkGray
-        label.text = ""
+        label.text = "팔로워 0명"
         return label
     }()
     
@@ -71,8 +71,8 @@ final class ProfileView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(resource: .postStatusModify)
-        configureHierarchy()
-        configureLayout()
+        configureHierarchyView()
+        configureLayoutView()
         
         // 코난
         let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU1vlLWxAULVL6qo3QVjH9-c5KxHWJgk7U3eZWReHeig&s"
@@ -102,7 +102,7 @@ final class ProfileView: UIView {
         }
     }
     
-    private func configureHierarchy() {
+    func configureHierarchyView() {
         addSubview(profileInfoView)
         profileInfoView.addSubview(nickNameLabel)
         profileInfoView.addSubview(profileImageView)
@@ -110,10 +110,10 @@ final class ProfileView: UIView {
         profileInfoView.addSubview(followerUserProfileImageView2)
         profileInfoView.addSubview(followerUserProfileImageView3)
         profileInfoView.addSubview(followerLabel)
-        addSubview(bottomView)
+//        addSubview(bottomView)
     }
     
-    private func configureLayout() {
+    func configureLayoutView() {
         profileInfoView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.height.equalToSuperview().multipliedBy(0.15)
@@ -132,7 +132,6 @@ final class ProfileView: UIView {
         }
 
         followerUserProfileImageView1.snp.makeConstraints { make in
-//            make.bottom.equalTo(profileImageView.snp.bottom) // 이미지 뷰 아래랑 같게
             make.top.equalTo(nickNameLabel.snp.bottom).offset(10)
             make.leading.equalTo(nickNameLabel.snp.leading)
             make.size.equalTo(20)

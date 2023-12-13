@@ -279,8 +279,7 @@ final class PostListTableViewCell: UITableViewCell {
         
         // Profile Image
         if let profileImageURL = elements.creator.profile {
-            let imageURL = "\(BaseURL.baseURL)/\(profileImageURL)"
-            imageURL.loadImageByKingfisher(imageView: profileImageView)
+            profileImageURL.loadImageByKingfisher(imageView: profileImageView)
         } else {
             profileImageView.image = UIImage(named: "user")
         }
@@ -323,8 +322,7 @@ final class PostListTableViewCell: UITableViewCell {
                     cellIdentifier: BasePostListImageCollectionViewCell.description(),
                     cellType: BasePostListImageCollectionViewCell.self)
             ) { (row, element, cell) in
-                let imageURL = "\(BaseURL.baseURL)/\(element)"
-                imageURL.loadImageByKingfisher(imageView: cell.postImageView)
+                element.loadImageByKingfisher(imageView: cell.postImageView)
             }
             .disposed(by: disposeBag)
     }

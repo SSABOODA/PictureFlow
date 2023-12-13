@@ -7,6 +7,32 @@
 
 import UIKit
 import RxSwift
+/*
+ UISheetPresentationController
+ */
+
+extension UIViewController {
+    func makeCustomSheetPresentationController(sheetVC: UIViewController) {
+        if #available(iOS 16.0, *) {
+            let detentIdentifier = UISheetPresentationController.Detent.Identifier("customDetent")
+            let customDetent = UISheetPresentationController.Detent.custom(identifier: .init("customDetent")) { _ in
+                return UIScreen.main.bounds.width * 0.4
+            }
+            
+            if let sheet = sheetVC.sheetPresentationController {
+//                sheet.prefersGrabberVisible = true
+                sheet.detents = [customDetent]
+            }
+
+        } else {
+            if let sheet = sheetVC.sheetPresentationController {
+                sheet.prefersGrabberVisible = true
+                sheet.detents = [.medium()]
+            }
+        }
+        self.present(sheetVC, animated: true)
+    }
+}
 
 /*
  화면 전환

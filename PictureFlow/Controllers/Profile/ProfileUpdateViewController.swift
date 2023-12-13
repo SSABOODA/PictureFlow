@@ -32,8 +32,8 @@ final class ProfileUpdateViewController: UIViewController {
     
     private func configureView() {
         guard let profile = viewModel.profile else { return }
-        if let profile = profile.profile {
-            "\(BaseURL.baseURL)/\(profile)".loadImageByKingfisher(imageView: mainView.profileImageView)
+        if let profileURL = profile.profile {
+            profileURL.loadImageByKingfisher(imageView: mainView.profileImageView)
         }
         mainView.nicknameTextField.text = profile.nick
         mainView.phoneNumberTextField.text = profile.phoneNum

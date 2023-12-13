@@ -65,7 +65,7 @@ final class ProfileViewController: UIViewController {
         profileUpdateBarButton.rx.tap
             .bind(with: self) { owner, _ in
                 let vc = ProfileUpdateViewController()
-                vc.viewModel.profile = owner.viewModel.UserProfile
+                vc.viewModel.profile = owner.viewModel.userProfile
                 vc.completionHandler = { data in
                     print("성공했냐?")
                     let profile = UserProfileDomainData(
@@ -90,19 +90,18 @@ final class ProfileViewController: UIViewController {
         view.nickNameLabel.text = data.nick
         view.followerLabel.text = "팔로워 \(data.followers.count)명"
         
-        if let profile = data.profile {
-            "\(BaseURL.baseURL)/\(profile)".loadImageByKingfisher(imageView: view.profileImageView)
+        if let profileURL = data.profile {
+            profileURL.loadImageByKingfisher(imageView: view.profileImageView)
         }
         
         for (idx, follwer) in data.followers.enumerated() {
-            if let followerProfile = follwer.profile {
-                let imageURL = "\(BaseURL.baseURL)/\(followerProfile)"
+            if let followerProfileURL = follwer.profile {
                 if idx == 0 {
-                    imageURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView1)
+                    followerProfileURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView1)
                 } else if idx == 1 {
-                    imageURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView2)
+                    followerProfileURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView2)
                 } else if idx == 2 {
-                    imageURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView3)
+                    followerProfileURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView3)
                 }
             }
         }
