@@ -15,6 +15,25 @@ final class PostListTableViewCell: UITableViewCell {
         let view = ProfileImageView(frame: .zero)
         return view
     }()
+     
+    let profileFlollowCheckButtonView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(resource: .background)
+        return view
+    }()
+    
+    let profileFlollowCheckButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark"), for: .normal) // checkmark
+        button.backgroundColor = UIColor(resource: .text)
+        button.tintColor = UIColor(resource: .background)
+        button.clipsToBounds = true
+        button.isUserInteractionEnabled = false
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 13, left: 13, bottom: 13, right: 13)
+        
+        return button
+    }()
     
     let leftDividLineView = {
         let view = UIView()
@@ -163,10 +182,18 @@ final class PostListTableViewCell: UITableViewCell {
         super.layoutSubviews()
         profileImageView.layoutIfNeeded()
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        
+        profileFlollowCheckButtonView.layoutIfNeeded()
+        profileFlollowCheckButtonView.layer.cornerRadius = profileFlollowCheckButtonView.frame.width / 2
+        
+        profileFlollowCheckButton.layoutIfNeeded()
+        profileFlollowCheckButton.layer.cornerRadius = profileFlollowCheckButton.frame.width / 2
     }
     
     private func configureHierarchy() {
         contentView.addSubview(profileImageView)
+        contentView.addSubview(profileFlollowCheckButtonView)
+        profileFlollowCheckButtonView.addSubview(profileFlollowCheckButton)
         contentView.addSubview(leftDividLineView)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(postCreatedTimeLabel)
@@ -183,7 +210,17 @@ final class PostListTableViewCell: UITableViewCell {
             make.top.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(10)
             make.trailing.equalTo(nicknameLabel.snp.leading).offset(-10)
-            make.size.equalTo(40)
+            make.size.equalTo(45)
+        }
+        
+        profileFlollowCheckButtonView.snp.makeConstraints { make in
+            make.bottom.equalTo(profileImageView.snp.bottom)
+            make.trailing.equalTo(profileImageView.snp.trailing).offset(5)
+            make.size.equalTo(20)
+        }
+        
+        profileFlollowCheckButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(2)
         }
         
         leftDividLineView.snp.makeConstraints { make in

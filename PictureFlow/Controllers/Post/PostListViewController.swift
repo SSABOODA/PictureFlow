@@ -83,6 +83,21 @@ class PostListViewController: UIViewController {
                     // cell 데이터 구성
                     cell.configureCell(with: element)
                     
+                    // 이미지 뷰 터치시 팔로우
+                    // 게시글이 나이면 +, v 버튼 hidden true하고 간단한 프로필 바터시트 띄우기
+                    // 게시글이 내가 아니면 +, v 버튼 hidden false하고 간단한 프로필 띄우면서 팔로우 버튼 만들기
+                    
+                    if !(element.creator._id == UserDefaultsManager.userID) {
+                        let tapGesture = UITapGestureRecognizer()
+                        cell.profileImageView.addGestureRecognizer(tapGesture)
+                        
+                        tapGesture.rx.event.bind(with: self) { owner, tap in
+                            print("image view did tapppp")
+                        }
+                        .disposed(by: cell.disposeBag)
+                    }
+
+                    
                     // 좋아요 버튼
                     var likeCount = element.likes.count
                     
@@ -215,4 +230,3 @@ class PostListViewController: UIViewController {
         
     }
 }
-

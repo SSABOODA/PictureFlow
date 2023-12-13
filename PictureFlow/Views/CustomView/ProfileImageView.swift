@@ -28,5 +28,6 @@ class ProfileImageView: UIImageView {
         backgroundColor = UIColor(resource: .tint)
         tintColor = UIColor(resource: .background)
         contentMode = .scaleAspectFill
+        isUserInteractionEnabled = true
     }
 }
