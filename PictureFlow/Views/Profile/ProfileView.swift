@@ -23,7 +23,7 @@ class ProfileView: UIView {
     
     let profileImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "add-user")
+        view.image = UIImage(named: "empty-user")
         view.tintColor = UIColor(resource: .tint)
         view.backgroundColor = .lightGray
         view.contentMode = .scaleAspectFill
@@ -34,25 +34,28 @@ class ProfileView: UIView {
     
     let followerUserProfileImageView1 = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person")
+        view.image = UIImage(named: "empty-user")
         view.tintColor = UIColor(resource: .tint)
-        view.contentMode = .scaleToFill
+        view.backgroundColor = .white
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
     let followerUserProfileImageView2 = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person")
+        view.image = UIImage(named: "empty-user")
         view.tintColor = UIColor(resource: .tint)
-        view.contentMode = .scaleToFill
+        view.backgroundColor = .white
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
     let followerUserProfileImageView3 = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person")
+        view.image = UIImage(named: "empty-user")
         view.tintColor = UIColor(resource: .tint)
-        view.contentMode = .scaleToFill
+        view.backgroundColor = .white
+        view.contentMode = .scaleAspectFill
         return view
     }()
 

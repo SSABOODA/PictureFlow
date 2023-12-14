@@ -278,11 +278,10 @@ final class PostListTableViewCell: UITableViewCell {
         
         // Profile Image
         if let profileImageURL = elements.creator.profile {
-            profileImageURL.loadImageByKingfisher(imageView: profileImageView)
+            profileImageURL.loadProfileImageByKingfisher(imageView: profileImageView)
         } else {
-            profileImageView.image = UIImage(named: "user")
+            profileImageView.image = UIImage(named: "empty-user")
         }
-
         // 시간 작업
         let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: elements.time)
         

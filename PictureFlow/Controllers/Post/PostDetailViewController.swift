@@ -82,9 +82,7 @@ extension PostDetailViewController {
             }
             
             if let profileURL = data.creator.profile {
-                profileURL.loadImageByKingfisher(imageView: cell.profileImageView)
-            } else {
-                cell.profileImageView.image = UIImage(named: "user")
+                profileURL.loadProfileImageByKingfisher(imageView: cell.profileImageView)
             }
             
             cell.nicknameLabel.text = data.creator.nick
@@ -159,9 +157,7 @@ extension PostDetailViewController {
                 cell.contentLabel.text = elements.content
 
                 if let profileURL = elements.creator.profile {
-                    profileURL.loadImageByKingfisher(imageView: cell.profileImageView)
-                } else {
-                    cell.profileImageView.image = UIImage(named: "user")
+                    profileURL.loadProfileImageByKingfisher(imageView: cell.profileImageView)
                 }
                 
                 cell.commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)

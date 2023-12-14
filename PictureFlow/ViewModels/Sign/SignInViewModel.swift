@@ -61,8 +61,6 @@ final class SignInViewModel: ViewModelType {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let success):
-                    print("token==", success.token)
-                    print("refreshToken==", success.refreshToken)
                     KeyChain.create(key: APIConstants.accessToken, token: success.token)
                     KeyChain.create(key: APIConstants.refreshToken, token: success.refreshToken)
                     UserDefaultsManager.isLoggedIn = true

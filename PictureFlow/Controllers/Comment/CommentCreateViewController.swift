@@ -25,25 +25,12 @@ class CommentCreateViewController: UIViewController {
         configureNavigationBar()
         configureTextView()
         bind()
-        configureView()
+        viewModel.fetchProfilData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         mainView.commentTextView.becomeFirstResponder()
-    }
-    
-    private func configureView() {
-        guard let postList = viewModel.postList else { return }
-        
-        if let profileURL = postList.creator.profile {
-            profileURL.loadImageByKingfisher(imageView: mainView.profileImageView)
-        } else {
-            mainView.profileImageView.image = UIImage(named: "user")
-        }
-
-        mainView.nicknameLabel.text = viewModel.postList?.creator.nick
-        
     }
     
     private func bind() {
@@ -55,6 +42,17 @@ class CommentCreateViewController: UIViewController {
         )
         
         let output = viewModel.transform(input: input)
+        
+        output.userProfileObservable
+            .subscribe(with: self) { owner, userProfile in
+                owner.mainView.nicknameLabel.text = userProfile.nick
+                
+                if let profileImageURL = userProfile.profile {
+                    profileImageURL.loadProfileImageByKingfisher(imageView: owner.mainView.profileImageView)
+                }
+            }
+            .disposed(by: disposeBag)
+            
         
         output.commentsObservableInfo
             .subscribe(with: self) { owner, newComment in

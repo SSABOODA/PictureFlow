@@ -18,18 +18,53 @@ class CommentCreateViewModel: ViewModelType {
     struct Output {
         let commentCreateSuccess: BehaviorRelay<Bool>
         let commentsObservableInfo: PublishSubject<Comments>
+        let userProfileObservable: PublishSubject<UserInfo>
     }
     
     var disposeBag = DisposeBag()
     
-    var postId: String = ""
-    var postList: PostList? = nil
-    
+    var initTokenObservable = PublishSubject<String>()
+    var userProfileObservable = PublishSubject<UserInfo>()
     var commentCreateSuccess = BehaviorRelay(value: false)
     var commentsObservableInfo = PublishSubject<Comments>()
     var commentCreateError = PublishSubject<String>()
+    
+    var postId: String = ""
+    var postList: PostList? = nil
+    
+    func fetchProfilData() {
+        if let token = KeyChain.read(key: APIConstants.accessToken) {
+            print("🔑 토큰 확인: \(token)")
+            initTokenObservable.onNext(token)
+        } else {
+            print("토큰 확인 실패")
+        }
+    }
 
     func transform(input: Input) -> Output {
+        
+        initTokenObservable
+            .flatMap { token in
+                Network.shared.requestObservableConvertible(
+                    type: UserProfileRetrieveResponse.self,
+                    router: .userProfileRetrieve(accessToken: token)
+                )
+            }
+            .subscribe(with: self) { owner, response in
+                switch response {
+                case .success(let data):
+                    print(data)
+                    let userInfo = UserInfo(
+                        _id: data._id,
+                        nick: data.nick,
+                        profile: data.profile
+                    )
+                    owner.userProfileObservable.onNext(userInfo)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            .disposed(by: disposeBag)
         
         input.commentCreateButtonTap
             .withLatestFrom(input.commentCreateContentText)
@@ -66,7 +101,8 @@ class CommentCreateViewModel: ViewModelType {
         
         return Output(
             commentCreateSuccess: commentCreateSuccess,
-            commentsObservableInfo: commentsObservableInfo
+            commentsObservableInfo: commentsObservableInfo,
+            userProfileObservable: userProfileObservable
         )
     }
     

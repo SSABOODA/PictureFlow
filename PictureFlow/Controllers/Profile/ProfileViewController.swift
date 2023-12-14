@@ -62,12 +62,20 @@ final class ProfileViewController: UIViewController {
     
     private func barButtonBind() {
         guard let profileUpdateBarButton = navigationItem.rightBarButtonItems?[1] else { return }
+        guard let settingBarButton = navigationItem.rightBarButtonItems?[0] else { return }
+        
+        settingBarButton.rx.tap
+            .bind(with: self) { owner, _ in
+                let vc = SettingViewController()
+                owner.transition(viewController: vc, style: .push)
+            }
+            .disposed(by: disposeBag)
+        
         profileUpdateBarButton.rx.tap
             .bind(with: self) { owner, _ in
                 let vc = ProfileUpdateViewController()
                 vc.viewModel.profile = owner.viewModel.userProfile
                 vc.completionHandler = { data in
-                    print("성공했냐?")
                     let profile = UserProfileDomainData(
                         posts: data.posts,
                         followers: data.followers,
@@ -91,17 +99,17 @@ final class ProfileViewController: UIViewController {
         view.followerLabel.text = "팔로워 \(data.followers.count)명"
         
         if let profileURL = data.profile {
-            profileURL.loadImageByKingfisher(imageView: view.profileImageView)
+            profileURL.loadProfileImageByKingfisher(imageView: view.profileImageView)
         }
         
         for (idx, follwer) in data.followers.enumerated() {
             if let followerProfileURL = follwer.profile {
                 if idx == 0 {
-                    followerProfileURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView1)
+                    followerProfileURL.loadProfileImageByKingfisher(imageView: view.followerUserProfileImageView1)
                 } else if idx == 1 {
-                    followerProfileURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView2)
+                    followerProfileURL.loadProfileImageByKingfisher(imageView: view.followerUserProfileImageView2)
                 } else if idx == 2 {
-                    followerProfileURL.loadImageByKingfisher(imageView: view.followerUserProfileImageView3)
+                    followerProfileURL.loadProfileImageByKingfisher(imageView: view.followerUserProfileImageView3)
                 }
             }
         }

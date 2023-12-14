@@ -59,11 +59,22 @@ extension String {
             imageView.kf.indicatorType = .activity
             imageView.kf.setImage(
                 with: imageURL,
-//                placeholder: UIImage(named: "user"),
                 options: [.requestModifier(self.imageDownloadRequest())]
             )
         }
-    }   
+    }
+    
+    func loadProfileImageByKingfisher(imageView: UIImageView) {
+        let fullImageURL = "\(BaseURL.baseURL)/\(self)"
+        if let imageURL = URL(string: fullImageURL) {
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(
+                with: imageURL,
+                placeholder: UIImage(named: "empty-user"),
+                options: [.requestModifier(self.imageDownloadRequest())]
+            )
+        }
+    }
 }
 
 

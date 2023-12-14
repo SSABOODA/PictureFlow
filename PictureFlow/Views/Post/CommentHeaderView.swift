@@ -12,7 +12,7 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
     
     let profileImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "user")
+        view.image = UIImage(named: "empty-user")
         view.clipsToBounds = true
         view.layer.masksToBounds = true
         view.layer.borderWidth = 1

@@ -77,17 +77,17 @@ final class FollowViewController: UIViewController {
                 mv.followerLabel.text = "팔로워 \(profileData.followers.count)명"
                 
                 if let profileImageURL = profileData.profile {
-                    profileImageURL.loadImageByKingfisher(imageView: mv.profileImageView)
+                    profileImageURL.loadProfileImageByKingfisher(imageView: mv.profileImageView)
                 }
 
                 for (idx, follwer) in profileData.followers.enumerated() {
                     if let followerProfileURL = follwer.profile {
                         if idx == 0 {
-                            followerProfileURL.loadImageByKingfisher(imageView: mv.followerUserProfileImageView1)
+                            followerProfileURL.loadProfileImageByKingfisher(imageView: mv.followerUserProfileImageView1)
                         } else if idx == 1 {
-                            followerProfileURL.loadImageByKingfisher(imageView: mv.followerUserProfileImageView2)
+                            followerProfileURL.loadProfileImageByKingfisher(imageView: mv.followerUserProfileImageView2)
                         } else if idx == 2 {
-                            followerProfileURL.loadImageByKingfisher(imageView: mv.followerUserProfileImageView3)
+                            followerProfileURL.loadProfileImageByKingfisher(imageView: mv.followerUserProfileImageView3)
                         }
                     }
                 }

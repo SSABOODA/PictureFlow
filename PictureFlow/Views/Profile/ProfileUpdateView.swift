@@ -11,7 +11,7 @@ final class ProfileUpdateView: UIView {
     
     let profileImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "add-user")
+        view.image = UIImage(named: "empty-user")
         view.tintColor = UIColor(resource: .tint)
         view.backgroundColor = .lightGray
         view.clipsToBounds = true

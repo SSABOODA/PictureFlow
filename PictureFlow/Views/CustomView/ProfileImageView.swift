@@ -18,9 +18,8 @@ class ProfileImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func configure() {
-        image = UIImage(named: "user")
+        image = UIImage(named: "empty-user")
         clipsToBounds = true
         layer.masksToBounds = true
         layer.borderWidth = 1

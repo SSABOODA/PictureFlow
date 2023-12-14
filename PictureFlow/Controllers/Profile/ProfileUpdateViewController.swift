@@ -33,7 +33,7 @@ final class ProfileUpdateViewController: UIViewController {
     private func configureView() {
         guard let profile = viewModel.profile else { return }
         if let profileURL = profile.profile {
-            profileURL.loadImageByKingfisher(imageView: mainView.profileImageView)
+            profileURL.loadProfileImageByKingfisher(imageView: mainView.profileImageView)
         }
         mainView.nicknameTextField.text = profile.nick
         mainView.phoneNumberTextField.text = profile.phoneNum
@@ -101,7 +101,7 @@ extension ProfileUpdateViewController: PHPickerViewControllerDelegate {
             self?.setupImagePicker()
         }
         let remove = UIAlertAction(title: "현재 사진 삭제", style: .destructive) { [weak self] _ in
-            self?.mainView.profileImageView.image = UIImage(named: "add-user")
+            self?.mainView.profileImageView.image = UIImage(named: "empty-user")
         }
         let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in }
         alert.addAction(library)

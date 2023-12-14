@@ -58,6 +58,8 @@ final class ProfileChileMyPostListViewController: UIViewController {
                 cellType: PostListTableViewCell.self)) { (row, element, cell) in
                     cell.configureCell(with: element)
                     
+                    cell.profileFlollowCheckButtonView.isHidden = element.creator._id == UserDefaultsManager.userID ? true : false
+                    
                     var likeCount = element.likes.count
                     cell.likeButton.rx.tap
                         .throttle(.seconds(1), scheduler: MainScheduler.instance)
