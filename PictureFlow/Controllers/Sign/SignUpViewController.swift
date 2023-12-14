@@ -22,8 +22,8 @@ final class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureDatePicker()
         bind()
-        mainView.datePicker.addTarget(self, action: #selector(datePickerValueDidChange(_:)), for: .valueChanged)
     }
     
     @objc func datePickerValueDidChange(_ datePicker: UIDatePicker) {
@@ -36,8 +36,15 @@ final class SignUpViewController: UIViewController {
         mainView.emailTextField.becomeFirstResponder()
     }
     
+    func configureDatePicker() {
+        mainView.datePicker.addTarget(
+            self,
+            action: #selector(datePickerValueDidChange(_:)),
+            for: .valueChanged
+        )
+    }
+
     private func bind() {
-        
         let input = SignUpViewModel.Input(
             email: mainView.emailTextField.rx.text.orEmpty,
             password: mainView.passwordTextField.rx.text.orEmpty,

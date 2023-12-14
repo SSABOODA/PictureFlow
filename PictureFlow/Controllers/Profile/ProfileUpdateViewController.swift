@@ -16,6 +16,7 @@ final class ProfileUpdateViewController: UIViewController {
     let viewModel = ProfileUpdateViewModel()
     var disposeBag = DisposeBag()
     var completionHandler: ((UserProfileUpdateResponse) -> Void)?
+    private var diaryDate: Date?
     
     override func loadView() {
         view = mainView
@@ -23,11 +24,28 @@ final class ProfileUpdateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureDatePicker()
         configureNavigationBar()
         configureTextField()
         configureView()
         setupTapGestures()
         bind()
+    }
+    
+    @objc func datePickerValueDidChange(_ datePicker: UIDatePicker) {
+        self.diaryDate = datePicker.date
+        self.mainView.birthdayTextField.text = datePicker.date.convertDateToString(
+            format: .compact,
+            localeType: .ko_KR
+        )
+    }
+    
+    private func configureDatePicker() {
+        mainView.datePicker.addTarget(
+            self,
+            action: #selector(datePickerValueDidChange(_:)),
+            for: .valueChanged
+        )
     }
     
     private func configureView() {

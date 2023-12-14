@@ -54,6 +54,13 @@ final class ProfileUpdateView: UIView {
         return tf
     }()
     
+    let datePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .wheels
+        return picker
+    }()
+    
     let birthdayLabel = {
         let label = UILabel()
         label.text = "생년월일"
@@ -62,12 +69,13 @@ final class ProfileUpdateView: UIView {
         return label
     }()
     
-    let birthdayTextField = {
+    lazy var birthdayTextField = {
         let tf = UITextField()
         tf.text = "1992.08.28"
         tf.placeholder = "생년월일을 입력해주세요"
         tf.textColor = UIColor(resource: .text)
         tf.font = .boldSystemFont(ofSize: 30)
+        tf.inputView = self.datePicker
         return tf
     }()
     

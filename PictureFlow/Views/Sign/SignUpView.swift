@@ -76,9 +76,10 @@ final class SignUpView: UIView {
         return picker
     }()
     
-    let birthdayTextField = {
+    lazy var birthdayTextField = {
         let tf = LoginTextField(placeholderText: "생년월일")
         tf.textColor = UIColor(resource: .text)
+        tf.inputView = self.datePicker
         return tf
     }()
     
@@ -96,16 +97,12 @@ final class SignUpView: UIView {
         super.init(frame: frame)
         backgroundColor = UIColor(resource: .background)
         configureHierarchy()
-        configureDatePicker()
+        configureLayout()
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureDatePicker() {
-        self.birthdayTextField.inputView = self.datePicker
     }
     
     private func configureHierarchy() {
@@ -121,7 +118,9 @@ final class SignUpView: UIView {
         addSubview(birthdayView)
         birthdayView.addSubview(birthdayTextField)
         addSubview(signUpButton)
-        
+    }
+    
+    private func configureLayout() {
         signUpTitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-300)
@@ -195,6 +194,6 @@ final class SignUpView: UIView {
             make.width.equalToSuperview().multipliedBy(0.9)
             make.height.equalToSuperview().multipliedBy(0.065)
         }
-        
+
     }
 }
