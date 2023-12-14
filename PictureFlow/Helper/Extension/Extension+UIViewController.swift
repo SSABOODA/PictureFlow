@@ -160,11 +160,23 @@ extension UIViewController {
     }
 }
 
+/*
+ User Info Delete
+ */
+
+extension UIViewController {
+    func removeUserInfo() {
+        KeyChain.delete(key: APIConstants.accessToken)
+        KeyChain.delete(key: APIConstants.refreshToken)
+        UserDefaultsManager.isLoggedIn = false
+        UserDefaultsManager.userID = ""
+    }
+}
+
 
 /*
  Rx Alert
  */
-
 
 extension UIViewController {
     func showObservableAlert2(

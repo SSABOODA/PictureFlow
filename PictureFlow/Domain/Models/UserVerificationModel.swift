@@ -61,3 +61,13 @@ struct TokenRequest: Encodable {
 struct TokenResponse: Decodable {
     let token: String
 }
+
+/*
+ 탈퇴
+ */
+
+struct WithdrawResponse: Decodable {
+    let _id: String
+    let email: String
+    let nick: String
+}

@@ -19,10 +19,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         var isLoggedIn =  UserDefaultsManager.isLoggedIn
-//        isLoggedIn = false
+        isLoggedIn = false
 //        print("isLoggedIn: \(isLoggedIn)")
         
-//        let vc = ProfileViewController()
+//        let vc = SettingViewController()
 //        window?.rootViewController = UINavigationController(rootViewController: vc)
 //        window?.makeKeyAndVisible()
         

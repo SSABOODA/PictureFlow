@@ -24,13 +24,19 @@ final class PostListTableViewCell: UITableViewCell {
     
     let profileFlollowCheckButton = {
         let button = UIButton()
+        let spacing:CGFloat = 13
         button.setImage(UIImage(systemName: "plus"), for: .normal) // checkmark
         button.backgroundColor = UIColor(resource: .text)
         button.tintColor = UIColor(resource: .background)
         button.clipsToBounds = true
         button.isUserInteractionEnabled = false
         button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsets(top: 13, left: 13, bottom: 13, right: 13)
+        button.imageEdgeInsets = UIEdgeInsets(
+            top: spacing,
+            left: spacing,
+            bottom: spacing,
+            right: spacing
+        )
         return button
     }()
     
@@ -113,8 +119,7 @@ final class PostListTableViewCell: UITableViewCell {
         button.tintColor = UIColor(resource: .tint)
         return button
     }()
-    
-    
+
     lazy var functionButtonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             likeButton,
@@ -127,7 +132,6 @@ final class PostListTableViewCell: UITableViewCell {
         stackView.distribution = .fillEqually
         return stackView
     }()
-    
     
     let commentCountButton = {
         let button = UIButton()

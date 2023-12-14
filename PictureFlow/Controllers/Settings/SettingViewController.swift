@@ -9,47 +9,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class SettingView: UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .orange
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-struct SettingItem {
-    let name: String
-    let image: UIImage?
-}
-
-final class SettingViewModel: ViewModelType {
-    struct Input {}
-    struct Output {}
-    
-    var disposeBag = DisposeBag()
-    
-    
-    let settingItemList = [
-        SettingItem(name: "로그아웃", image: nil),
-        SettingItem(name: "회원탈퇴", image: nil),
-    ]
-    
-    
-    func transform(input: Input) -> Output {
-        return Output()
-    }
-}
-
 final class SettingViewController: UIViewController {
     let mainView = SettingView()
     let viewModel = SettingViewModel()
-    
-    
-    
+    let disposeBag = DisposeBag()
     override func loadView() {
         view = mainView
     }
@@ -57,6 +20,72 @@ final class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
+        bind()
+    }
+    
+    private func bind() {
+        let input = SettingViewModel.Input()
+        let output = viewModel.transform(input: input)
+        output.settingItemListObservable
+            .bind(to: mainView.tableView.rx.items(
+                cellIdentifier: SettingTableViewCell.description(),
+                cellType: SettingTableViewCell.self)) { row, element, cell  in
+                    cell.configureCell(element: element)
+                }
+                .disposed(by: disposeBag)
+        
+        
+        Observable.zip(
+            mainView.tableView.rx.itemSelected,
+            mainView.tableView.rx.modelSelected(SettingItem.self)
+        )
+        .subscribe(with: self) { owner, value in
+            print("cell clicked")
+            print(value.0, value.1)
+            
+            let row = value.0.row
+            if 0...5 ~= row {
+                owner.showAlertAction1(message: "추후 업데이트 예정입니다")
+            } else if row == 6 { // 로그아웃
+                owner.showAlertAction2(message: "로그아웃을 하시겠습니까?",  {
+                    print("취소")
+                }, {
+                    print("로그아웃 gogo")
+                    owner.removeUserInfo()
+                    owner.changeRootViewController(
+                        viewController: SignInViewController(),
+                        isNav: false
+                    )
+                    
+                })
+            } else { // 회원 탈퇴
+                owner.showAlertAction2(message: "정말 회원탈퇴를 하시겠습니까? 회원 탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다.",  {
+                    print("취소")
+                }, {
+                    print("회원탈퇴 gogo")
+                    owner.viewModel.isWithdraw.onNext(true)
+                })
+            }
+        }
+        .disposed(by: disposeBag)
+        
+        output.withdrawUserInfo
+            .subscribe(with: self) { owner, withdrawUserInfo in
+                owner.removeUserInfo()
+                owner.changeRootViewController(
+                    viewController: SignInViewController(),
+                    isNav: false
+                )
+            }
+            .disposed(by: disposeBag)
+        
+        output.errorResponse
+            .subscribe(with: self) { owner, error in
+                owner.showAlertAction1(message: error.message)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.settingItemListObservable.onNext(viewModel.settingItemList)
     }
 }
 

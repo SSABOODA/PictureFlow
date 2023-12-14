@@ -68,7 +68,8 @@ final class SignUpViewController: UIViewController {
             .drive(with: self) { owner, value in
                 print("signUpSuccess next VC", value)
                 if value {
-                    owner.showAlertAction1(title: "회원가입에 성공하셨습니다.😃") {
+                    owner.showAlertAction1(message: "회원가입에 성공하셨습니다.😃") {
+                        print("회원가입 성공")
                         owner.navigationController?.popViewController(animated: true)
                     }
                 }
@@ -78,6 +79,7 @@ final class SignUpViewController: UIViewController {
         output.errorResponse
             .subscribe(with: self) { owner, errorResponse in
                 print("errorResponse: \(errorResponse)")
+                owner.showAlertAction1(message: errorResponse.message)
             }
             .disposed(by: disposeBag)
     }

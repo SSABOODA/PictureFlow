@@ -170,7 +170,7 @@ enum Router: URLRequestConvertible {
         case .validation: return .post
         case .login: return .post
         case .refresh: return .get
-        case .withdraw: return .post
+        case .withdraw: return .get
             
         // post
         case .post: return .post
