@@ -25,23 +25,14 @@ class PostListViewController: UIViewController {
         super.viewDidLoad()
         print(#function, PostListViewController.description())
         configureNavigationBar()
-        bind()
         configureRefreshControl()
-        
-        printAccessToken() // @Deprecated
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function, PostListViewController.description())
+        print(#function, "PostListViewController")
         self.viewModel.updateDateSource()
-    }
-    
-    func printAccessToken() {
-//        let accessToken = KeyChain.read(key: "accessToken")!
-//        let refreshToken = KeyChain.read(key: "refreshToken")!
-//        print("accessToken: \(accessToken)")
-//        print("refreshToken: \(refreshToken)")
     }
     
     private func configureRefreshControl() {

@@ -11,7 +11,6 @@ import RxCocoa
 
 final class ProfileChileMyPostListViewController: UIViewController {
     
-    let emptyView = ProfileChileMyPostListEmptyView()
     let mainView = ProfileChileMyPostListView()
     let viewModel = ProfileChileMyPostListViewModel()
     var disposeBag = DisposeBag()

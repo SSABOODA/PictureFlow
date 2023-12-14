@@ -52,6 +52,10 @@
 		F76EE9312B11DA27005C6106 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9302B11DA27005C6106 /* ProfileImageView.swift */; };
 		F76EE9412B1452D8005C6106 /* PostWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9402B1452D8005C6106 /* PostWriteView.swift */; };
 		F76EE9452B15D8F4005C6106 /* PostWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */; };
+		F77A0E082B2B2EC4000404FE /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77A0E072B2B2EC4000404FE /* SearchView.swift */; };
+		F77A0E0B2B2B2EEF000404FE /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77A0E0A2B2B2EEF000404FE /* SearchViewModel.swift */; };
+		F77A0E0E2B2B32BA000404FE /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77A0E0D2B2B32BA000404FE /* LikeView.swift */; };
+		F77A0E112B2B32E2000404FE /* LikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77A0E102B2B32E2000404FE /* LikeViewModel.swift */; };
 		F79D69E92B2821600059678E /* ProfileChileMyPostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69E82B2821600059678E /* ProfileChileMyPostListView.swift */; };
 		F79D69EC2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69EB2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift */; };
 		F79D69EE2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69ED2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift */; };
@@ -145,6 +149,10 @@
 		F76EE9302B11DA27005C6106 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		F76EE9402B1452D8005C6106 /* PostWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteView.swift; sourceTree = "<group>"; };
 		F76EE9442B15D8F4005C6106 /* PostWriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteViewModel.swift; sourceTree = "<group>"; };
+		F77A0E072B2B2EC4000404FE /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		F77A0E0A2B2B2EEF000404FE /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		F77A0E0D2B2B32BA000404FE /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
+		F77A0E102B2B32E2000404FE /* LikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewModel.swift; sourceTree = "<group>"; };
 		F79D69E82B2821600059678E /* ProfileChileMyPostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostListView.swift; sourceTree = "<group>"; };
 		F79D69EB2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostListTableViewCell.swift; sourceTree = "<group>"; };
 		F79D69ED2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostListViewModel.swift; sourceTree = "<group>"; };
@@ -281,6 +289,8 @@
 		F7095A122AFE372100F0218B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F77A0E0C2B2B32B2000404FE /* Like */,
+				F77A0E062B2B2EBC000404FE /* Search */,
 				F79D6A0F2B2B08FF0059678E /* Settting */,
 				F79D6A042B29B7D20059678E /* Follow */,
 				F7E33D4E2B26191300ACB8D9 /* Profile */,
@@ -339,6 +349,8 @@
 		F7095A3D2AFF7D1800F0218B /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				F77A0E0F2B2B32DC000404FE /* Like */,
+				F77A0E092B2B2EE9000404FE /* Search */,
 				F79D6A132B2B09330059678E /* Setting */,
 				F79D6A012B29B7AB0059678E /* Follow */,
 				F7E33D662B2720E700ACB8D9 /* Profile */,
@@ -436,6 +448,38 @@
 				F72C690E2B1C3EC9007B1F8F /* CommentCreateViewModel.swift */,
 			);
 			path = Comment;
+			sourceTree = "<group>";
+		};
+		F77A0E062B2B2EBC000404FE /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				F77A0E072B2B2EC4000404FE /* SearchView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		F77A0E092B2B2EE9000404FE /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				F77A0E0A2B2B2EEF000404FE /* SearchViewModel.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		F77A0E0C2B2B32B2000404FE /* Like */ = {
+			isa = PBXGroup;
+			children = (
+				F77A0E0D2B2B32BA000404FE /* LikeView.swift */,
+			);
+			path = Like;
+			sourceTree = "<group>";
+		};
+		F77A0E0F2B2B32DC000404FE /* Like */ = {
+			isa = PBXGroup;
+			children = (
+				F77A0E102B2B32E2000404FE /* LikeViewModel.swift */,
+			);
+			path = Like;
 			sourceTree = "<group>";
 		};
 		F79D69EA2B2821950059678E /* cell */ = {
@@ -772,6 +816,7 @@
 				F7B409442B076F9D006CD373 /* UITabbarController.swift in Sources */,
 				F7095A4C2AFF8A9F00F0218B /* Router.swift in Sources */,
 				F7095A882B02340600F0218B /* Extension+Date.swift in Sources */,
+				F77A0E0B2B2B2EEF000404FE /* SearchViewModel.swift in Sources */,
 				F72C690C2B1AF2E3007B1F8F /* CommentCreateView.swift in Sources */,
 				F76EE92D2B10AE12005C6106 /* CommentHeaderView.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
@@ -793,8 +838,10 @@
 				F7095A392AFF6FB700F0218B /* Extension+String.swift in Sources */,
 				F7095A8B2B0239B000F0218B /* PostListViewController.swift in Sources */,
 				F7B409522B078DA8006CD373 /* PostModel.swift in Sources */,
+				F77A0E082B2B2EC4000404FE /* SearchView.swift in Sources */,
 				F7B409412B075730006CD373 /* UserVerificationModel.swift in Sources */,
 				F7095A1A2AFE3B0700F0218B /* JoinButton.swift in Sources */,
+				F77A0E112B2B32E2000404FE /* LikeViewModel.swift in Sources */,
 				F72C690F2B1C3EC9007B1F8F /* CommentCreateViewModel.swift in Sources */,
 				F7095A4A2AFF89A600F0218B /* Network.swift in Sources */,
 				F7095A332AFE514300F0218B /* SignInView.swift in Sources */,
@@ -818,6 +865,7 @@
 				F76EE9312B11DA27005C6106 /* ProfileImageView.swift in Sources */,
 				F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */,
 				F79D69E92B2821600059678E /* ProfileChileMyPostListView.swift in Sources */,
+				F77A0E0E2B2B32BA000404FE /* LikeView.swift in Sources */,
 				F79D6A122B2B09200059678E /* SettingView.swift in Sources */,
 				F79D6A032B29B7B60059678E /* FollowViewModel.swift in Sources */,
 				F7A375B32B22A2AA00810BD9 /* PostListBottomSheetViewController.swift in Sources */,

@@ -33,7 +33,7 @@ final class ProfileUpdateView: UIView {
         let tf = UITextField()
         tf.placeholder = "닉네임을 입력해주세요"
         tf.textColor = UIColor(resource: .text)
-        tf.font = .boldSystemFont(ofSize: 30)
+        tf.font = .boldSystemFont(ofSize: 25)
         return tf
     }()
     
@@ -50,7 +50,7 @@ final class ProfileUpdateView: UIView {
         tf.keyboardType = .numberPad
         tf.placeholder = "전화번호을 입력해주세요"
         tf.textColor = UIColor(resource: .text)
-        tf.font = .boldSystemFont(ofSize: 30)
+        tf.font = .boldSystemFont(ofSize: 25)
         return tf
     }()
     
@@ -74,7 +74,7 @@ final class ProfileUpdateView: UIView {
         tf.text = "1992.08.28"
         tf.placeholder = "생년월일을 입력해주세요"
         tf.textColor = UIColor(resource: .text)
-        tf.font = .boldSystemFont(ofSize: 30)
+        tf.font = .boldSystemFont(ofSize: 25)
         tf.inputView = self.datePicker
         return tf
     }()
@@ -84,13 +84,6 @@ final class ProfileUpdateView: UIView {
         backgroundColor = UIColor(resource: .background)
         configureHierarchy()
         configureLayout()
-        
-        
-        // 코난
-//        let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU1vlLWxAULVL6qo3QVjH9-c5KxHWJgk7U3eZWReHeig&s"
-//        if let imageURL = URL(string: urlString) {
-//            profileImageView.kf.setImage(with: imageURL)
-//        }
     }
     
     @available(*, unavailable)

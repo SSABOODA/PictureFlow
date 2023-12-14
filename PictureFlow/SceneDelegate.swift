@@ -22,20 +22,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        isLoggedIn = false
 //        print("isLoggedIn: \(isLoggedIn)")
         
-//        let vc = SettingViewController()
-//        window?.rootViewController = UINavigationController(rootViewController: vc)
-//        window?.makeKeyAndVisible()
-        
-        if !isLoggedIn {
-            // 로그인 상태 X
-            let vc = SignInViewController()
-            window?.rootViewController = vc
-        } else {
-            // 로그인 상태 O
-            let tabbarVC = CustomTabBarController()
-            window?.rootViewController = tabbarVC
-        }
+        let vc = LikeViewController()
+        window?.rootViewController = UINavigationController(rootViewController: vc)
         window?.makeKeyAndVisible()
+        
+//        self.isLoginStatusInitViewController(isLoggedIn: isLoggedIn, window: window)
+        
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -65,7 +58,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 
+extension SceneDelegate {
+    func isLoginStatusInitViewController(isLoggedIn: Bool, window: UIWindow?) {
+        if !isLoggedIn {
+            // 로그인 상태 X
+            let vc = SignInViewController()
+            window?.rootViewController = vc
+        } else {
+            // 로그인 상태 O
+            let tabbarVC = CustomTabBarController()
+            window?.rootViewController = tabbarVC
+        }
+        window?.makeKeyAndVisible()
+    }
+}

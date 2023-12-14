@@ -77,7 +77,7 @@ final class SignUpViewController: UIViewController {
                 if value {
                     owner.showAlertAction1(message: "회원가입에 성공하셨습니다.😃") {
                         print("회원가입 성공")
-                        owner.navigationController?.popViewController(animated: true)
+                        owner.dismiss(animated: true)
                     }
                 }
             }

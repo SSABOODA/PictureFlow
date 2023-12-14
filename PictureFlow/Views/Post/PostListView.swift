@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PostListView: UIView {
+class PostListView: UIView {
     
     let tableView: UITableView = {
         let view = UITableView()
@@ -39,7 +39,6 @@ final class PostListView: UIView {
     private func configureHierarchy() {
         addSubview(tableView)
         tableView.addSubview(activityIndicator)
-        
     }
     
     private func configureLayout() {
