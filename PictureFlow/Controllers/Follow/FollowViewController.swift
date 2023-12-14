@@ -15,7 +15,6 @@ final class FollowViewController: UIViewController {
     let viewModel = FollowViewModel()
     var disposeBag = DisposeBag()
     
-    
     override func loadView() {
         view = mainView
     }
@@ -32,11 +31,34 @@ final class FollowViewController: UIViewController {
         )
         let output = viewModel.transform(input: input)
         
+        output.errorObservable
+            .subscribe(with: self) { owner, error in
+                owner.showAlertAction1(message: error.message)
+            }
+            .disposed(by: disposeBag)
+        
         output.isFollow
             .observe(on: MainScheduler.instance)
             .bind(with: self) { owner, isFollow in
                 let followButton = owner.mainView.followButton
-                owner.configureFollowButton(isFollow: isFollow, followButton: followButton)
+                
+                owner.configureFollowButton(
+                    isFollow: isFollow,
+                    followButton: followButton
+                )
+                
+                print("before count: \(owner.viewModel.follwerCount)")
+
+                if isFollow {
+                    owner.viewModel.follwerCount += 1
+                } else {
+                    if owner.viewModel.follwerCount > 0 {
+                        owner.viewModel.follwerCount -= 1
+                    }
+                }
+                print("after count: \(owner.viewModel.follwerCount)")
+                
+                owner.mainView.followerLabel.text = "팔로워 \(owner.viewModel.follwerCount)명"
             }
             .disposed(by: disposeBag)
         
@@ -47,8 +69,8 @@ final class FollowViewController: UIViewController {
                 let isFollow = profileData.followers
                     .map { $0._id == UserDefaultsManager.userID }
                     .isEmpty ? false : true
-
-                print("init isFollow: \(isFollow)")
+                
+                owner.viewModel.follwerCount = isFollow ? (owner.viewModel.follwerCount - 1) : (owner.viewModel.follwerCount + 1)
                 owner.viewModel.isFollow.accept(isFollow)
                 
                 mv.nickNameLabel.text = profileData.nick

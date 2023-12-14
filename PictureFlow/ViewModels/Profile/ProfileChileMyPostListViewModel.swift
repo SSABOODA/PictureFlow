@@ -38,7 +38,6 @@ final class ProfileChileMyPostListViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print("==== my post list: \(data)")
                     owner.postList = data.data
                     owner.myPostListObservable.onNext(owner.postList)
                 case .failure(let error):

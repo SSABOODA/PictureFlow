@@ -18,58 +18,54 @@ final class FollowViewModel: ViewModelType {
         let initTokenObservable: PublishSubject<String>
         let userProfileObservableData: PublishSubject<OtherUserProfileRetrieve>
         let isFollow: BehaviorRelay<Bool>
+        var errorObservable: PublishSubject<CustomErrorResponse>
     }
     var disposeBag = DisposeBag()
     
     var initTokenObservable = PublishSubject<String>()
     var userProfile: OtherUserProfileRetrieve? = nil
     var userProfileObservableData = PublishSubject<OtherUserProfileRetrieve>()
-    
     var isFollow = BehaviorRelay(value: false)
+    var errorObservable = PublishSubject<CustomErrorResponse>()
     
     var postUserId: String = ""
+    var follwerCount: Int = 0
     
     func transform(input: Input) -> Output {
+        // true: 팔로우, false: 언팔로우
+        
         input.followButtonTap
             .withLatestFrom(isFollow)
-            .scan(false) { lastState, newState in !lastState }
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .scan(self.isFollow.value) { lastState, newState in !lastState }
             .map { isFollow in
-                // true: 팔로우, false: 언팔로우
-                print("isFollow: \(isFollow)")
-                print("isFollowRelay: \(self.isFollow.value)")
-                
+                print("map isFollow: \(isFollow)")
                 if isFollow == self.isFollow.value {
-                    self.isFollow.accept(!isFollow)
                     return !isFollow
                 }
-                
-                self.isFollow.accept(isFollow)
                 return isFollow
             }
-            .bind(with: self, onNext: { owner, _ in
-            })
+            .map { v -> Router in
+                let token = KeyChain.read(key: APIConstants.accessToken) ?? ""
+                return v ? .follow(accessToken: token, userId: self.postUserId) : .unfollow(accessToken: token, userId: self.postUserId)
+            }
+            .flatMap {
+                Network.shared.requestObservableConvertible(
+                    type: FollowResponse.self,
+                    router: $0
+                )
+            }
+            .subscribe(with: self) { owner, response in
+                switch response {
+                case .success(let data):
+                    print(data)
+                    owner.isFollow.accept(data.followingStatus)
+                case .failure(let error):
+                    print(error)
+                    owner.errorObservable.onNext(error)
+                }
+            }
             .disposed(by: disposeBag)
-        
-        
-//            .map { v -> Router in
-//                let token = KeyChain.read(key: APIConstants.accessToken) ?? ""
-//                return v ? .follow(accessToken: token, userId: self.postUserId) : .unfollow(accessToken: token, userId: self.postUserId)
-//            }
-//            .flatMap {
-//                Network.shared.requestObservableConvertible(
-//                    type: FollowResponse.self,
-//                    router: $0
-//                )
-//            }
-//            .subscribe(with: self) { owner, response in
-//                switch response {
-//                case .success(let data):
-//                    print(data)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//            .disposed(by: disposeBag)
             
         
         initTokenObservable
@@ -85,7 +81,9 @@ final class FollowViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
+//                    print("profile data: \(data)")
                     owner.userProfile = data
+                    owner.follwerCount = data.followers.count
                     owner.userProfileObservableData.onNext(data)
                 case .failure(let error):
                     print(error)
@@ -96,7 +94,8 @@ final class FollowViewModel: ViewModelType {
         return Output(
             initTokenObservable: initTokenObservable,
             userProfileObservableData: userProfileObservableData,
-            isFollow: isFollow
+            isFollow: isFollow,
+            errorObservable: errorObservable
         )
     }
     

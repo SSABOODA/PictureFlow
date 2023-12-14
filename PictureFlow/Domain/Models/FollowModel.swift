@@ -14,7 +14,7 @@ import Foundation
 struct FollowResponse: Decodable {
     let user: String
     let following: String
-    let followingStatus: String
+    let followingStatus: Bool
     
     enum CodingKeys: String, CodingKey {
         case user
