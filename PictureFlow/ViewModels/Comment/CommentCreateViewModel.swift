@@ -23,6 +23,7 @@ class CommentCreateViewModel: ViewModelType {
     var disposeBag = DisposeBag()
     
     var postId: String = ""
+    var postList: PostList? = nil
     
     var commentCreateSuccess = BehaviorRelay(value: false)
     var commentsObservableInfo = PublishSubject<Comments>()

@@ -25,11 +25,25 @@ class CommentCreateViewController: UIViewController {
         configureNavigationBar()
         configureTextView()
         bind()
+        configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         mainView.commentTextView.becomeFirstResponder()
+    }
+    
+    private func configureView() {
+        guard let postList = viewModel.postList else { return }
+        
+        if let profileURL = postList.creator.profile {
+            profileURL.loadImageByKingfisher(imageView: mainView.profileImageView)
+        } else {
+            mainView.profileImageView.image = UIImage(named: "user")
+        }
+
+        mainView.nicknameLabel.text = viewModel.postList?.creator.nick
+        
     }
     
     private func bind() {

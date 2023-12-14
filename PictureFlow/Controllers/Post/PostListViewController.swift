@@ -93,9 +93,7 @@ class PostListViewController: UIViewController {
                     
                     // 팔로우 버튼
                     cell.profileFlollowCheckButtonView.isHidden = element.creator._id == UserDefaultsManager.userID ? true : false
-                    
-                    // TODO: 게시글이 나이면 +, v 버튼 hidden true하고 간단한 프로필 바터시트 띄우기
-                    // TODO: 게시글이 내가 아니면 +, v 버튼 hidden false하고 간단한 프로필 띄우면서 팔로우 버튼 만들기
+
                     let tapGesture = UITapGestureRecognizer()
                     cell.profileImageView.addGestureRecognizer(tapGesture)
                     
@@ -162,8 +160,9 @@ class PostListViewController: UIViewController {
                                 let newCommetCount = element.comments.count + 1
                                 cell.commentCountButton.setTitle("\(newCommetCount) 답글", for: .normal)
                             }
-                            let _id = owner.viewModel.postListDataSource[row]._id
-                            vc.viewModel.postId = _id
+                            let postList = owner.viewModel.postListDataSource[row]
+                            vc.viewModel.postId = postList._id
+                            vc.viewModel.postList = postList
                             owner.transition(viewController: vc, style: .presentNavigation)
                         }
                         .disposed(by: cell.disposeBag)
@@ -240,16 +239,15 @@ class PostListViewController: UIViewController {
         output.refreshLoading
             .bind(to: mainView.refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
-        
-        
     }
 }
-
-
 
 extension PostListViewController {
     private func configureNavigationBar() {
         navigationItem.title = "FLOW"
-        setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .tint))
+        setNavigationBarBackButtonItem(
+            title: "뒤로",
+            color: UIColor(resource: .tint)
+        )
     }
 }

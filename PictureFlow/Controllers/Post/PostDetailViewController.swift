@@ -63,8 +63,9 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
                     owner.viewModel.postObservableItem.onNext(owner.viewModel.postDataList)
                 }
                 
-                guard let post = self.viewModel.postList else { return }
-                vc.viewModel.postId = post._id
+                guard let postList = self.viewModel.postList else { return }
+                vc.viewModel.postId = postList._id
+                vc.viewModel.postList = postList
                 owner.transition(viewController: vc, style: .presentNavigation)
             }
             .disposed(by: disposeBag)
@@ -80,6 +81,12 @@ extension PostDetailViewController {
                 return UICollectionViewCell()
             }
             
+            if let profileURL = data.creator.profile {
+                profileURL.loadImageByKingfisher(imageView: cell.profileImageView)
+            } else {
+                cell.profileImageView.image = UIImage(named: "user")
+            }
+            
             cell.nicknameLabel.text = data.creator.nick
             cell.commentContentLabel.text = data.content
             let timeContent = DateTimeInterval.shared.calculateDateTimeInterval(createdTime: data.time)
@@ -88,33 +95,39 @@ extension PostDetailViewController {
             cell.moreInfoButton.rx.tap
                 .bind(with: self) { owner, _ in
                     print("more button did tap")
-                    let bottomSheetVC = CommentStatusModifyBottomSheetController()
                     
-                    if let postInfo = owner.viewModel.postDataList.first {
-                        bottomSheetVC.postId = postInfo.header._id
-                        bottomSheetVC.commentId = postInfo.items[indexPath.row]._id
-                        bottomSheetVC.post = postInfo.header
-                        bottomSheetVC.comment = postInfo.items[indexPath.row]
-                        bottomSheetVC.completionHandler = { commentDeleteResponse in
-                            for (idx, item) in self.viewModel.postDataList[0].items.enumerated() {
-                                if item._id == commentDeleteResponse.commentId {
-                                    self.viewModel.postDataList[0].items.remove(at: idx)
-                                    self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
+                    if data.creator._id == UserDefaultsManager.userID {
+                        let bottomSheetVC = CommentStatusModifyBottomSheetController()
+                        
+                        if let postInfo = owner.viewModel.postDataList.first {
+                            bottomSheetVC.postId = postInfo.header._id
+                            bottomSheetVC.commentId = postInfo.items[indexPath.row]._id
+                            bottomSheetVC.post = postInfo.header
+                            bottomSheetVC.comment = postInfo.items[indexPath.row]
+                            bottomSheetVC.completionHandler = { commentDeleteResponse in
+                                for (idx, item) in self.viewModel.postDataList[0].items.enumerated() {
+                                    if item._id == commentDeleteResponse.commentId {
+                                        self.viewModel.postDataList[0].items.remove(at: idx)
+                                        self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
+                                    }
                                 }
                             }
+                            
+                            NotificationCenter.default.addObserver(
+                                self,
+                                selector: #selector(owner.observeCommentUpdate(_:)),
+                                name: NSNotification.Name("observeCommentUpdate"),
+                                object: nil
+                            )
+                            
+                            bottomSheetVC.modalPresentationStyle = .overFullScreen
+                            self.present(bottomSheetVC, animated: false)
                         }
-                        
-                        NotificationCenter.default.addObserver(
-                            self,
-                            selector: #selector(owner.observeCommentUpdate(_:)),
-                            name: NSNotification.Name("observeCommentUpdate"),
-                            object: nil
-                        )
-                        
+                    } else {
+                        let bottomSheetVC = OtherUserPostBottomSheetViewController()
                         bottomSheetVC.modalPresentationStyle = .overFullScreen
                         self.present(bottomSheetVC, animated: false)
                     }
-
                 }
                 .disposed(by: cell.disposeBag)
             
@@ -144,10 +157,11 @@ extension PostDetailViewController {
                 cell.nicknameLabel.text = elements.creator.nick
                 cell.postCreatedTimeLabel.text = timeContent
                 cell.contentLabel.text = elements.content
-                
-                if !elements.image.isEmpty {
-                    let imageURL = elements.image[0]
-                    imageURL.loadImageByKingfisher(imageView: cell.profileImageView)
+
+                if let profileURL = elements.creator.profile {
+                    profileURL.loadImageByKingfisher(imageView: cell.profileImageView)
+                } else {
+                    cell.profileImageView.image = UIImage(named: "user")
                 }
                 
                 cell.commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
@@ -211,6 +225,7 @@ extension PostDetailViewController {
                             owner.viewModel.postObservableItem.onNext(owner.viewModel.postDataList)
                         }
                         vc.viewModel.postId = elements._id
+                        vc.viewModel.postList = elements
                         owner.transition(viewController: vc, style: .presentNavigation)
                     }
                     .disposed(by: cell.disposeBag)
@@ -220,26 +235,33 @@ extension PostDetailViewController {
                     .observe(on: MainScheduler.instance)
                     .bind(with: self) { owner, _ in
                         print("post detail view more button did tap")
-                        let bottomSheetVC = PostListBottomSheetViewController()
-                        bottomSheetVC.modalPresentationStyle = .overFullScreen
-                        self.present(bottomSheetVC, animated: false)
                         
-                        bottomSheetVC.completion = { isDeleted in
-                            if isDeleted {
-                                owner.navigationController?.popViewController(animated: true)
+                        if elements.creator._id == UserDefaultsManager.userID {
+                            let bottomSheetVC = PostListBottomSheetViewController()
+                            bottomSheetVC.modalPresentationStyle = .overFullScreen
+                            self.present(bottomSheetVC, animated: false)
+                            
+                            bottomSheetVC.completion = { isDeleted in
+                                if isDeleted {
+                                    owner.navigationController?.popViewController(animated: true)
+                                }
                             }
-                        }
-                        
-                        NotificationCenter.default.addObserver(
-                            self,
-                            selector: #selector(owner.oberservePostUpdate(_:)),
-                            name: NSNotification.Name("oberservePostUpdate"),
-                            object: nil
-                        )
+                            
+                            NotificationCenter.default.addObserver(
+                                self,
+                                selector: #selector(owner.oberservePostUpdate(_:)),
+                                name: NSNotification.Name("oberservePostUpdate"),
+                                object: nil
+                            )
 
-                        let post = owner.viewModel.postDataList[indexPath.row].header
-                        bottomSheetVC.post = post
-                        bottomSheetVC.postId = post._id
+                            let post = owner.viewModel.postDataList[indexPath.row].header
+                            bottomSheetVC.post = post
+                            bottomSheetVC.postId = post._id
+                        } else {
+                            let bottomSheetVC = OtherUserPostBottomSheetViewController()
+                            bottomSheetVC.modalPresentationStyle = .overFullScreen
+                            self.present(bottomSheetVC, animated: false)
+                        }
                     }
                     .disposed(by: cell.disposeBag)
                 

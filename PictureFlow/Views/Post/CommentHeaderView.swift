@@ -12,12 +12,12 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
     
     let profileImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person")
+        view.image = UIImage(named: "user")
         view.clipsToBounds = true
         view.layer.masksToBounds = true
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.clear.cgColor
-        view.backgroundColor = UIColor(resource: .tint)
+        view.backgroundColor = .white
         view.tintColor = UIColor(resource: .background)
         view.contentMode = .scaleAspectFill
         return view
@@ -175,7 +175,7 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(15)
             make.leading.equalToSuperview().inset(15)
-            make.size.equalTo(35)
+            make.size.equalTo(45)
         }
         
         nicknameLabel.snp.makeConstraints { make in
