@@ -17,16 +17,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+
+//        let vc = LikeViewController()
+//        window?.rootViewController = UINavigationController(rootViewController: vc)
+//        window?.makeKeyAndVisible()
         
-        var isLoggedIn =  UserDefaultsManager.isLoggedIn
-//        isLoggedIn = false
-//        print("isLoggedIn: \(isLoggedIn)")
-        
-        let vc = LikeViewController()
-        window?.rootViewController = UINavigationController(rootViewController: vc)
-        window?.makeKeyAndVisible()
-        
-//        self.isLoginStatusInitViewController(isLoggedIn: isLoggedIn, window: window)
+        self.isLoginStatusInitViewController(
+            isLoggedIn: UserDefaultsManager.isLoggedIn,
+//            isLoggedIn: false,
+            window: window
+        )
         
         
     }

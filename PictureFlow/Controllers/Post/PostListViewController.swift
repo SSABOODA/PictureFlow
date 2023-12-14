@@ -25,17 +25,16 @@ class PostListViewController: UIViewController {
         super.viewDidLoad()
         print(#function, PostListViewController.description())
         configureNavigationBar()
-        configureRefreshControl()
+        bidingRefreshControl()
         bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function, "PostListViewController")
         self.viewModel.updateDateSource()
     }
     
-    private func configureRefreshControl() {
+    private func bidingRefreshControl() {
         mainView.refreshControl.endRefreshing()
         mainView.tableView.refreshControl = mainView.refreshControl
         
@@ -58,6 +57,7 @@ class PostListViewController: UIViewController {
         output.errorResponse
             .subscribe(with: self) { owner, error in
                 print("postListVC error: \(error.message) \(error.statusCode)")
+                owner.showAlertAction1(message: error.message)
             }
             .disposed(by: disposeBag)
         

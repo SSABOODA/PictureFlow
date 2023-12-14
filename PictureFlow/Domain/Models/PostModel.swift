@@ -149,6 +149,52 @@ struct UserProfileMyPostListResponse: Decodable {
     let data: [PostList]
 }
 
+/*
+ 좋아요한 게시글 조회
+ */
+
+struct LikedPostListRequest: Encodable {
+    let next: String
+    let limit: String
+}
+
+struct LikedPostListResponse: Decodable {
+    let data: [PostList]
+    var nextCursor: String
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+        case nextCursor = "next_cursor"
+    }
+}
+
+struct LikedPostList: Decodable {
+    let likes: [String]
+    let image: [String]
+    let hashTags: [String]
+    let comments: Comments
+    let _id: String
+    let creator: Creator
+    let time: String
+    let title: String
+    let content: String?
+    let content1: String?
+    let content2: String?
+    let content3: String?
+    let content4: String?
+    let content5: String?
+    let productID: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case likes, image, hashTags
+        case _id, time, title
+        case content, content1, content2, content3, content4, content5
+        case productID = "product_id"
+        case creator
+        case comments
+    }
+}
+
 
 /*
  struct LandingValue: Decodable {
