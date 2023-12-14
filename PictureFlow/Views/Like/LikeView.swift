@@ -8,9 +8,9 @@
 import UIKit
 
 final class LikeView: PostListView {
+    
     override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = UIColor(resource: .background)
+        super.init(frame: frame) 
     }
     
     @available(*, unavailable)

@@ -28,7 +28,7 @@ struct LikedPostListRequest: Encodable {
 }
 
 struct LikedPostListResponse: Decodable {
-    let data: [LikedPostList]
+    let data: [PostList]
     var nextCursor: String
 }
 
@@ -47,7 +47,16 @@ struct LikedPostList: Decodable {
     let content3: String?
     let content4: String?
     let content5: String?
-    let product_id: String?
+    let productID: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case likes, image, hashTags
+        case _id, time, title
+        case content, content1, content2, content3, content4, content5
+        case productID = "product_id"
+        case creator
+        case comments
+    }
 }
 
 

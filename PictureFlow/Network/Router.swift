@@ -24,6 +24,7 @@ enum Router: URLRequestConvertible {
     case postUpdate(accessToken: String, postId: String, model: PostWriteRequest) // 게시글 수정
     case postDelete(accessToken: String, postId: String) // 게시글 삭제
     case userProfileMyPostList(accessToken: String, userId: String, next: String? = "", limit: String? = "", product_id: String? = "") // 유저별 작성한 게시글 조회
+    case likedPost(accessToken: String)
     
     
     // Comment
@@ -65,6 +66,7 @@ enum Router: URLRequestConvertible {
         case .postUpdate(_, let postId, _): return "post/\(postId)"
         case .postDelete(_, let postId): return "post/\(postId)"
         case .userProfileMyPostList(_, let userId, _, _, _): return "post/user/\(userId)"
+        case .likedPost: return "post/like/me"
             
         // comment
         case .commentCreate(let postId, _, _): return "post/\(postId)/comment"
@@ -123,6 +125,9 @@ enum Router: URLRequestConvertible {
         case .userProfileMyPostList(let accessToken, _, _, _, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+        case .likedPost(let accessToken):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
             
         // comment
         case .commentCreate(_, let accessToken, _):
@@ -178,6 +183,7 @@ enum Router: URLRequestConvertible {
         case .postUpdate: return .put
         case .postDelete: return .delete
         case .userProfileMyPostList: return .get
+        case .likedPost: return .get
             
         // comment
         case .commentCreate: return .post
