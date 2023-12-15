@@ -84,6 +84,40 @@ final class PostUpdateViewController: NewPostWriteViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        let maxCharacterCount = 20
+        
+        mainView.postContentTextView.rx.didChange
+            .withLatestFrom(self.mainView.postContentTextView.rx.text.orEmpty) { _, text -> Bool in
+                
+                if text.count > maxCharacterCount {
+                    self.mainView.postContentTextView.text = String(text.prefix(maxCharacterCount))
+                    return false
+                }
+                return true
+            }
+            .bind(with: self) { owner, isMax in
+//                print("isMax: \(isMax)")
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.postContentTextView.rx.text.orEmpty
+            .map { text in
+                if text == "게시글을 수정해보세요..." {
+                    return ""
+                }
+                let currentCount = text.count
+                let limitCount = maxCharacterCount-currentCount
+                if limitCount > 10 {
+                    return ""
+                } else if limitCount < 0 {
+                    return "0"
+                } else {
+                    return "\(maxCharacterCount-currentCount)"
+                }
+            }
+            .bind(to: self.mainView.postContentLimitCountLabel.rx.text)
+            .disposed(by: disposeBag)
     }
     
     private func configureNavigation() {

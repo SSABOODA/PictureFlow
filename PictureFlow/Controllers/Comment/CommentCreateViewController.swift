@@ -16,6 +16,9 @@ class CommentCreateViewController: UIViewController {
     var disposeBag = DisposeBag()
     var completionHandler: ((Comments) -> Void)?
     
+    let maxCharacterCount = 50
+    let showLimitCharacterCount = 10
+    
     override func loadView() {
         view = mainView
     }
@@ -63,6 +66,8 @@ class CommentCreateViewController: UIViewController {
     }
     
     @objc func configureTextView() {
+        textViewDynamicHeight()
+        
         mainView.commentTextView.rx.didBeginEditing
             .bind(with: self) { owner, _ in
                 if (owner.mainView.commentTextView.text) == "답글을 남겨보세요..." {
@@ -81,7 +86,39 @@ class CommentCreateViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        textViewDynamicHeight()
+        
+        mainView.commentTextView.rx.didChange
+            .withLatestFrom(self.mainView.commentTextView.rx.text.orEmpty) { _, text -> Bool in
+                
+                if text.count > self.maxCharacterCount {
+                    self.mainView.commentTextView.text = String(text.prefix(self.maxCharacterCount))
+                    return false
+                }
+                return true
+            }
+            .bind(with: self) { owner, isMax in
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.commentTextView.rx.text.orEmpty
+            .map { text in
+                if text == "답글을 남겨보세요..." {
+                    return ""
+                }
+                let currentCount = text.count
+                let limitCount = self.maxCharacterCount-currentCount
+                if limitCount > self.showLimitCharacterCount {
+                    return ""
+                } else if limitCount < 0 {
+                    return "0"
+                } else {
+                    return "\(self.maxCharacterCount-currentCount)"
+                }
+            }
+            .bind(to: self.mainView.commentContentLimitCountLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        
     }
     
     func textViewDynamicHeight() {

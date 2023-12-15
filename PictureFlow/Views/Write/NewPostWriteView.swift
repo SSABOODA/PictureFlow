@@ -1,15 +1,13 @@
 //
-//  CommentCreateView.swift
+//  NewPostWriteView.swift
 //  PictureFlow
 //
-//  Created by 한성봉 on 12/2/23.
+//  Created by 한성봉 on 12/15/23.
 //
 
 import UIKit
-import SnapKit
 
-final class CommentCreateView: UIView {
-    
+class NewPostWriteView: UIView {
     let scrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -36,11 +34,11 @@ final class CommentCreateView: UIView {
         label.font = .boldSystemFont(ofSize: 18)
         label.numberOfLines = 1
         label.textColor = UIColor(resource: .text)
-        label.text = "Unknown"
+        label.text = "unknown"
         return label
     }()
     
-    let commentContentLimitCountLabel = {
+    let postContentLimitCountLabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 18)
         label.textColor = UIColor(resource: .text)
@@ -55,15 +53,70 @@ final class CommentCreateView: UIView {
         return view
     }()
     
-    let commentTextView = {
+    let postContentTextView = {
         let tv = UITextView()
-        tv.text = "답글을 남겨보세요..."
+        tv.text = "이야기를 시작해보세요..."
         tv.textColor = UIColor(resource: .text)
         tv.font = .systemFont(ofSize: 17)
         tv.isScrollEnabled = false
         tv.sizeToFit()
         tv.backgroundColor = .clear
         return tv
+    }()
+    
+    lazy var collectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: createLayout()
+        )
+        collectionView.register(
+            PostListImageCancelCollectionViewCell.self,
+            forCellWithReuseIdentifier: PostListImageCancelCollectionViewCell.description()
+        )
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = UIColor(resource: .background).withAlphaComponent(0)
+        return collectionView
+    }()
+    
+    let addImageButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "photo.on.rectangle.angled"), for: .normal)
+        button.tintColor = UIColor(resource: .tint)
+        return button
+    }()
+    
+    let addGIFButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "doc"), for: .normal)
+        button.tintColor = UIColor(resource: .tint)
+        return button
+    }()
+    
+    let addVoiceRecordButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "waveform"), for: .normal)
+        button.tintColor = UIColor(resource: .tint)
+        return button
+    }()
+    
+    let addSurveyButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "list.bullet"), for: .normal)
+        button.tintColor = UIColor(resource: .tint)
+        return button
+    }()
+    
+    lazy var functionButtonStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            addImageButton,
+            addGIFButton,
+            addVoiceRecordButton,
+            addSurveyButton,
+        ])
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .fillEqually
+        return stackView
     }()
     
     override init(frame: CGRect) {
@@ -91,8 +144,11 @@ final class CommentCreateView: UIView {
         backView.addSubview(profileImageView)
         backView.addSubview(leftDividLineView)
         backView.addSubview(nicknameLabel)
-        backView.addSubview(commentContentLimitCountLabel)
-        backView.addSubview(commentTextView)
+        backView.addSubview(postContentLimitCountLabel)
+        backView.addSubview(postContentTextView)
+        
+        backView.addSubview(collectionView)
+        backView.addSubview(functionButtonStackView)
     }
     
     private func configureLayout() {
@@ -108,7 +164,8 @@ final class CommentCreateView: UIView {
         
         backView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(commentTextView.snp.bottom)
+            make.bottom.equalTo(functionButtonStackView.snp.bottom)
+            make.bottom.equalTo(scrollView.snp.bottom)
         }
         
         profileImageView.snp.makeConstraints { make in
@@ -129,15 +186,43 @@ final class CommentCreateView: UIView {
             make.leading.equalTo(profileImageView.snp.trailing).offset(15)
         }
         
-        commentContentLimitCountLabel.snp.makeConstraints { make in
+        postContentLimitCountLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.top)
             make.trailing.equalToSuperview().offset(-20)
         }
         
-        commentTextView.snp.makeConstraints { make in
+        postContentTextView.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-15)
         }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(postContentTextView.snp.bottom).offset(5)
+            make.leading.equalTo(safeAreaLayoutGuide)
+            make.trailing.equalToSuperview().offset(-10)
+            make.height.equalTo(0)
+        }
+        
+        functionButtonStackView.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(15)
+            make.leading.equalTo(nicknameLabel.snp.leading)
+            make.width.equalToSuperview().multipliedBy(0.4)
+        }
+
     }
 }
+
+// collection layout
+extension NewPostWriteView {
+    func createLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 8
+        layout.itemSize = CGSize(width: 200, height: 200)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 10)
+        return layout
+    }
+}
+

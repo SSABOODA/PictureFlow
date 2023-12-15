@@ -94,6 +94,37 @@ final class CommentUpdateViewController: CommentCreateViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        mainView.commentTextView.rx.didChange
+            .withLatestFrom(self.mainView.commentTextView.rx.text.orEmpty) { _, text -> Bool in
+                
+                if text.count > self.maxCharacterCount {
+                    self.mainView.commentTextView.text = String(text.prefix(self.maxCharacterCount))
+                    return false
+                }
+                return true
+            }
+            .bind(with: self) { owner, isMax in
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.commentTextView.rx.text.orEmpty
+            .map { text in
+                if text == "답글을 수정해보세요..." {
+                    return ""
+                }
+                let currentCount = text.count
+                let limitCount = self.maxCharacterCount-currentCount
+                if limitCount > self.showLimitCharacterCount {
+                    return ""
+                } else if limitCount < 0 {
+                    return "0"
+                } else {
+                    return "\(self.maxCharacterCount-currentCount)"
+                }
+            }
+            .bind(to: self.mainView.commentContentLimitCountLabel.rx.text)
+            .disposed(by: disposeBag)
     }
     
     private func configureView() {
