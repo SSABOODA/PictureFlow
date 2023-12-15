@@ -34,6 +34,11 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         print(#function)
     }
     
+    deinit {
+        removeNotificationCenterObserver(notificationName: "observeCommentUpdate")
+        removeNotificationCenterObserver(notificationName: "oberservePostUpdate")
+    }
+
     private func bind() {
         let input = PostDetailViewModel.Input()
         let output = viewModel.transform(input: input)
@@ -326,5 +331,15 @@ extension PostDetailViewController {
         }
         
         self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
+    }
+}
+
+extension PostDetailViewController {
+    private func removeNotificationCenterObserver(notificationName: String) {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name(notificationName),
+            object: nil
+        )
     }
 }

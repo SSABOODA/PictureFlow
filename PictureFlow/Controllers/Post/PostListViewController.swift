@@ -181,7 +181,8 @@ class PostListViewController: UIViewController {
                             }
                         }
                         .disposed(by: cell.disposeBag)
-
+                    
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
@@ -230,6 +231,14 @@ class PostListViewController: UIViewController {
         output.refreshLoading
             .bind(to: mainView.refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
+    }
+}
+
+extension PostListViewController: CustomTableViewCellDelegate {
+    func didTapButton(in cell: PostListTableViewCell, image: UIImage) {
+        let vc = FullScreenImageViewController(image: image)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 }
 

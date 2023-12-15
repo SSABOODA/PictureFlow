@@ -9,6 +9,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+
+
 final class ProfileViewController: UIViewController {
     let mainView = ProfileView()
     let viewModel = ProfileViewModel()
@@ -23,6 +25,7 @@ final class ProfileViewController: UIViewController {
         configureNavigationBar()
         makeContainerViewController()
         bind()
+        profileImageTapGesture()
         
     }
     
@@ -31,11 +34,21 @@ final class ProfileViewController: UIViewController {
         viewModel.fetchProfileData()
     }
     
+    private func profileImageTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        mainView.profileImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func imageTapped() {
+        let fullScreenViewController = FullScreenImageViewController(image: mainView.profileImageView.image)
+        fullScreenViewController.modalPresentationStyle = .fullScreen
+        self.present(fullScreenViewController, animated: true, completion: nil)
+    }
+    
     private func bind() {
         barButtonBind()
         
-        let input = ProfileViewModel.Input(
-        )
+        let input = ProfileViewModel.Input()
         let output = viewModel.transform(input: input)
         
         viewModel.fetchProfileData()

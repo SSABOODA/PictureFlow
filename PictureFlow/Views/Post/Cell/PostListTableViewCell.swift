@@ -8,6 +8,11 @@
 import UIKit
 import RxSwift
 import RxDataSources
+import Kingfisher
+
+protocol CustomTableViewCellDelegate: AnyObject { // TODO: 이동
+    func didTapButton(in cell: PostListTableViewCell, image: UIImage)
+}
 
 final class PostListTableViewCell: UITableViewCell {
     
@@ -161,6 +166,8 @@ final class PostListTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    weak var delegate: CustomTableViewCellDelegate? // TODO: 이동
+    
     var disposeBag = DisposeBag()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -277,6 +284,8 @@ final class PostListTableViewCell: UITableViewCell {
         }
     }
     
+    
+    
     func configureCell(with elements: PostList) {
         updateCollectionViewHeight(isEmpty: elements.image.isEmpty)
         
@@ -318,6 +327,7 @@ final class PostListTableViewCell: UITableViewCell {
     }
     
     private func configureCollectionView(with imageList: [String]) {
+        
         Observable.just(imageList)
             .bind(
                 to: collectionView.rx.items(
@@ -325,6 +335,12 @@ final class PostListTableViewCell: UITableViewCell {
                     cellType: BasePostListImageCollectionViewCell.self)
             ) { (row, element, cell) in
                 element.loadImageByKingfisher(imageView: cell.postImageView)
+                
+                cell.imageTappedHandler = { [weak self] in
+                    guard let self = self else { return }
+                    guard let image = cell.postImageView.image else { return }
+                    delegate?.didTapButton(in: self, image: image) // TODO: 이동
+                }
             }
             .disposed(by: disposeBag)
     }
@@ -339,4 +355,3 @@ final class PostListTableViewCell: UITableViewCell {
         return layout
     }
 }
-

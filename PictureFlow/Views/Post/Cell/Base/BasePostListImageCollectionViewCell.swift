@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 
+
 final class PostListImageCancelCollectionViewCell: BasePostListImageCollectionViewCell {
     let cancelButtonView = {
         let view = UIView()
@@ -51,7 +52,9 @@ final class PostListImageCancelCollectionViewCell: BasePostListImageCollectionVi
     }
 }
 
+
 class BasePostListImageCollectionViewCell: UICollectionViewCell {
+    var imageTappedHandler: (() -> Void)?
     
     let postImageView = {
         let view = UIImageView()
@@ -68,22 +71,19 @@ class BasePostListImageCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         configureHierarchy()
         configureLayout()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        postImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func imageTapped() {
+        imageTappedHandler?()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
         postImageView.image = nil
-    }
-    
-    @objc func imageTapped() {
-        // 이미지를 탭했을 때 실행되는 코드
-        // 전체 화면으로 전환하는 코드를 여기에 추가
-        toggleFullScreen()
-    }
-    
-    func toggleFullScreen() {
-        
     }
     
     @available(*, unavailable)
