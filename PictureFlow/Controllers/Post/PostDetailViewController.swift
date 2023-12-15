@@ -312,7 +312,8 @@ extension PostDetailViewController {
             time: postData.time,
             productID: postData.productID,
             creator: postData.creator,
-            comments: postData.comments
+            comments: postData.comments,
+            hashTags: postData.hashTags
         )
         
         self.viewModel.postDataList[0].header = postListItem

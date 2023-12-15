@@ -45,7 +45,7 @@ final class PostUpdateViewController: NewPostWriteViewController {
     
     func configurePostData() {
         guard let post = self.postUpdateViewModel.post else { return }
-        self.mainView.postContentTextView.text = post.content
+        self.mainView.postContentTextView.attributedText = self.processHashtags(in: post.content)
         
         let group = DispatchGroup()
         for imageString in post.image {
@@ -67,6 +67,16 @@ final class PostUpdateViewController: NewPostWriteViewController {
     override func configureTextView() {
         textViewDynamicHeight()
         
+        // UITextView의 텍스트 변경을 감지
+        mainView.postContentTextView.rx.didChange
+            .map { [weak self] in self?.mainView.postContentTextView.text }
+            .bind { [weak self] text in
+                let att = self?.processHashtags(in: text)
+                self?.mainView.postContentTextView.attributedText = att
+                
+            }
+            .disposed(by: disposeBag)
+        
         mainView.postContentTextView.rx.didBeginEditing
             .bind(with: self) { owner, _ in
                 if (owner.mainView.postContentTextView.text) == "게시글을 수정해보세요..." {
@@ -85,19 +95,17 @@ final class PostUpdateViewController: NewPostWriteViewController {
             }
             .disposed(by: disposeBag)
         
-        let maxCharacterCount = 20
         
         mainView.postContentTextView.rx.didChange
             .withLatestFrom(self.mainView.postContentTextView.rx.text.orEmpty) { _, text -> Bool in
                 
-                if text.count > maxCharacterCount {
-                    self.mainView.postContentTextView.text = String(text.prefix(maxCharacterCount))
+                if text.count > self.maxCharacterCount {
+                    self.mainView.postContentTextView.text = String(text.prefix(self.maxCharacterCount))
                     return false
                 }
                 return true
             }
             .bind(with: self) { owner, isMax in
-//                print("isMax: \(isMax)")
             }
             .disposed(by: disposeBag)
         
@@ -107,13 +115,13 @@ final class PostUpdateViewController: NewPostWriteViewController {
                     return ""
                 }
                 let currentCount = text.count
-                let limitCount = maxCharacterCount-currentCount
-                if limitCount > 10 {
+                let limitCount = self.maxCharacterCount-currentCount
+                if limitCount > self.showLimitCharacterCount {
                     return ""
                 } else if limitCount < 0 {
                     return "0"
                 } else {
-                    return "\(maxCharacterCount-currentCount)"
+                    return "\(self.maxCharacterCount-currentCount)"
                 }
             }
             .bind(to: self.mainView.postContentLimitCountLabel.rx.text)

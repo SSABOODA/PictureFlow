@@ -38,12 +38,14 @@ struct PostList: Decodable {
     let productID: String?
     let creator: Creator
     let comments: [Comments]
+    let hashTags: [String]
     
     enum CodingKeys: String, CodingKey {
         case _id, time, likes, image, title, content
         case productID = "product_id"
         case creator
         case comments
+        case hashTags
     }
 }
 
@@ -122,12 +124,14 @@ struct PostUpdateResponse: Decodable {
     let productID: String?
     let creator: Creator
     let comments: [Comments]
+    let hashTags: [String]
     
     enum CodingKeys: String, CodingKey {
         case _id, time, likes, image, title, content
         case productID = "product_id"
         case creator
         case comments
+        case hashTags
     }
 }
 
@@ -192,6 +196,20 @@ struct LikedPostList: Decodable {
         case productID = "product_id"
         case creator
         case comments
+    }
+}
+
+/*
+ 해시태그 검색
+ */
+
+struct HashTagPostResponse: Decodable {
+    let data: [PostList]
+    var nextCursor: String
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+        case nextCursor = "next_cursor"
     }
 }
 

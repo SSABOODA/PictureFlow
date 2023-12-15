@@ -150,7 +150,8 @@ final class ProfileChileMyPostListViewController: UIViewController {
                     time: item.time,
                     productID: item.productID,
                     creator: item.creator,
-                    comments: item.comments
+                    comments: item.comments,
+                    hashTags: item.hashTags
                 )
             }
             .subscribe(with: self) { owner, value in

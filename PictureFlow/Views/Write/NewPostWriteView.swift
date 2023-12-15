@@ -61,6 +61,9 @@ class NewPostWriteView: UIView {
         tv.isScrollEnabled = false
         tv.sizeToFit()
         tv.backgroundColor = .clear
+        tv.autocapitalizationType = .none
+        tv.autocorrectionType = .no
+        tv.spellCheckingType = .no
         return tv
     }()
     

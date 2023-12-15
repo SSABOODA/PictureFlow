@@ -10,8 +10,11 @@ import RxSwift
 import RxDataSources
 import Kingfisher
 
-protocol CustomTableViewCellDelegate: AnyObject { // TODO: 이동
+
+
+protocol CustomTableViewCellDelegate: AnyObject {
     func didTapButton(in cell: PostListTableViewCell, image: UIImage)
+    func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String)
 }
 
 final class PostListTableViewCell: UITableViewCell {
@@ -74,13 +77,15 @@ final class PostListTableViewCell: UITableViewCell {
         button.tintColor = UIColor(resource: .text)
         return button
     }()
-    
-    let contentLabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 18)
-        label.textColor = UIColor(resource: .text)
-        return label
+
+    let contentTextView = {
+        let textView = HashtagTextView()
+        textView.font = .systemFont(ofSize: 18)
+        textView.textColor = UIColor(resource: .text)
+        textView.sizeToFit()
+        textView.isScrollEnabled = false
+        textView.backgroundColor = UIColor(resource: .background)
+        return textView
     }()
     
     let collectionView: UICollectionView = {
@@ -140,7 +145,7 @@ final class PostListTableViewCell: UITableViewCell {
     
     let commentCountButton = {
         let button = UIButton()
-        button.setTitle("91 답글", for: .normal)
+        button.setTitle("0 답글", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
         return button
@@ -148,7 +153,7 @@ final class PostListTableViewCell: UITableViewCell {
     
     let likeCountButton = {
         let button = UIButton()
-        button.setTitle("141 좋아요", for: .normal)
+        button.setTitle("0 좋아요", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
         return button
@@ -166,9 +171,10 @@ final class PostListTableViewCell: UITableViewCell {
         return stackView
     }()
     
-    weak var delegate: CustomTableViewCellDelegate? // TODO: 이동
-    
+    weak var delegate: CustomTableViewCellDelegate?
     var disposeBag = DisposeBag()
+    
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -208,7 +214,7 @@ final class PostListTableViewCell: UITableViewCell {
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(postCreatedTimeLabel)
         contentView.addSubview(moreInfoButton)
-        contentView.addSubview(contentLabel)
+        contentView.addSubview(contentTextView)
         
         contentView.addSubview(collectionView)
         contentView.addSubview(functionButtonStackView)
@@ -241,7 +247,7 @@ final class PostListTableViewCell: UITableViewCell {
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10)
+            make.top.equalTo(profileImageView.snp.top)
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
     
@@ -256,14 +262,14 @@ final class PostListTableViewCell: UITableViewCell {
             make.size.equalTo(25)
         }
         
-        contentLabel.snp.makeConstraints { make in
+        contentTextView.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(5)
             make.leading.equalTo(nicknameLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-15)
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(15)
+            make.top.equalTo(contentTextView.snp.bottom).offset(15)
             make.leading.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(200)
@@ -283,9 +289,7 @@ final class PostListTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(15)
         }
     }
-    
-    
-    
+
     func configureCell(with elements: PostList) {
         updateCollectionViewHeight(isEmpty: elements.image.isEmpty)
         
@@ -300,8 +304,18 @@ final class PostListTableViewCell: UITableViewCell {
         
         nicknameLabel.text = elements.creator.nick
         postCreatedTimeLabel.text = timeContent
-        contentLabel.text = elements.content
+        contentTextView.text = elements.content
 
+        contentTextView.hashtagArr = elements.hashTags
+        contentTextView.resolveHashTags()
+        
+        contentTextView.rx.didTapWord()
+            .subscribe(with: self) { owner, word in
+                print("클릭된 단어: \(word)")
+                owner.delegate?.didTapHashTag(in: self, hashTagWord: word)
+            }
+            .disposed(by: disposeBag)
+        
         commentCountButton.setTitle("\(elements.comments.count) 답글", for: .normal)
         likeCountButton.setTitle("\(elements.likes.count) 좋아요", for: .normal)
         
@@ -353,5 +367,65 @@ final class PostListTableViewCell: UITableViewCell {
         layout.itemSize = CGSize(width: 200, height: 200)
         layout.sectionInset = UIEdgeInsets(top: 10, left: 60, bottom: 10, right: 10)
         return layout
+    }
+}
+
+/* Rxswift hash tag */
+extension Reactive where Base: UITextView {
+    func didTapWord() -> Observable<String> {
+        return Observable.create { observer in
+            let target = GestureTarget()
+            self.base.addGestureRecognizer(target.gesture!)
+
+            target.observer = observer
+
+            return Disposables.create {
+                self.base.removeGestureRecognizer(target.gesture!)
+            }
+        }
+    }
+}
+
+class GestureTarget: NSObject, UIGestureRecognizerDelegate {
+    var gesture: UITapGestureRecognizer?
+    var observer: AnyObserver<String>?
+
+    override init() {
+        super.init()
+        gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        gesture?.delegate = self
+    }
+
+    @objc func handleTap(_ gesture: UITapGestureRecognizer) {
+        guard let textView = gesture.view as? UITextView else {
+            return
+        }
+
+        let layoutManager = textView.layoutManager
+        let location = gesture.location(in: textView)
+        let characterIndex = layoutManager.characterIndex(for: location, in: textView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        let wordRange = textView.text.wordRange(at: characterIndex)
+
+        if let wordRange = wordRange, let observer = observer {
+            let word = (textView.text as NSString).substring(with: wordRange)
+            observer.onNext(word)
+        }
+    }
+}
+
+extension String {
+    func wordRange(at index: Int) -> NSRange? {
+//        let pattern = "\\S*\\b"
+        let pattern = "#(\\w+)"
+        let regex = try? NSRegularExpression(pattern: pattern, options: [])
+        let matches = regex?.matches(in: self, options: [], range: NSRange(location: 0, length: self.count))
+
+        for match in matches ?? [] {
+            if NSLocationInRange(index, match.range) {
+                return match.range
+            }
+        }
+
+        return nil
     }
 }

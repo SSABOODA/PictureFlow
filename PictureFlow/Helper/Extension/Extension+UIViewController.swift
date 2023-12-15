@@ -208,3 +208,54 @@ extension UIViewController {
         return Observable.just(alert)
     }
 }
+
+
+/*
+ Hashtags
+ */
+
+extension UIViewController {
+    func processHashtags(in text: String?) -> NSMutableAttributedString {
+        guard let text = text else {
+            return NSMutableAttributedString()
+        }
+
+        let attributedText = NSMutableAttributedString(string: text)
+        
+        do {
+
+            // 해시태그에 대한 속성 설정
+            let hashtagAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.boldSystemFont(ofSize: 17),
+                .foregroundColor: UIColor.systemBlue
+            ]
+            
+            // 일반 텍스트에 대한 속성 설정
+            let regularTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 17),
+                .foregroundColor: UIColor(resource: .text)
+            ]
+            
+            // 해시태그와 일반 텍스트에 대해 각각 속성 적용
+            let regex = try NSRegularExpression(pattern: "#(\\w+)")
+            let results = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+            
+            // 기존 속성 초기화
+            attributedText.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: attributedText.length))
+            attributedText.addAttributes(regularTextAttributes, range: NSRange(location: 0, length: attributedText.length))
+            
+            for result in results {
+                let hashtagRange = Range(result.range, in: text)!
+                let nsRange = NSRange(hashtagRange, in: text)
+                
+                // 해시태그에 대한 속성 적용
+                attributedText.addAttributes(hashtagAttributes, range: nsRange)
+            }
+            
+        } catch let error {
+            print("Invalid regex: \(error.localizedDescription)")
+        }
+        
+        return attributedText
+    }
+}

@@ -25,7 +25,7 @@ class PostListViewController: UIViewController {
         super.viewDidLoad()
         print(#function, PostListViewController.description())
         configureNavigationBar()
-        bidingRefreshControl()
+        bindingRefreshControl()
         bind()
     }
     
@@ -34,7 +34,7 @@ class PostListViewController: UIViewController {
         self.viewModel.updateDateSource()
     }
     
-    private func bidingRefreshControl() {
+    private func bindingRefreshControl() {
         mainView.refreshControl.endRefreshing()
         mainView.tableView.refreshControl = mainView.refreshControl
         
@@ -201,7 +201,8 @@ class PostListViewController: UIViewController {
                     time: item.time,
                     productID: item.productID,
                     creator: item.creator,
-                    comments: item.comments
+                    comments: item.comments,
+                    hashTags: item.hashTags
                 )
             }
             .subscribe(with: self) { owner, value in
@@ -235,6 +236,12 @@ class PostListViewController: UIViewController {
 }
 
 extension PostListViewController: CustomTableViewCellDelegate {
+    func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
+        let vc = SearchViewController()
+        vc.hashTagWord = hashTagWord
+        self.transition(viewController: vc, style: .push)
+    }
+    
     func didTapButton(in cell: PostListTableViewCell, image: UIImage) {
         let vc = FullScreenImageViewController(image: image)
         vc.modalPresentationStyle = .fullScreen
@@ -246,8 +253,10 @@ extension PostListViewController {
     private func configureNavigationBar() {
         navigationItem.title = "FLOW"
         setNavigationBarBackButtonItem(
-            title: "뒤로",
+            title: "",
             color: UIColor(resource: .tint)
         )
     }
 }
+
+

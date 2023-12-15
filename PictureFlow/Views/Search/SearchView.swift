@@ -7,10 +7,13 @@
 
 import UIKit
 
-final class SearchView: UIView {
+final class SearchView: PostListView {
+    
+    let searchBar = UISearchBar()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .orange
+        backgroundColor = UIColor(resource: .background)
     }
     
     @available(*, unavailable)

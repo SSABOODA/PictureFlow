@@ -11,6 +11,22 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+// 정규표현식에 사용할 String 확장
+extension String {
+    func matches(for regex: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in: self, range: NSRange(self.startIndex..., in: self))
+            return results.map {
+                String(self[Range($0.range, in: self)!])
+            }
+        } catch let error {
+            print("Invalid regex: \(error.localizedDescription)")
+            return []
+        }
+    }
+}
+
 class NewPostWriteViewController: UIViewController {
     
     let mainView = NewPostWriteView()
@@ -139,8 +155,20 @@ extension NewPostWriteViewController: PHPickerViewControllerDelegate {
 
 // Configure TextView
 extension NewPostWriteViewController {
+    
     @objc func configureTextView() {
+
         textViewDynamicHeight()
+        
+        // UITextView의 텍스트 변경을 감지
+        mainView.postContentTextView.rx.didChange
+            .map { [weak self] in self?.mainView.postContentTextView.text }
+            .bind { [weak self] text in
+                let att = self?.processHashtags(in: text)
+                self?.mainView.postContentTextView.attributedText = att
+                
+            }
+            .disposed(by: disposeBag)
         
         mainView.postContentTextView.rx.didBeginEditing
             .bind(with: self) { owner, _ in
@@ -159,8 +187,6 @@ extension NewPostWriteViewController {
                 }
             }
             .disposed(by: disposeBag)
-
-        
         
         mainView.postContentTextView.rx.didChange
             .withLatestFrom(self.mainView.postContentTextView.rx.text.orEmpty) { _, text -> Bool in
@@ -192,7 +218,6 @@ extension NewPostWriteViewController {
             }
             .bind(to: self.mainView.postContentLimitCountLabel.rx.text)
             .disposed(by: disposeBag)
-
     }
     
     func textViewDynamicHeight() {
@@ -258,8 +283,4 @@ extension NewPostWriteViewController {
     
     @objc func plusButtonClicked() { }
 }
-
-
-
-
 

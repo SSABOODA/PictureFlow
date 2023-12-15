@@ -44,6 +44,9 @@ enum Router: URLRequestConvertible {
     case userProfileUpdate(accessToken: String, model: UserProfileUpdateRequest) // 유저 프로필 업데이트
     case otherUserProfileRetrieve(accessToken: String, userId: String)
     
+    // hashTag
+    case hashTag(accessToken: String, next: String? = "", limit: String? = "", product_id: String? = "", hashTag: String)
+    
     
     
     /* baseURL */
@@ -84,6 +87,9 @@ enum Router: URLRequestConvertible {
         case .userProfileRetrieve: return "profile/me"
         case .userProfileUpdate: return "profile/me"
         case .otherUserProfileRetrieve(_, let userId): return "profile/\(userId)"
+            
+        // hashTag
+        case .hashTag: return "post/hashTag"
         
         }
     }
@@ -164,6 +170,11 @@ enum Router: URLRequestConvertible {
         case .otherUserProfileRetrieve(let accessToken, _):
             defaultHeader[APIConstants.authorization] = accessToken
             return defaultHeader
+            
+        // hashTag
+        case .hashTag(let accessToken, _, _, _, _):
+            defaultHeader[APIConstants.authorization] = accessToken
+            return defaultHeader
         }
     }
     
@@ -201,6 +212,9 @@ enum Router: URLRequestConvertible {
         case .userProfileRetrieve: return .get
         case .userProfileUpdate: return .put
         case .otherUserProfileRetrieve: return .get
+            
+        // hashTag
+        case .hashTag: return .get
         }
     }
     
@@ -261,6 +275,14 @@ enum Router: URLRequestConvertible {
         // user profile
         case .userProfileRetrieve: return nil
 
+            // hashTag
+        case .hashTag(_, let next, let limit, let product_id, let hashTag):
+            return [
+                "next": next ?? "",
+                "limit": limit ?? "",
+                "product_id": product_id ?? "",
+                "hashTag": hashTag
+            ]
         default: return nil
         }
     }
