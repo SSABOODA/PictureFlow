@@ -29,7 +29,7 @@ final class ProfileUpdateViewModel: ViewModelType {
     var profileImage = BehaviorSubject<UIImage>(value: UIImage())
     
     func transform(input: Input) -> Output {
-        
+
         Observable.combineLatest(
             input.nicknameTextFieldText,
             input.phoneNumberTextFieldText,

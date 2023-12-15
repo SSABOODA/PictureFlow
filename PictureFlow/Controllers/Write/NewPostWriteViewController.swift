@@ -16,6 +16,9 @@ class NewPostWriteViewController: UIViewController {
     let mainView = NewPostWriteView()
     var viewModel = NewPostWriteViewModel()
     var disposeBag = DisposeBag()
+    
+    let maxCharacterCount = 500
+    let showLimitCharacterCount = 50
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,19 +160,18 @@ extension NewPostWriteViewController {
             }
             .disposed(by: disposeBag)
 
-        let maxCharacterCount = 500
+        
         
         mainView.postContentTextView.rx.didChange
             .withLatestFrom(self.mainView.postContentTextView.rx.text.orEmpty) { _, text -> Bool in
                 
-                if text.count > maxCharacterCount {
-                    self.mainView.postContentTextView.text = String(text.prefix(maxCharacterCount))
+                if text.count > self.maxCharacterCount {
+                    self.mainView.postContentTextView.text = String(text.prefix(self.maxCharacterCount))
                     return false
                 }
                 return true
             }
             .bind(with: self) { owner, isMax in
-//                print("isMax: \(isMax)")
             }
             .disposed(by: disposeBag)
         
@@ -179,13 +181,13 @@ extension NewPostWriteViewController {
                     return ""
                 }
                 let currentCount = text.count
-                let limitCount = maxCharacterCount-currentCount
-                if limitCount > 50 {
+                let limitCount = self.maxCharacterCount-currentCount
+                if limitCount > self.showLimitCharacterCount {
                     return ""
                 } else if limitCount < 0 {
                     return "0"
                 } else {
-                    return "\(maxCharacterCount-currentCount)"
+                    return "\(self.maxCharacterCount-currentCount)"
                 }
             }
             .bind(to: self.mainView.postContentLimitCountLabel.rx.text)

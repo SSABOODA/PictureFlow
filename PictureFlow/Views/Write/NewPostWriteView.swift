@@ -119,6 +119,8 @@ class NewPostWriteView: UIView {
         return stackView
     }()
     
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(resource: .background)

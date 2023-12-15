@@ -16,8 +16,8 @@ class CommentCreateViewController: UIViewController {
     var disposeBag = DisposeBag()
     var completionHandler: ((Comments) -> Void)?
     
-    let maxCharacterCount = 50
-    let showLimitCharacterCount = 10
+    let maxCharacterCount = 300
+    let showLimitCharacterCount = 50
     
     override func loadView() {
         view = mainView

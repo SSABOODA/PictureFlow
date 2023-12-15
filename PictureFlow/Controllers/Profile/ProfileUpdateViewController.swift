@@ -52,6 +52,7 @@ final class ProfileUpdateViewController: UIViewController {
         guard let profile = viewModel.profile else { return }
         if let profileURL = profile.profile {
             profileURL.loadProfileImageByKingfisher(imageView: mainView.profileImageView)
+            viewModel.profileImage.onNext(mainView.profileImageView.image ?? UIImage())
         }
         mainView.nicknameTextField.text = profile.nick
         mainView.phoneNumberTextField.text = profile.phoneNum
@@ -85,12 +86,7 @@ final class ProfileUpdateViewController: UIViewController {
                 owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
-        
-//        successBarButton.rx.tap
-//            .bind(with: self) { owner, _ in
-//                owner.dismiss(animated: true)
-//            }
-//            .disposed(by: disposeBag)
+
     }
     
     private func configureTextField() {
@@ -122,6 +118,7 @@ extension ProfileUpdateViewController: PHPickerViewControllerDelegate {
             self?.mainView.profileImageView.image = UIImage(named: "empty-user")
         }
         let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in }
+        
         alert.addAction(library)
         alert.addAction(remove)
         alert.addAction(cancel)
