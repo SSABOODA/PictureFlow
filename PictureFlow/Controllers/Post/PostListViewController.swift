@@ -39,6 +39,10 @@ class PostListViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    deinit {
+        self.removeNotificationCenterObserver(notificationName: "updateDataSource")
+    }
+    
     @objc func updateDataSource(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }

@@ -97,7 +97,6 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
                         ) { response in
                             switch response {
                             case .success(let data):
-                                print(data)
                                 NotificationCenter.default.post(
                                     name: NSNotification.Name("updateDataSource"),
                                     object: nil,

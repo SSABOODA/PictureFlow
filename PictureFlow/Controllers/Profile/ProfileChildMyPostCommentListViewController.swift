@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class ProfileChileMaPostCommentListViewController: UIViewController {
+final class ProfileChildMyPostCommentListViewController: UIViewController {
     let mainView = ProfileChileMyPostCommentListView()
     let viewModel = ProfileChileMaPostCommentListViewModel()
     
@@ -23,7 +23,6 @@ final class ProfileChileMaPostCommentListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // update datasource
     }
 }
 

@@ -23,10 +23,15 @@ final class ProfileChildViewController: TabmanViewController {
     }
     
     private func configureTabViewController() {
-        let vc1 = ProfileChileMyPostListViewController()
-        let vc2 = ProfileChileMaPostCommentListViewController()
+        let vc1 = ProfileChildMyPostListViewController()
+        let vc2 = ProfileChildMyPostCommentListViewController()
+        let vc3 = ProfileChildMyFollowerViewController()
+        let vc4 = ProfileChildMyFollowingViewController()
+        
         viewControllers.append(vc1)
         viewControllers.append(vc2)
+        viewControllers.append(vc3)
+        viewControllers.append(vc4)
         
         self.dataSource = self
         
@@ -54,6 +59,10 @@ extension ProfileChildViewController: PageboyViewControllerDataSource, TMBarData
             item.title = "게시글"
         } else if index == 1 {
             item.title = "답글"
+        } else if index == 2 {
+            item.title = "팔로워"
+        } else if index == 3 {
+            item.title = "팔로잉"
         } else {
             item.title = "기타"
         }

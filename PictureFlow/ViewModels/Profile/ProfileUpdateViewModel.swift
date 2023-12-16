@@ -61,7 +61,6 @@ final class ProfileUpdateViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-//                    print("🔥 profile update data", data)
                     owner.profileUpdateResponseObservable.onNext(data)
                 case .failure(let error):
                     print(error)

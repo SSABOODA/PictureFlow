@@ -16,6 +16,7 @@ final class ProfileViewModel: ViewModelType {
     
     struct Output {
         let myProfileData: PublishSubject<UserProfileRetrieveResponse>
+        let errorResponse: PublishSubject<CustomErrorResponse>
     }
     
     var disposeBag = DisposeBag()
@@ -24,6 +25,7 @@ final class ProfileViewModel: ViewModelType {
     
     var userProfile: UserProfileRetrieveResponse? = nil
     var userProfileObservableData = PublishSubject<UserProfileRetrieveResponse>()
+    var errorResponse = PublishSubject<CustomErrorResponse>()
     
     func transform(input: Input) -> Output {
         
@@ -40,25 +42,20 @@ final class ProfileViewModel: ViewModelType {
                     owner.userProfile = data
                     owner.userProfileObservableData.onNext(data)
                 case .failure(let error):
-                    print(error)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)
         
         return Output(
-            myProfileData: userProfileObservableData
+            myProfileData: userProfileObservableData,
+            errorResponse: errorResponse
         )
     }
     
     func fetchProfileData() {
-        if let token = KeyChain.read(key: APIConstants.accessToken) {
-            print("🔑 토큰 확인: \(token)")
-            initTokenObservable.onNext(token)
-        } else {
-            print("토큰 확인 실패")
-        }
-
-            
+        let token = self.checkAccessToken()
+        initTokenObservable.onNext(token)
     }
     
 }

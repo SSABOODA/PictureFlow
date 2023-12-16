@@ -296,7 +296,7 @@ enum Router: URLRequestConvertible {
     
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appendingPathComponent(path)
-        print("url: \(url)")
+//        print("url: \(url)")
 
         var request = URLRequest(url: url)
         request.headers = header

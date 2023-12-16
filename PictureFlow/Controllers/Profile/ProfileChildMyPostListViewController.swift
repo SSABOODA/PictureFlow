@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class ProfileChileMyPostListViewController: UIViewController {
+final class ProfileChildMyPostListViewController: UIViewController {
     
     let mainView = ProfileChileMyPostListView()
     let viewModel = ProfileChileMyPostListViewModel()
@@ -192,7 +192,7 @@ final class ProfileChileMyPostListViewController: UIViewController {
     }
 }
 
-extension ProfileChileMyPostListViewController: CustomTableViewCellDelegate {
+extension ProfileChildMyPostListViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
         print(#function)
         let vc = SearchViewController()

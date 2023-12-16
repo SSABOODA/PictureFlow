@@ -73,6 +73,11 @@ final class ProfileUpdateViewController: UIViewController {
         
         output.profileUpdateResponseObservable
             .subscribe(with: self) { owner, profile in
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("updateDataSource"),
+                    object: nil,
+                    userInfo: ["isUpdate": true]
+                )
                 owner.completionHandler?(profile)
                 owner.dismiss(animated: true)
             }
@@ -86,7 +91,6 @@ final class ProfileUpdateViewController: UIViewController {
                 owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
-
     }
     
     private func configureTextField() {

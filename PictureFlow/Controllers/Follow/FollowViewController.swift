@@ -58,8 +58,6 @@ final class FollowViewController: UIViewController {
                     isFollow: isFollow,
                     followButton: followButton
                 )
-                
-                print("before count: \(owner.viewModel.follwerCount)")
 
                 if isFollow {
                     owner.viewModel.follwerCount += 1
@@ -68,7 +66,6 @@ final class FollowViewController: UIViewController {
                         owner.viewModel.follwerCount -= 1
                     }
                 }
-                print("after count: \(owner.viewModel.follwerCount)")
                 
                 owner.mainView.followerLabel.text = "팔로워 \(owner.viewModel.follwerCount)명"
             }

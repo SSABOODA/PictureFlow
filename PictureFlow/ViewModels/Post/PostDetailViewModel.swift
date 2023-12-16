@@ -59,11 +59,7 @@ final class PostDetailViewModel: ViewModelType {
     }
     
     func updateDateSource() {
-        if let token = KeyChain.read(key: APIConstants.accessToken) {
-            print("토큰 확인: \(token)")
-            tokenObservable.onNext(token)
-        } else {
-            print("토큰 확인 실패")
-        }
+        let token = self.checkAccessToken()
+        tokenObservable.onNext(token)
     }
 }

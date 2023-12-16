@@ -54,12 +54,8 @@ final class LikeViewModel: ViewModelType {
     func fetchUpdateDataSource() {
         self.likedPostList.removeAll()
         self.nextCursor = ""
-        if let token = KeyChain.read(key: APIConstants.accessToken) {
-            print("🔑 토큰 확인: \(token)")
-            initTokenObservable.onNext(token)
-        } else {
-            print("토큰 확인 실패")
-        }
+        let token = self.checkAccessToken()
+        initTokenObservable.onNext(token)
     }
     
     func prefetchData(next: String) {
