@@ -88,9 +88,9 @@ class NewPostWriteView: UIView {
         return button
     }()
     
-    let addGIFButton = {
+    let addHashtagButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "doc"), for: .normal)
+        button.setImage(UIImage(systemName: "number"), for: .normal)
         button.tintColor = UIColor(resource: .tint)
         return button
     }()
@@ -112,7 +112,7 @@ class NewPostWriteView: UIView {
     lazy var functionButtonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             addImageButton,
-            addGIFButton,
+            addHashtagButton,
             addVoiceRecordButton,
             addSurveyButton,
         ])

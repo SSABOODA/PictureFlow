@@ -53,6 +53,13 @@ class NewPostWriteViewController: UIViewController {
     }
     
     private func bind() {
+        mainView.addHashtagButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind(with: self) { owner, _ in
+                owner.mainView.postContentTextView.text += "#"
+            }
+            .disposed(by: disposeBag)
+        
         mainView.addImageButton.rx.tap
             .bind(with: self) { owner, _ in
                 print("addImageButton did tap")

@@ -92,6 +92,9 @@ final class SettingViewController: UIViewController {
 extension SettingViewController {
     private func configureNavigationBar() {
         navigationItem.title = "설정"
-        self.setNavigationBarBackButtonItem(color: UIColor(resource: .text))
+        self.setNavigationBarBackButtonItem(
+            title: nil,
+            color: UIColor(resource: .tint)
+        )
     }
 }

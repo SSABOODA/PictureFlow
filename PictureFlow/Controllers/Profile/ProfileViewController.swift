@@ -9,8 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-
-
 final class ProfileViewController: UIViewController {
     let mainView = ProfileView()
     let viewModel = ProfileViewModel()
@@ -145,6 +143,7 @@ extension ProfileViewController {
 
 extension ProfileViewController {
     private func configureNavigationBar() {
+        
         navigationItem.title = "프로필"
         let settingButton = UIBarButtonItem(
             image: UIImage(named: "setting"),
@@ -174,7 +173,7 @@ extension ProfileViewController {
             target: self,
             action: nil
         )
-        backBarButtonItem.tintColor = .black
+        backBarButtonItem.tintColor = UIColor(resource: .tint)
         self.navigationItem.backBarButtonItem = backBarButtonItem
     }
 }
