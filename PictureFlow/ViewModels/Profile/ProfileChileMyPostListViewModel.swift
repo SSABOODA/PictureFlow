@@ -13,13 +13,15 @@ final class ProfileChileMyPostListViewModel: ViewModelType {
     
     struct Output {
         let myPostListObservable: PublishSubject<[PostList]>
+        let errorResponse: PublishSubject<CustomErrorResponse>
     }
     
+    var nextCursor = ""
     var disposeBag = DisposeBag()
     var initTokenObservable = PublishSubject<String>()
-    
     var postList = [PostList]()
     var myPostListObservable = PublishSubject<[PostList]>()
+    var errorResponse = PublishSubject<CustomErrorResponse>()
     
     func transform(input: Input) -> Output {
         initTokenObservable
@@ -48,7 +50,8 @@ final class ProfileChileMyPostListViewModel: ViewModelType {
             
         
         return Output(
-            myPostListObservable: myPostListObservable
+            myPostListObservable: myPostListObservable,
+            errorResponse: errorResponse
         )
     }
     
@@ -58,6 +61,29 @@ final class ProfileChileMyPostListViewModel: ViewModelType {
             initTokenObservable.onNext(token)
         } else {
             print("토큰 확인 실패")
+        }
+    }
+    
+    func prefetchData(next: String) {
+        guard let token = KeyChain.read(key: APIConstants.accessToken) else { return }
+        Network.shared.requestConvertible(
+            type: UserProfileMyPostListResponse.self,
+            router: .userProfileMyPostList(
+                accessToken: token,
+                userId: UserDefaultsManager.userID,
+                next: next,
+                limit: "10",
+                product_id: "picture_flow"
+            )
+        ) { result in
+            switch result {
+            case .success(let data):
+                self.nextCursor = data.nextCursor
+                self.postList.append(contentsOf: data.data)
+                self.myPostListObservable.onNext(self.postList)
+            case .failure(let error):
+                self.errorResponse.onNext(error)
+            }
         }
     }
 }

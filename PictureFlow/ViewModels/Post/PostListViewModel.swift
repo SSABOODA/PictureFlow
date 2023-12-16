@@ -97,7 +97,7 @@ final class PostListViewModel: ViewModelType {
                 self.postListDataSource.append(contentsOf: data.data)
                 self.postListItem.onNext(self.postListDataSource)
             case .failure(let error):
-                print(error.localizedDescription)
+                self.errorResponse.onNext(error)
             }
         }
     }

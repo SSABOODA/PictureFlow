@@ -16,17 +16,23 @@ final class LikeViewModel: ViewModelType {
     }
     
     var disposeBag = DisposeBag()
-    var initTokenObservable = PublishSubject<String>()
     
+    var nextCursor = ""
+    var initTokenObservable = PublishSubject<String>()
     var likedPostList = [PostList]()
     var likedPostListObservable = PublishSubject<[PostList]>()
     var errorResponse = PublishSubject<CustomErrorResponse>()
+    
     func transform(input: Input) -> Output {
         initTokenObservable
             .flatMap {
                 Network.shared.requestObservableConvertible(
                     type: LikedPostListResponse.self,
-                    router: .likedPost(accessToken: $0)
+                    router: .likedPost(
+                        accessToken: $0,
+                        next: "",
+                        limit: ""
+                    )
                 )
             }
             .subscribe(with: self) { owner, response in
@@ -51,6 +57,27 @@ final class LikeViewModel: ViewModelType {
             initTokenObservable.onNext(token)
         } else {
             print("토큰 확인 실패")
+        }
+    }
+    
+    func prefetchData(next: String) {
+        guard let token = KeyChain.read(key: APIConstants.accessToken) else { return }
+        Network.shared.requestConvertible(
+            type: LikedPostListResponse.self,
+            router: .likedPost(
+                accessToken: token,
+                next: next,
+                limit: "10"
+            )
+        ) { result in
+            switch result {
+            case .success(let data):
+                self.nextCursor = data.nextCursor
+                self.likedPostList.append(contentsOf: data.data)
+                self.likedPostListObservable.onNext(self.likedPostList)
+            case .failure(let error):
+                self.errorResponse.onNext(error)
+            }
         }
     }
     

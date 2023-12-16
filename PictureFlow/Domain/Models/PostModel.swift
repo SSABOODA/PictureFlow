@@ -151,6 +151,13 @@ struct PostDeleteResponse: Decodable {
 
 struct UserProfileMyPostListResponse: Decodable {
     let data: [PostList]
+    var nextCursor: String
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+        case nextCursor = "next_cursor"
+    }
+    
 }
 
 /*

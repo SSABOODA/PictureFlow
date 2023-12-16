@@ -45,6 +45,21 @@ final class ProfileChileMyPostListViewController: UIViewController {
         let input = ProfileChileMyPostListViewModel.Input()
         let output = viewModel.transform(input: input)
         
+        // pagination
+        mainView.tableView.rx.prefetchRows
+            .compactMap(\.last?.row)
+            .withUnretained(self)
+            .bind(with: self) { owner, rowSet in
+                let row = rowSet.1
+                guard row == owner.viewModel.postList.count - 1 else { return }
+                
+                let nextCursor = owner.viewModel.nextCursor
+                if nextCursor != "0" {
+                    owner.viewModel.prefetchData(next: nextCursor)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         output.myPostListObservable
             .subscribe(with: self) { owner, myPostList in
                 owner.mainView.firstStartButton.isHidden = myPostList.isEmpty ? false : true

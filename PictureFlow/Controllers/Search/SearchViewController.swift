@@ -14,8 +14,7 @@ final class SearchViewController: UIViewController {
     var disposeBag = DisposeBag()
     
     var hashTagWord: String = ""
-    
-    
+
     override func loadView() {
         view = mainView
     }
@@ -31,15 +30,42 @@ final class SearchViewController: UIViewController {
     
     private func dataBinding() {
         if !self.hashTagWord.isEmpty {
-            let word = hashTagWord.replacingOccurrences(of: "#", with: "")
+            let word = hashTagWord.removeHashTag()
             viewModel.hashTagWord.onNext(word)
         }
     }
     
     private func bind() {
-        print(#function)
-        let input = SearchViewModel.Input()
+        let input = SearchViewModel.Input(
+            searchBarSearchButtonTap: mainView.searchController.searchBar.rx.searchButtonClicked,
+            searchText: mainView.searchController.searchBar.rx.text.orEmpty
+        )
         let output = viewModel.transform(input: input)
+        
+        // pagination
+        mainView.tableView.rx.prefetchRows
+            .compactMap(\.last?.row)
+            .withUnretained(self)
+            .bind(with: self) { owner, rowSet in
+                let row = rowSet.1
+                guard row == owner.viewModel.hashTagPostList.count - 1 else { return }
+                guard let searchText = self.mainView.searchController.searchBar.text else { return }
+                
+                let nextCursor = owner.viewModel.nextCursor
+                if nextCursor != "0" {
+                    owner.viewModel.prefetchData(
+                        next: nextCursor,
+                        hashTag: searchText.removeHashTag()
+                    )
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        output.hashTagPostListObservable
+            .bind(with: self) { owner, postList in
+                owner.mainView.emptyLabel.isHidden = postList.isEmpty ? false : true
+            }
+            .disposed(by: disposeBag)
         
         output.hashTagPostListObservable
             .bind(to: mainView.tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
@@ -158,23 +184,36 @@ final class SearchViewController: UIViewController {
     }
 }
 
-extension SearchViewController: UISearchBarDelegate {
+extension SearchViewController: UISearchControllerDelegate, UISearchBarDelegate {
     private func configureNavigationBar() {
         navigationItem.title = "검색"
         setNavigationBarBackButtonItem(color: UIColor(resource: .text))
     }
     
     private func configureSearchController() {
-        self.navigationItem.titleView = mainView.searchBar
-        mainView.searchBar.delegate = self
-        mainView.searchBar.placeholder = "검색"
-        mainView.searchBar.showsCancelButton = true
-        mainView.searchBar.setValue("취소", forKey: "cancelButtonText")
-        
+        self.mainView.searchController.searchBar.delegate = self
+        self.navigationItem.searchController = mainView.searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+
         if !self.hashTagWord.isEmpty {
-            mainView.searchBar.text = self.hashTagWord
+            self.mainView.searchController.searchBar.text = self.hashTagWord
         }
     }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        let cancelButton = searchBar.value(forKey: "cancelButton") as! UIButton
+        cancelButton.setTitle("취소", for: .normal)
+        cancelButton.setTitleColor(UIColor(resource: .text), for: .normal)
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    
+    
+    
 }
 
 

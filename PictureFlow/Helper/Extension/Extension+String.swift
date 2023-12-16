@@ -101,3 +101,15 @@ extension String {
             }
     }
 }
+
+
+/*
+ remove hash tag #
+ */
+
+extension String {
+    func removeHashTag() -> String {
+        let newWord = self.replacingOccurrences(of: "#", with: "")
+        return newWord
+    }
+}

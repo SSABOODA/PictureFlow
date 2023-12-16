@@ -237,6 +237,7 @@ class PostListViewController: UIViewController {
 
 extension PostListViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
+        print(#function)
         let vc = SearchViewController()
         vc.hashTagWord = hashTagWord
         self.transition(viewController: vc, style: .push)

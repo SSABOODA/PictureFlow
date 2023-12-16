@@ -32,9 +32,32 @@ final class LikeViewController: UIViewController {
     private func bind() {
         let input = LikeViewModel.Input()
         let output = viewModel.transform(input: input)
+        
+        // pagination
+        mainView.tableView.rx.prefetchRows
+            .compactMap(\.last?.row)
+            .withUnretained(self)
+            .bind(with: self) { owner, rowSet in
+                let row = rowSet.1
+                guard row == owner.viewModel.likedPostList.count - 1 else { return }
+                
+                let nextCursor = owner.viewModel.nextCursor
+                if nextCursor != "0" {
+                    owner.viewModel.prefetchData(next: nextCursor)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        
         output.errorResponse
             .subscribe(with: self) { owner, error in
                 owner.showAlertAction1(message: error.message)
+            }
+            .disposed(by: disposeBag)
+        
+        output.likedPostListObservable
+            .bind(with: self) { owner, postList in
+                owner.mainView.emptyLabel.isHidden = postList.isEmpty ? false : true
             }
             .disposed(by: disposeBag)
         
