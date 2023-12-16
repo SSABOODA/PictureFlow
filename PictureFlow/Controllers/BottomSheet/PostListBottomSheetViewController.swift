@@ -95,12 +95,16 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
                             accessToken: token,
                             postId: post._id)) { result in
                             switch result {
-                            case .success(let data):
-                                print(data)
+                            case .success(_):
+                                NotificationCenter.default.post(
+                                    name: NSNotification.Name("updateDataSource"),
+                                    object: nil,
+                                    userInfo: ["isUpdate": true]
+                                )
                                 owner.completion?(true)
                                 owner.dismiss(animated: true)
                             case .failure(let error):
-                                print(error.localizedDescription)
+                                self.showAlertAction1(message: error.message)
                             }
                         }
                     }

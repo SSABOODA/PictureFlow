@@ -23,6 +23,18 @@ final class FollowViewController: UIViewController {
         super.viewDidLoad()
         bind()
         self.viewModel.fetchProfilData()
+        profileImageTapGesture()
+    }
+    
+    private func profileImageTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        mainView.profileImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func imageTapped() {
+        let fullScreenViewController = FullScreenImageViewController(image: mainView.profileImageView.image)
+        fullScreenViewController.modalPresentationStyle = .fullScreen
+        self.present(fullScreenViewController, animated: true, completion: nil)
     }
     
     private func bind() {

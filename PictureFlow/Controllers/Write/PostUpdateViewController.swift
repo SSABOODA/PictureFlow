@@ -33,12 +33,20 @@ final class PostUpdateViewController: NewPostWriteViewController {
         
         self.postUpdateViewModel.postUpdateResponse
             .subscribe(with: self) { owner, value in
-                owner.dismiss(animated: true)
+                
                 NotificationCenter.default.post(
                     name: NSNotification.Name("oberservePostUpdate"),
                     object: nil,
                     userInfo: ["postData": value]
                 )
+                
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("updateDataSource"),
+                    object: nil,
+                    userInfo: ["isUpdate": true]
+                )
+                
+                owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
     }

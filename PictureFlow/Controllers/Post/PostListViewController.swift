@@ -23,15 +23,29 @@ class PostListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, PostListViewController.description())
         configureNavigationBar()
         bindingRefreshControl()
         bind()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.updateDataSource(_:)),
+            name: NSNotification.Name("updateDataSource"),
+            object: nil
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.viewModel.updateDateSource()
+    }
+    
+    @objc func updateDataSource(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
+        print("post List isupdate: \(isUpdate)")
+        if isUpdate {
+            self.viewModel.updateDateSource()
+        }
     }
     
     private func bindingRefreshControl() {
@@ -89,7 +103,6 @@ class PostListViewController: UIViewController {
                     cell.profileImageView.addGestureRecognizer(tapGesture)
                     
                     tapGesture.rx.event.bind(with: self) { owner, tap in
-                        print("image view did tapppp")
                         if element.creator._id == UserDefaultsManager.userID {
                             let vc = ProfileViewController()
                             owner.transition(viewController: vc, style: .push)
@@ -120,7 +133,7 @@ class PostListViewController: UIViewController {
                             switch result {
                             case .success(let data):
                                 print("like network data: \(data)")
-
+                                
                                 if data.likeStatus {
                                     owner.viewModel.postListDataSource[row].likes.append(UserDefaultsManager.userID)
                                     cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -206,7 +219,6 @@ class PostListViewController: UIViewController {
                 )
             }
             .subscribe(with: self) { owner, value in
-                print("cell clicked")
                 let vc = PostDetailViewController()
                 vc.viewModel.postList = value
                 owner.transition(viewController: vc, style: .push)

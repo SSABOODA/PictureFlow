@@ -258,3 +258,18 @@ extension UIViewController {
         return attributedText
     }
 }
+
+
+/*
+ removeNotificationCenterObserver
+ */
+
+extension UIViewController {
+    func removeNotificationCenterObserver(notificationName: String) {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name(notificationName),
+            object: nil
+        )
+    }
+}

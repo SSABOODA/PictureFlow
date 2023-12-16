@@ -46,6 +46,12 @@ class CommentCreateViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
+        output.errorResponse
+            .subscribe(with: self) { owner, error in
+                owner.showAlertAction1(message: error.message)
+            }
+            .disposed(by: disposeBag)
+        
         output.userProfileObservable
             .subscribe(with: self) { owner, userProfile in
                 owner.mainView.nicknameLabel.text = userProfile.nick
@@ -55,10 +61,14 @@ class CommentCreateViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
-            
         
         output.commentsObservableInfo
             .subscribe(with: self) { owner, newComment in
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("updateDataSource"),
+                    object: nil,
+                    userInfo: ["isUpdate": true]
+                )
                 owner.completionHandler?(newComment)
                 owner.dismiss(animated: true)
             }

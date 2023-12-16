@@ -25,7 +25,27 @@ final class SearchViewController: UIViewController {
         configureSearchController()
         bind()
         dataBinding()
-        print("서치뷰: \(hashTagWord)")
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.updateDataSource(_:)),
+            name: NSNotification.Name("updateDataSource"),
+            object: nil
+        )
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)        
+    }
+    
+    @objc func updateDataSource(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
+        print("post List isupdate: \(isUpdate)")
+        guard let searchText = mainView.searchController.searchBar.text else { return }
+        if isUpdate {
+            self.viewModel.hashTagWord.onNext(searchText.removeHashTag())
+        }
     }
     
     private func dataBinding() {
@@ -68,7 +88,9 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.hashTagPostListObservable
-            .bind(to: mainView.tableView.rx.items(cellIdentifier: PostListTableViewCell.description(), cellType: PostListTableViewCell.self)) { (row, element, cell) in
+            .bind(to: mainView.tableView.rx.items(
+                cellIdentifier: PostListTableViewCell.description(),
+                cellType: PostListTableViewCell.self)) { (row, element, cell) in
                 
                 // cell 데이터 구성
                 cell.configureCell(with: element)
@@ -173,6 +195,35 @@ final class SearchViewController: UIViewController {
                     }
                     .disposed(by: cell.disposeBag)
                 
+                cell.delegate = self
+                
+            }
+            .disposed(by: disposeBag)
+
+        Observable.zip(
+            mainView.tableView.rx.itemSelected,
+            mainView.tableView.rx.modelSelected(PostList.self)
+        )
+            .map {
+                let item = $0.1
+                return PostList(
+                    _id: item._id,
+                    likes: item.likes,
+                    image: item.image,
+                    title: item.title,
+                    content: item.content,
+                    time: item.time,
+                    productID: item.productID,
+                    creator: item.creator,
+                    comments: item.comments,
+                    hashTags: item.hashTags
+                )
+            }
+            .subscribe(with: self) { owner, value in
+                print("cell clicked")
+                let vc = PostDetailViewController()
+                vc.viewModel.postList = value
+                owner.transition(viewController: vc, style: .push)
             }
             .disposed(by: disposeBag)
         
@@ -181,6 +232,21 @@ final class SearchViewController: UIViewController {
                 owner.showAlertAction1(message: error.message)
             }
             .disposed(by: disposeBag)
+    }
+}
+
+extension SearchViewController: CustomTableViewCellDelegate {
+    func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
+        print(#function)
+        let vc = SearchViewController()
+        vc.hashTagWord = hashTagWord
+        self.transition(viewController: vc, style: .push)
+    }
+    
+    func didTapButton(in cell: PostListTableViewCell, image: UIImage) {
+        let vc = FullScreenImageViewController(image: image)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 }
 

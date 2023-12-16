@@ -10,8 +10,6 @@ import RxSwift
 import RxDataSources
 import Kingfisher
 
-
-
 protocol CustomTableViewCellDelegate: AnyObject {
     func didTapButton(in cell: PostListTableViewCell, image: UIImage)
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String)

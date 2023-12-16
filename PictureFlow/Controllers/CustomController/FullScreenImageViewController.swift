@@ -93,7 +93,6 @@ final class FullScreenImageViewController: UIViewController {
             for: .touchUpInside
         )
         
-        // 탭 제스처를 추가하여 전체 화면에서 이미지를 탭하면 화면 닫히도록
         let tapGesture = UITapGestureRecognizer(
             target: self,
             action: #selector(closeFullScreen)
@@ -102,6 +101,12 @@ final class FullScreenImageViewController: UIViewController {
     }
     
     @objc func closeFullScreen() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(
+                name: NSNotification.Name("updateDataSource"),
+                object: nil,
+                userInfo: ["isUpdate": false]
+            )
+        }
     }
 }

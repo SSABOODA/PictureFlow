@@ -23,12 +23,25 @@ final class ProfileChileMyPostListViewController: UIViewController {
         super.viewDidLoad()
         print("profile chile vc viewDidLoad")
         bind()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.updateDataSource(_:)),
+            name: NSNotification.Name("updateDataSource"),
+            object: nil
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
-        viewModel.fetchProfileMyPostListData()
+    }
+    
+    @objc func updateDataSource(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
+        if isUpdate {
+            self.viewModel.fetchProfileMyPostListData()
+        }
     }
     
     private func emptyViewBind() {
@@ -144,6 +157,7 @@ final class ProfileChileMyPostListViewController: UIViewController {
                             self.present(bottomSheetVC, animated: false)
                         }
                         .disposed(by: cell.disposeBag)
+                    cell.delegate = self
             }
             .disposed(by: disposeBag)
         
@@ -175,5 +189,20 @@ final class ProfileChileMyPostListViewController: UIViewController {
                 owner.transition(viewController: vc, style: .push)
             }
             .disposed(by: disposeBag)
+    }
+}
+
+extension ProfileChileMyPostListViewController: CustomTableViewCellDelegate {
+    func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
+        print(#function)
+        let vc = SearchViewController()
+        vc.hashTagWord = hashTagWord
+        self.transition(viewController: vc, style: .push)
+    }
+    
+    func didTapButton(in cell: PostListTableViewCell, image: UIImage) {
+        let vc = FullScreenImageViewController(image: image)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 }

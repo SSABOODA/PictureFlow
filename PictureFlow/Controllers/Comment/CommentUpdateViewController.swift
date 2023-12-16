@@ -66,7 +66,6 @@ final class CommentUpdateViewController: CommentCreateViewController {
     
     let commentUpdateViewModel = CommentUpdateViewModel()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
@@ -142,12 +141,20 @@ final class CommentUpdateViewController: CommentCreateViewController {
         let ouput = commentUpdateViewModel.transform(input: input)
         ouput.commentsObservableInfo
             .subscribe(with: self) { owner, comment in
-                owner.dismiss(animated: true)
+                
                 NotificationCenter.default.post(
                     name: NSNotification.Name("observeCommentUpdate"),
                     object: nil,
                     userInfo: ["commentData": comment]
                 )
+                
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("updateDataSource"),
+                    object: nil,
+                    userInfo: ["isUpdate": true]
+                )
+                
+                owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
     }

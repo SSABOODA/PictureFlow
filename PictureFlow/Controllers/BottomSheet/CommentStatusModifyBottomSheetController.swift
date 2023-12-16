@@ -98,10 +98,15 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
                             switch response {
                             case .success(let data):
                                 print(data)
+                                NotificationCenter.default.post(
+                                    name: NSNotification.Name("updateDataSource"),
+                                    object: nil,
+                                    userInfo: ["isUpdate": true]
+                                )
                                 owner.completionHandler?(data)
                             case .failure(let error):
-                                print(error)
 //                                owner.completionHandler?(false)
+                                owner.showAlertAction1(message: error.message)
                             }
                         }
                         

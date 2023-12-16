@@ -19,6 +19,7 @@ class CommentCreateViewModel: ViewModelType {
         let commentCreateSuccess: BehaviorRelay<Bool>
         let commentsObservableInfo: PublishSubject<Comments>
         let userProfileObservable: PublishSubject<UserInfo>
+        let errorResponse: PublishSubject<CustomErrorResponse>
     }
     
     var disposeBag = DisposeBag()
@@ -28,7 +29,7 @@ class CommentCreateViewModel: ViewModelType {
     var commentCreateSuccess = BehaviorRelay(value: false)
     var commentsObservableInfo = PublishSubject<Comments>()
     var commentCreateError = PublishSubject<String>()
-    
+    var errorResponse = PublishSubject<CustomErrorResponse>()
     var postId: String = ""
     var postList: PostList? = nil
     
@@ -53,7 +54,6 @@ class CommentCreateViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print(data)
                     let userInfo = UserInfo(
                         _id: data._id,
                         nick: data.nick,
@@ -61,7 +61,7 @@ class CommentCreateViewModel: ViewModelType {
                     )
                     owner.userProfileObservable.onNext(userInfo)
                 case .failure(let error):
-                    print(error)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)
@@ -84,8 +84,6 @@ class CommentCreateViewModel: ViewModelType {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let data):
-                    print(data)
-                    
                     let newComment = Comments(
                         _id: data._id,
                         content: data.content,
@@ -94,7 +92,7 @@ class CommentCreateViewModel: ViewModelType {
                     )
                     owner.commentsObservableInfo.onNext(newComment)
                 case .failure(let error):
-                    print(error)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)
@@ -102,7 +100,8 @@ class CommentCreateViewModel: ViewModelType {
         return Output(
             commentCreateSuccess: commentCreateSuccess,
             commentsObservableInfo: commentsObservableInfo,
-            userProfileObservable: userProfileObservable
+            userProfileObservable: userProfileObservable,
+            errorResponse: errorResponse
         )
     }
     

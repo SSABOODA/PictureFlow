@@ -51,11 +51,9 @@ final class SearchViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print(data)
                     owner.hashTagPostList = data.data
                     owner.hashTagPostListObservable.onNext(owner.hashTagPostList)
                 case .failure(let error):
-                    print(error)
                     owner.errorResponse.onNext(error)
                 }
             }
@@ -77,11 +75,9 @@ final class SearchViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print(data)
                     owner.hashTagPostList = data.data
                     owner.hashTagPostListObservable.onNext(owner.hashTagPostList)
                 case .failure(let error):
-                    print(error)
                     owner.errorResponse.onNext(error)
                 }
             }

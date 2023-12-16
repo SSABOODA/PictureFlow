@@ -22,11 +22,28 @@ final class LikeViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         bind()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.updateDataSource(_:)),
+            name: NSNotification.Name("updateDataSource"),
+            object: nil
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.fetchUpdateDataSource()
+        
+        
+    }
+    
+    @objc func updateDataSource(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
+        print("like VC isupdate: \(isUpdate)")
+        if isUpdate {
+            self.viewModel.fetchUpdateDataSource()
+        }
     }
     
     private func bind() {
@@ -47,7 +64,6 @@ final class LikeViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
-        
         
         output.errorResponse
             .subscribe(with: self) { owner, error in
@@ -166,7 +182,7 @@ final class LikeViewController: UIViewController {
                         }
                     }
                     .disposed(by: cell.disposeBag)
-                
+                cell.delegate = self
             }
             .disposed(by: disposeBag)
         
@@ -201,10 +217,24 @@ final class LikeViewController: UIViewController {
     }
 }
 
+extension LikeViewController: CustomTableViewCellDelegate {
+    func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
+        print(#function)
+        let vc = SearchViewController()
+        vc.hashTagWord = hashTagWord
+        self.transition(viewController: vc, style: .push)
+    }
+    
+    func didTapButton(in cell: PostListTableViewCell, image: UIImage) {
+        let vc = FullScreenImageViewController(image: image)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
+    }
+}
+
 extension LikeViewController {
     private func configureNavigationBar() {
         navigationItem.title = "좋아요"
-        navigationController?.navigationBar.prefersLargeTitles = true
         self.setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .text))
     }
 }

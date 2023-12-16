@@ -31,9 +31,8 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
     }
-    
+
     deinit {
         removeNotificationCenterObserver(notificationName: "observeCommentUpdate")
         removeNotificationCenterObserver(notificationName: "oberservePostUpdate")
@@ -200,6 +199,13 @@ extension PostDetailViewController {
                         switch result {
                         case .success(let data):
                             print("like network data: \(data.likeStatus)")
+                            
+                            NotificationCenter.default.post(
+                                name: NSNotification.Name("updateDataSource"),
+                                object: nil,
+                                userInfo: ["isUpdate": true]
+                            )
+                            
                             if data.likeStatus {
                                 cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
                                 cell.likeButton.tintColor = .red
@@ -332,15 +338,5 @@ extension PostDetailViewController {
         }
         
         self.viewModel.postObservableItem.onNext(self.viewModel.postDataList)
-    }
-}
-
-extension PostDetailViewController {
-    private func removeNotificationCenterObserver(notificationName: String) {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: NSNotification.Name(notificationName),
-            object: nil
-        )
     }
 }
