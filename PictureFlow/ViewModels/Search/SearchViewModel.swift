@@ -94,6 +94,8 @@ final class SearchViewModel: ViewModelType {
     }
     
     func updateDateSource() {
+        self.hashTagPostList.removeAll()
+        self.nextCursor = ""
         if let token = KeyChain.read(key: APIConstants.accessToken) {
             print("토큰 확인: \(token)")
             tokenObservable.onNext(token)

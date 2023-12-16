@@ -48,7 +48,7 @@ final class SearchViewController: UIViewController {
             .withUnretained(self)
             .bind(with: self) { owner, rowSet in
                 let row = rowSet.1
-                guard row == owner.viewModel.hashTagPostList.count - 1 else { return }
+                guard row <= owner.viewModel.hashTagPostList.count - 2 else { return }
                 guard let searchText = self.mainView.searchController.searchBar.text else { return }
                 
                 let nextCursor = owner.viewModel.nextCursor

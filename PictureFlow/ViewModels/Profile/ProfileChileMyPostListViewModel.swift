@@ -32,7 +32,7 @@ final class ProfileChileMyPostListViewModel: ViewModelType {
                         accessToken: token,
                         userId: UserDefaultsManager.userID,
                         next: "",
-                        limit: "",
+                        limit: "10",
                         product_id: ""
                     )
                 )
@@ -47,7 +47,6 @@ final class ProfileChileMyPostListViewModel: ViewModelType {
                 }
             }
             .disposed(by: disposeBag)
-            
         
         return Output(
             myPostListObservable: myPostListObservable,
@@ -56,6 +55,8 @@ final class ProfileChileMyPostListViewModel: ViewModelType {
     }
     
     func fetchProfileMyPostListData() {
+        self.postList.removeAll()
+        self.nextCursor = ""
         if let token = KeyChain.read(key: APIConstants.accessToken) {
             print("🔑 토큰 확인: \(token)")
             initTokenObservable.onNext(token)

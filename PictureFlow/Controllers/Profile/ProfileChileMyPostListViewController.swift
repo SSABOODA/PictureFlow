@@ -51,8 +51,7 @@ final class ProfileChileMyPostListViewController: UIViewController {
             .withUnretained(self)
             .bind(with: self) { owner, rowSet in
                 let row = rowSet.1
-                guard row == owner.viewModel.postList.count - 1 else { return }
-                
+                guard row <= owner.viewModel.postList.count - 2 else { return }
                 let nextCursor = owner.viewModel.nextCursor
                 if nextCursor != "0" {
                     owner.viewModel.prefetchData(next: nextCursor)
