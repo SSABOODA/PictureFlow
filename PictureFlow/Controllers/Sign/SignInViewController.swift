@@ -54,7 +54,6 @@ final class SignInViewController: UIViewController {
                 return $0 == true
             }
             .drive(with: self) { owner, value in
-                print("Login Succeed")
             }
             .disposed(by: disposeBag)
         

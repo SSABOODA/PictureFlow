@@ -190,7 +190,6 @@ extension PostDetailViewController {
                     }
                     .observe(on: MainScheduler.instance)
                     .bind(with: self) { owner, result in
-                        print("like button tap")
                         switch result {
                         case .success(let data):
                             

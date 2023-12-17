@@ -13,7 +13,7 @@ import RxCocoa
 final class PostUpdateViewController: NewPostWriteViewController {
     
     var postUpdateViewModel = PostUpdateViewModel()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigation()
@@ -48,8 +48,6 @@ final class PostUpdateViewController: NewPostWriteViewController {
                 owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
-        
-        
     }
     
     func configurePostData() {
@@ -61,7 +59,6 @@ final class PostUpdateViewController: NewPostWriteViewController {
             group.enter()
             imageString.downloadImage(urlString: imageString) { [weak self] UIImage in
                 guard let image = UIImage else { return }
-                
                 self?.viewModel.photoImageList.append(image)
                 group.leave()
             }

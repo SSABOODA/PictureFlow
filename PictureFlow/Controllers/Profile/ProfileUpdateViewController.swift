@@ -106,9 +106,7 @@ extension ProfileUpdateViewController: PHPickerViewControllerDelegate {
         mainView.profileImageView.isUserInteractionEnabled = true
     }
     
-    @objc func touchUpImageView() {
-        print("이미지 뷰 터치")
-        
+    @objc func touchUpImageView() {        
         let alert = UIAlertController(
             title: nil,
             message: nil,

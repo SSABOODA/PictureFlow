@@ -77,6 +77,21 @@ class PostListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        // pagination
+        mainView.tableView.rx.prefetchRows
+            .compactMap(\.last?.row)
+            .withUnretained(self)
+            .bind(with: self) { owner, rowSet in
+                let row = rowSet.1
+                guard row == owner.viewModel.postListDataSource.count - 1 else { return }
+                
+                let nextCursor = owner.viewModel.nextCursor
+                if nextCursor != "0" {
+                    owner.viewModel.prefetchData(next: nextCursor)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         // pull to refresh
         output.refreshLoading
             .bind(to: mainView.refreshControl.rx.isRefreshing)
@@ -197,8 +212,15 @@ class PostListViewController: UIViewController {
                                 }
                                 
                                 bottomSheetVC.postUpdateCompletion = { postUpdateData in
-                                    owner.viewModel.postListDataSource[row] = postUpdateData
-                                    owner.viewModel.postListItem.onNext(owner.viewModel.postListDataSource)
+                                    
+                                    
+                                    for (index, item) in owner.viewModel.postListDataSource.enumerated() {
+                                        if item._id == postUpdateData._id {
+                                            owner.viewModel.postListDataSource[index] = postUpdateData
+                                            owner.viewModel.postListItem.onNext(owner.viewModel.postListDataSource)
+                                        }
+                                    }
+
                                 }
                                 
                                 bottomSheetVC.post = owner.viewModel.postListDataSource[row]
@@ -244,23 +266,6 @@ class PostListViewController: UIViewController {
             owner.transition(viewController: vc, style: .push)
         }
         .disposed(by: disposeBag)
-
-        
-        // pagination
-        mainView.tableView.rx.prefetchRows
-            .compactMap(\.last?.row)
-            .withUnretained(self)
-            .bind(with: self) { owner, rowSet in
-                let row = rowSet.1
-                guard row == owner.viewModel.postListDataSource.count - 1 else { return }
-                
-                let nextCursor = owner.viewModel.nextCursor
-                if nextCursor != "0" {
-                    owner.viewModel.prefetchData(next: nextCursor)
-                }
-            }
-            .disposed(by: disposeBag)
-        
         
     }
 }
