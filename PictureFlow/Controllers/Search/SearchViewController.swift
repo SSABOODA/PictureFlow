@@ -219,6 +219,12 @@ final class SearchViewController: UIViewController {
                                     owner.viewModel.updateDateSource()
                                 }
                             }
+                            
+                            bottomSheetVC.postUpdateCompletion = { postUpdateData in
+                                owner.viewModel.hashTagPostList[row] = postUpdateData
+                                owner.viewModel.hashTagPostListObservable.onNext(owner.viewModel.hashTagPostList)
+                            }
+                            
                             bottomSheetVC.post = owner.viewModel.hashTagPostList[row]
                             bottomSheetVC.postId = owner.viewModel.hashTagPostList[row]._id
                             bottomSheetVC.modalPresentationStyle = .overFullScreen
@@ -274,10 +280,6 @@ final class SearchViewController: UIViewController {
 
 extension SearchViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
-//        print(#function)
-//        let vc = SearchViewController()
-//        vc.hashTagWord = hashTagWord
-//        self.transition(viewController: vc, style: .push)
     }
     
     func didTapButton(in cell: PostListTableViewCell, image: UIImage) {

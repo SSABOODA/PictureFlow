@@ -45,13 +45,6 @@ final class PostUpdateViewController: NewPostWriteViewController {
                     object: nil,
                     userInfo: ["postData": value]
                 )
-                
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("updateDataSource"),
-                    object: nil,
-                    userInfo: ["isUpdate": true]
-                )
-                
                 owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)

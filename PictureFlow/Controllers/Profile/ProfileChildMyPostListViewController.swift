@@ -188,6 +188,12 @@ final class ProfileChildMyPostListViewController: UIViewController {
                                     owner.viewModel.fetchProfileMyPostListData()
                                 }
                             }
+                            
+                            bottomSheetVC.postUpdateCompletion = { postUpdateData in
+                                owner.viewModel.postList[row] = postUpdateData
+                                owner.viewModel.myPostListObservable.onNext(owner.viewModel.postList)
+                            }
+                            
                             bottomSheetVC.post = owner.viewModel.postList[row]
                             bottomSheetVC.postId = owner.viewModel.postList[row]._id
                             bottomSheetVC.modalPresentationStyle = .overFullScreen

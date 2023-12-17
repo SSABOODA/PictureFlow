@@ -206,6 +206,12 @@ final class LikeViewController: UIViewController {
                                     owner.viewModel.fetchUpdateDataSource()
                                 }
                             }
+                            
+                            bottomSheetVC.postUpdateCompletion = { postUpdateData in
+                                owner.viewModel.likedPostList[row] = postUpdateData
+                                owner.viewModel.likedPostListObservable.onNext(owner.viewModel.likedPostList)
+                            }
+                            
                             bottomSheetVC.post = owner.viewModel.likedPostList[row]
                             bottomSheetVC.postId = owner.viewModel.likedPostList[row]._id
                             bottomSheetVC.modalPresentationStyle = .overFullScreen

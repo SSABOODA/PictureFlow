@@ -35,6 +35,7 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
     var postId: String = ""
     var post: PostList?
     var completion: ((Bool) -> Void)?
+    var postUpdateCompletion: ((PostList) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +67,14 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
         }
     }
     
+    @objc func oberservePostUpdate(_ notification: NSNotification) {
+        guard let postData = notification.userInfo?["postData"] as? PostUpdateResponse else { return }
+        
+        let model = PostList(_id: postData._id, likes: postData.likes, image: postData.image, title: postData.title, content: postData.content, time: postData.time, productID: postData.productID, creator: postData.creator, comments: postData.comments, hashTags: postData.hashTags)
+        
+        self.postUpdateCompletion?(model)
+    }
+    
     private func bind() {
         updateButton.rx.tap
             .bind(with: self) { owner, _ in
@@ -73,6 +82,14 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
                 let vc = PostUpdateViewController()
                 vc.postUpdateViewModel.post = owner.post
                 vc.configurePostData()
+                
+                NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(self.oberservePostUpdate),
+                    name: NSNotification.Name("oberservePostUpdate"),
+                    object: nil
+                )
+                
                 owner.transition(viewController: vc, style: .presentNavigation)
             }
             .disposed(by: disposeBag)
