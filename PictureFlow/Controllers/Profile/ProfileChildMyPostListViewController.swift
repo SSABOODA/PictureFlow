@@ -226,6 +226,15 @@ final class ProfileChildMyPostListViewController: UIViewController {
             
             model.comments = owner.viewModel.postList[indexPath.row].comments
             let vc = PostDetailViewController()
+            vc.commentCreateCompletion = { [weak self] (id, newComment) in
+                guard let self = self else { return }
+                for (index, item) in self.viewModel.postList.enumerated() {
+                    if item._id == id {
+                        self.viewModel.postList[index].comments.insert(newComment, at: 0)
+                        self.viewModel.myPostListObservable.onNext(self.viewModel.postList)
+                    }
+                }
+            }
             vc.viewModel.postList = model
             owner.transition(viewController: vc, style: .push)
         }

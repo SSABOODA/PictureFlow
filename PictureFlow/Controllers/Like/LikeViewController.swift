@@ -245,6 +245,15 @@ final class LikeViewController: UIViewController {
             
             model.comments = owner.viewModel.likedPostList[indexPath.row].comments
             let vc = PostDetailViewController()
+            vc.commentCreateCompletion = { [weak self] (id, newComment) in
+                guard let self = self else { return }
+                for (index, item) in self.viewModel.likedPostList.enumerated() {
+                    if item._id == id {
+                        self.viewModel.likedPostList[index].comments.insert(newComment, at: 0)
+                        self.viewModel.likedPostListObservable.onNext(self.viewModel.likedPostList)
+                    }
+                }
+            }
             vc.viewModel.postList = model
             owner.transition(viewController: vc, style: .push)
         }

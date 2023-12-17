@@ -69,8 +69,8 @@ final class PostDetailView: UIView {
     
     private func configureLayout() {
         collectionView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            make.bottom.equalTo(commentInputButtonView.snp.top)
+            make.top.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
+//            make.bottom.equalTo(commentInputButtonView.snp.top)
         }
 
         commentInputButtonView.snp.makeConstraints { make in

@@ -16,12 +16,16 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     var viewModel = PostDetailViewModel()
     var disposeBag = DisposeBag()
     
+    var commentCreateCompletion: ((String, Comments) -> Void)?
+    
     override func loadView() {
         view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainView.commentInputButtonView.isHidden = true
+        mainView.commentInputButton.isHidden = true
         bind()
         mainView.collectionView.rx
             .setDelegate(self)
@@ -222,6 +226,10 @@ extension PostDetailViewController {
                         vc.completionHandler = { newComment in
                             owner.viewModel.postDataList[0].items.insert(newComment, at: 0)
                             owner.viewModel.postObservableItem.onNext(owner.viewModel.postDataList)
+                            
+                            let _id = owner.viewModel.postDataList[0].header._id
+              
+                            owner.commentCreateCompletion?(_id, newComment)
                         }
                         vc.viewModel.postId = elements._id
                         vc.viewModel.postList = elements

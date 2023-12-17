@@ -33,6 +33,8 @@ class PostListViewController: UIViewController {
             name: NSNotification.Name("updateDataSource"),
             object: nil
         )
+
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +43,7 @@ class PostListViewController: UIViewController {
     
     deinit {
         self.removeNotificationCenterObserver(notificationName: "updateDataSource")
+        self.removeNotificationCenterObserver(notificationName: "createComment")
     }
     
     @objc func updateDataSource(_ notification: NSNotification) {
@@ -213,7 +216,6 @@ class PostListViewController: UIViewController {
                                 
                                 bottomSheetVC.postUpdateCompletion = { postUpdateData in
                                     
-                                    
                                     for (index, item) in owner.viewModel.postListDataSource.enumerated() {
                                         if item._id == postUpdateData._id {
                                             owner.viewModel.postListDataSource[index] = postUpdateData
@@ -262,6 +264,17 @@ class PostListViewController: UIViewController {
             
             model.comments = owner.viewModel.postListDataSource[indexPath.row].comments
             let vc = PostDetailViewController()
+            
+            vc.commentCreateCompletion = { [weak self] (id, newComment) in
+                guard let self = self else { return }
+                for (index, item) in self.viewModel.postListDataSource.enumerated() {
+                    if item._id == id {
+                        self.viewModel.postListDataSource[index].comments.insert(newComment, at: 0)
+                        self.viewModel.postListItem.onNext(self.viewModel.postListDataSource)
+                    }
+                }
+            }
+            
             vc.viewModel.postList = model
             owner.transition(viewController: vc, style: .push)
         }
@@ -269,6 +282,8 @@ class PostListViewController: UIViewController {
         
     }
 }
+
+
 
 extension PostListViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
