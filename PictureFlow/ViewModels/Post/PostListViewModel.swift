@@ -55,8 +55,7 @@ final class PostListViewModel: ViewModelType {
                     owner.postListDataSource = data.data
                     owner.postListItem.onNext(owner.postListDataSource)
                 case .failure(let error):
-                    print("error.statusCode: \(error.statusCode)")
-//                    owner.errorResponse.onNext(error)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)

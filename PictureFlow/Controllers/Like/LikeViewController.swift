@@ -21,20 +21,19 @@ final class LikeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
+        bindingRefreshControl()
         bind()
         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.updateDataSource(_:)),
-            name: NSNotification.Name("updateDataSource"),
+            name: NSNotification.Name("likeVCUpdateData"),
             object: nil
         )
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
     }
     
     @objc func updateDataSource(_ notification: NSNotification) {
@@ -46,9 +45,38 @@ final class LikeViewController: UIViewController {
         }
     }
     
+    private func bindingRefreshControl() {
+        mainView.refreshControl.endRefreshing()
+        mainView.tableView.refreshControl = mainView.refreshControl
+        
+        mainView.refreshControl.rx.controlEvent(.valueChanged)
+            .asObservable()
+            .bind(with: self) { owner, _ in
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
+                    owner.viewModel.fetchUpdateDataSource()
+                    owner.mainView.refreshControl.endRefreshing()
+                }
+                owner.viewModel.refreshLoading.accept(true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
     private func bind() {
         let input = LikeViewModel.Input()
         let output = viewModel.transform(input: input)
+        
+        // pull to refresh
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+
+        // activityIndicator
+        output.activityLoaing
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, visible in
+                owner.setVisibleWithAnimation(owner.mainView.activityIndicator, visible)
+            }
+            .disposed(by: disposeBag)
         
         // pagination
         mainView.tableView.rx.prefetchRows

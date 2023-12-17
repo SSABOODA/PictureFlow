@@ -16,7 +16,7 @@ final class LikeView: PostListView {
         label.text = "좋아요한 게시글이 없어요..."
         return label
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHierarchy()

@@ -72,14 +72,16 @@ final class FollowViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.userProfileObservableData
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self) { owner, profileData in
                 let mv = owner.mainView
                 
                 let isFollow = profileData.followers
-                    .map { $0._id == UserDefaultsManager.userID }
+                    .filter { $0._id == UserDefaultsManager.userID }
                     .isEmpty ? false : true
-                
+
                 owner.viewModel.follwerCount = isFollow ? (owner.viewModel.follwerCount - 1) : (owner.viewModel.follwerCount + 1)
+                
                 owner.viewModel.isFollow.accept(isFollow)
                 
                 mv.nickNameLabel.text = profileData.nick
@@ -102,8 +104,6 @@ final class FollowViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
-        
-        
     }
     
     private func configureFollowButton(isFollow: Bool, followButton: UIButton) {

@@ -77,7 +77,6 @@ final class FollowView: ProfileView {
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(UIScreen.main.bounds.height * 0.05)
             make.top.equalTo(profileImageView.snp.bottom).offset(15)
-//            make.bottom.equalTo(safeAreaLayoutGuide).offset(-5)
         }
     }
 }

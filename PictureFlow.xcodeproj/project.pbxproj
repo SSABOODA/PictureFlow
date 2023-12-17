@@ -95,6 +95,7 @@
 		F7B579672B2DD9FD0095A432 /* ProfileChildMyFollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B579662B2DD9FD0095A432 /* ProfileChildMyFollowingViewController.swift */; };
 		F7B579692B2DDD100095A432 /* ProfileChildMyFollowerListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B579682B2DDD100095A432 /* ProfileChildMyFollowerListTableViewCell.swift */; };
 		F7B5796B2B2DDFD90095A432 /* Extension+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5796A2B2DDFD90095A432 /* Extension+ViewModel.swift */; };
+		F7B5796D2B2EC76E0095A432 /* Extension+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B5796C2B2EC76E0095A432 /* Extension+Notification.swift */; };
 		F7C031D62B1F7A05002EAF19 /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C031D52B1F7A05002EAF19 /* UserProfileModel.swift */; };
 		F7C031D82B205631002EAF19 /* LikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C031D72B205631002EAF19 /* LikeModel.swift */; };
 		F7C032072B209F28002EAF19 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */; };
@@ -199,6 +200,7 @@
 		F7B579662B2DD9FD0095A432 /* ProfileChildMyFollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChildMyFollowingViewController.swift; sourceTree = "<group>"; };
 		F7B579682B2DDD100095A432 /* ProfileChildMyFollowerListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChildMyFollowerListTableViewCell.swift; sourceTree = "<group>"; };
 		F7B5796A2B2DDFD90095A432 /* Extension+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ViewModel.swift"; sourceTree = "<group>"; };
+		F7B5796C2B2EC76E0095A432 /* Extension+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Notification.swift"; sourceTree = "<group>"; };
 		F7C031D52B1F7A05002EAF19 /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
 		F7C031D72B205631002EAF19 /* LikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeModel.swift; sourceTree = "<group>"; };
 		F7C032062B209F28002EAF19 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				F72C69032B1AED98007B1F8F /* Extension+UIColor.swift */,
 				F72C69122B1C7148007B1F8F /* Extension+CALyer.swift */,
 				F7B5796A2B2DDFD90095A432 /* Extension+ViewModel.swift */,
+				F7B5796C2B2EC76E0095A432 /* Extension+Notification.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -831,6 +834,7 @@
 				F7E33D6C2B2738AF00ACB8D9 /* ProfileUpdateViewModel.swift in Sources */,
 				F79D69EC2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift in Sources */,
 				F7B4094B2B07714F006CD373 /* LikeViewController.swift in Sources */,
+				F7B5796D2B2EC76E0095A432 /* Extension+Notification.swift in Sources */,
 				F7E33D5F2B27017300ACB8D9 /* ProfileChildMyPostListViewController.swift in Sources */,
 				F7E33D632B2705EE00ACB8D9 /* ProfileUpdateViewController.swift in Sources */,
 				F7095A662B00F82200F0218B /* APIConstants.swift in Sources */,

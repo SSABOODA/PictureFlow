@@ -123,6 +123,11 @@ final class ProfileChildMyFollowerViewController: UIViewController {
         bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.viewModel.fetchDataSource()
+    }
+    
     private func bind() {
         
         let input = ProfileChildMyFollowerViewModel.Input()

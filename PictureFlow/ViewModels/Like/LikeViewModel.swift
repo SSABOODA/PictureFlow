@@ -7,12 +7,15 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 final class LikeViewModel: ViewModelType {
     struct Input {}
     struct Output {
         let likedPostListObservable: PublishSubject<[PostList]>
         let errorResponse: PublishSubject<CustomErrorResponse>
+        let refreshLoading: PublishRelay<Bool>
+        let activityLoaing: BehaviorRelay<Bool>
     }
     
     var disposeBag = DisposeBag()
@@ -22,6 +25,8 @@ final class LikeViewModel: ViewModelType {
     var likedPostList = [PostList]()
     var likedPostListObservable = PublishSubject<[PostList]>()
     var errorResponse = PublishSubject<CustomErrorResponse>()
+    let refreshLoading = PublishRelay<Bool>()
+    let activityLoaing = BehaviorRelay(value: true)
     
     func transform(input: Input) -> Output {
         initTokenObservable
@@ -38,6 +43,7 @@ final class LikeViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
+                    owner.activityLoaing.accept(false)
                     owner.likedPostList = data.data
                     owner.likedPostListObservable.onNext(owner.likedPostList)
                 case .failure(let error):
@@ -47,7 +53,9 @@ final class LikeViewModel: ViewModelType {
             .disposed(by: disposeBag)
         return Output(
             likedPostListObservable: likedPostListObservable,
-            errorResponse: errorResponse
+            errorResponse: errorResponse,
+            refreshLoading: refreshLoading,
+            activityLoaing: activityLoaing
         )
     }
     

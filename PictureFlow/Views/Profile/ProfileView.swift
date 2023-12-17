@@ -77,12 +77,6 @@ class ProfileView: UIView {
         backgroundColor = UIColor(resource: .postStatusModify)
         configureHierarchyView()
         configureLayoutView()
-        
-        // 코난
-        let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU1vlLWxAULVL6qo3QVjH9-c5KxHWJgk7U3eZWReHeig&s"
-        if let imageURL = URL(string: urlString) {
-            followerUserProfileImageView2.kf.setImage(with: imageURL)
-        }
     }
     
     @available(*, unavailable)

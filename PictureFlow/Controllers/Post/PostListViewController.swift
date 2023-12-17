@@ -138,6 +138,12 @@ class PostListViewController: UIViewController {
                             case .success(let data):
                                 print("like network data: \(data)")
                                 
+                                NotificationCenter.default.post(
+                                    name: NSNotification.Name("likeVCUpdateData"),
+                                    object: nil,
+                                    userInfo: ["isUpdate": true]
+                                )
+                                
                                 if data.likeStatus {
                                     owner.viewModel.postListDataSource[row].likes.append(UserDefaultsManager.userID)
                                     cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -154,7 +160,7 @@ class PostListViewController: UIViewController {
                                 owner.viewModel.postListItem.onNext(owner.viewModel.postListDataSource)
                                 cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                             case .failure(let error):
-                                print(error)
+                                owner.showAlertAction1(message: error.message)
                             }
                         }
                         .disposed(by: cell.disposeBag)
@@ -244,10 +250,7 @@ class PostListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        // pull to refresh
-        output.refreshLoading
-            .bind(to: mainView.refreshControl.rx.isRefreshing)
-            .disposed(by: disposeBag)
+        
     }
 }
 

@@ -115,24 +115,33 @@ final class ProfileChildMyFollowingViewController: UIViewController {
         super.viewDidLoad()
         print(#function, "ProfileChileMyFollowingViewController")
         bind()
-
+        
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(self.updateDataSource(_:)),
+//            name: Notification.Name.updateDataSource,
+//            object: nil
+//        )
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.viewModel.fetchDataSource()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.updateDataSource(_:)),
-            name: NSNotification.Name("updateDataSource"),
-            object: nil
-        )
     }
     
-    @objc func updateDataSource(_ notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-        guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
-        print("following isupdate: \(isUpdate)")
-        if isUpdate { self.viewModel.fetchDataSource() }
+//    @objc func updateDataSource(_ notification: NSNotification) {
+//        guard let userInfo = notification.userInfo else { return }
+//        guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
+//        print("following isupdate: \(isUpdate)")
+//        if isUpdate { self.viewModel.fetchDataSource() }
+//    }
+
+    deinit {
+        self.removeNotificationCenterObserver(notificationName: Notification.Name.updateDataSource.rawValue)
     }
     
     private func bind() {
