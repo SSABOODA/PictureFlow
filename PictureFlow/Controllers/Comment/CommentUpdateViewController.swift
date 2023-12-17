@@ -42,7 +42,6 @@ final class CommentUpdateViewModel: CommentCreateViewModel {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print(data)
                     let updatedComment = Comments(
                         _id: data._id,
                         content: data.content,
@@ -188,10 +187,7 @@ extension CommentUpdateViewController {
     }
     
     @objc func updateCancelButtonClicked() {
-        print(#function)
-
         self.showAlertAction2(title: "답글 수정을 취소하시겠습니까?") {
-            print("")
         } _: {
             self.dismiss(animated: true)
         }

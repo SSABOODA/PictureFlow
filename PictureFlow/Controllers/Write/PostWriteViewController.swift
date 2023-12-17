@@ -66,8 +66,7 @@ extension PostWriteViewController {
     
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<PostWriteCollectionViewCell, PostCreateModel> { [weak self] cell, indexPath, itemIdentifier in
-            
-            print("cell registration")
+
             cell.configureTextView()
 
             guard let self else { return }
@@ -94,12 +93,9 @@ extension PostWriteViewController {
                 .bind(to: cell.collectionView.rx.items(
                     cellIdentifier: PostListImageCancelCollectionViewCell.description(),
                     cellType: PostListImageCancelCollectionViewCell.self)) { (row, element, innerCell) in
-                        print("⭐️ rx element: \(element)")
                         innerCell.postImageView.image = element
                         innerCell.cancelButton.rx.tap
                             .bind(with: self) { owner, _ in
-                                print("cancel button did tap")
-                                
                                 owner.viewModel.photoImageList.remove(at: row)
                                 owner.viewModel.photoImageObservableList.onNext(owner.viewModel.photoImageList)
                             }
@@ -147,7 +143,6 @@ extension PostWriteViewController: PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
-        print(#function)
         
         if !results.isEmpty {
             viewModel.photoImageList.removeAll()
@@ -156,7 +151,6 @@ extension PostWriteViewController: PHPickerViewControllerDelegate {
                 if itemProvider.canLoadObject(ofClass: UIImage.self) {
                     itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
                         guard let image = image as? UIImage else { return }
-                        print("🔥 image: \(image)")
                         DispatchQueue.main.async {
                             self?.viewModel.photoImageList.append(image)
                             self?.viewModel.photoImageObservableList.onNext(self?.viewModel.photoImageList ?? [])
@@ -196,10 +190,7 @@ extension PostWriteViewController {
     }
     
     @objc func cancelButtonClicked() {
-        print(#function)
-
         self.showAlertAction2(title: "게시글 작성을 취소하시겠습니까?") {
-            print("")
         } _: {
             let vc = CustomTabBarController()
             self.changeRootViewController(viewController: vc)

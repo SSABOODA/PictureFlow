@@ -307,7 +307,6 @@ final class PostListTableViewCell: UITableViewCell {
         
         contentTextView.rx.didTapWord()
             .subscribe(with: self) { owner, word in
-                print("클릭된 단어: \(word)")
                 owner.delegate?.didTapHashTag(in: self, hashTagWord: word)
             }
             .disposed(by: disposeBag)

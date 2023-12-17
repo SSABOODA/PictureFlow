@@ -18,7 +18,6 @@ final class ProfileChildMyPostCommentListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, "ProfileChileMaPostCommentListViewController")
     }
     
     override func viewWillAppear(_ animated: Bool) {

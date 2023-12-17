@@ -75,7 +75,6 @@ final class FollowViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
-                    print(data)
                     owner.isFollow.accept(data.followingStatus)
                 case .failure(let error):
                     owner.errorObservable.onNext(error)

@@ -40,7 +40,6 @@ final class SettingViewController: UIViewController {
             mainView.tableView.rx.modelSelected(SettingItem.self)
         )
         .subscribe(with: self) { owner, value in
-            print("cell clicked")
             print(value.0, value.1)
             
             let row = value.0.row
@@ -50,7 +49,6 @@ final class SettingViewController: UIViewController {
                 owner.showAlertAction2(message: "로그아웃을 하시겠습니까?",  {
                     print("취소")
                 }, {
-                    print("로그아웃 gogo")
                     owner.removeUserInfo()
                     owner.changeRootViewController(
                         viewController: SignInViewController(),
@@ -62,7 +60,6 @@ final class SettingViewController: UIViewController {
                 owner.showAlertAction2(message: "정말 회원탈퇴를 하시겠습니까? 회원 탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다.",  {
                     print("취소")
                 }, {
-                    print("회원탈퇴 gogo")
                     owner.viewModel.isWithdraw.onNext(true)
                 })
             }

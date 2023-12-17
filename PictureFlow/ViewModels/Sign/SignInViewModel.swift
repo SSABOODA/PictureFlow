@@ -67,7 +67,6 @@ final class SignInViewModel: ViewModelType {
                     UserDefaultsManager.userID = success._id
                     loginSuccess.accept(true)
                 case .failure(let error):
-                    print("subscribe errorResponse: \(error)")
                     errorResponse.accept(error)
                 }
             } onDisposed: { owner in

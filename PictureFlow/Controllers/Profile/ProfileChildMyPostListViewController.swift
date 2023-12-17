@@ -21,7 +21,6 @@ final class ProfileChildMyPostListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("profile chile vc viewDidLoad")
         bindingRefreshControl()
         bind()
         
@@ -138,7 +137,6 @@ final class ProfileChildMyPostListViewController: UIViewController {
                         .bind(with: self) { owner, result in
                             switch result {
                             case .success(let data):
-                                print("like network data: \(data)")
 
                                 if data.likeStatus {
                                     owner.viewModel.postList[row].likes.append(UserDefaultsManager.userID)
@@ -156,7 +154,7 @@ final class ProfileChildMyPostListViewController: UIViewController {
                                 owner.viewModel.myPostListObservable.onNext(owner.viewModel.postList)
                                 cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                             case .failure(let error):
-                                print(error)
+                                owner.showAlertAction1(message: error.message)
                             }
                         }
                         .disposed(by: cell.disposeBag)
@@ -164,7 +162,6 @@ final class ProfileChildMyPostListViewController: UIViewController {
                     // 댓글 버튼
                     cell.commentButton.rx.tap
                         .bind(with: self) { owner, _ in
-                            print("comment button tap")
                             let vc = CommentCreateViewController()
                             vc.completionHandler = { newComment in
                                 let newCommetCount = element.comments.count + 1
@@ -181,7 +178,7 @@ final class ProfileChildMyPostListViewController: UIViewController {
                     cell.moreInfoButton.rx.tap
                         .observe(on: MainScheduler.instance)
                         .bind(with: self) { owner, _ in
-                            print("post list view more button did tap")
+                            
                             let bottomSheetVC = PostListBottomSheetViewController()
                             bottomSheetVC.completion = { isDeleted in
                                 if isDeleted {
@@ -238,7 +235,6 @@ final class ProfileChildMyPostListViewController: UIViewController {
 
 extension ProfileChildMyPostListViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
-        print(#function)
         let vc = SearchViewController()
         vc.hashTagWord = hashTagWord
         self.transition(viewController: vc, style: .push)

@@ -23,8 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window?.makeKeyAndVisible()
         
         self.isLoginStatusInitViewController(
-            isLoggedIn: UserDefaultsManager.isLoggedIn,
-//            isLoggedIn: false,
+//            isLoggedIn: UserDefaultsManager.isLoggedIn,
+            isLoggedIn: false,
             window: window
         )
         

@@ -39,8 +39,6 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
-        
         configureHierarchy()
         configureLayout()
         bind()
@@ -78,7 +76,6 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
     private func bind() {
         updateButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("updateButton did tap")
                 let vc = PostUpdateViewController()
                 vc.postUpdateViewModel.post = owner.post
                 vc.configurePostData()
@@ -96,15 +93,11 @@ final class PostListBottomSheetViewController: BottomSheetViewController {
         
         deleteButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("deleteButton did tap")
-                
                 owner.showAlertAction2(
                     title: "게시물을 삭제하시겠어요?",
                     message: "게시물을 삭제하면 복원할 수 없습니다.", cancelTitle: "취소", completeTitle: "삭제") {
                         
                     } _: {
-                        print("삭제")
-                        
                         guard let post = owner.post else { return }
                         guard let token = KeyChain.read(key: APIConstants.accessToken) else { return }
 

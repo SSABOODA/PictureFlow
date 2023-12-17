@@ -52,16 +52,13 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
         
         mainView.collectionView.rx.itemSelected
             .subscribe(with: self) { owner, indexPath in
-                print(indexPath)
             }
             .disposed(by: disposeBag)
         
         mainView.commentInputButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("답글 남기기 버튼 TAP")
                 let vc = CommentCreateViewController()
                 vc.completionHandler = { newComment in
-                    print("newComment: \(newComment)")
                     owner.viewModel.postDataList[0].items.insert(newComment, at: 0)
                     owner.viewModel.postObservableItem.onNext(owner.viewModel.postDataList)
                 }
@@ -95,7 +92,6 @@ extension PostDetailViewController {
             
             cell.moreInfoButton.rx.tap
                 .bind(with: self) { owner, _ in
-                    print("more button did tap")
                     
                     if data.creator._id == UserDefaultsManager.userID {
                         let bottomSheetVC = CommentStatusModifyBottomSheetController()
@@ -197,7 +193,6 @@ extension PostDetailViewController {
                         print("like button tap")
                         switch result {
                         case .success(let data):
-                            print("like network data: \(data.likeStatus)")
                             
                             NotificationCenter.default.post(
                                 name: NSNotification.Name("updateDataSource"),
@@ -216,7 +211,7 @@ extension PostDetailViewController {
                             }
                             cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                         case .failure(let error):
-                            print(error)
+                            owner.showAlertAction1(message: error.message)
                         }
                     }
                     .disposed(by: cell.disposeBag)
@@ -224,7 +219,6 @@ extension PostDetailViewController {
                 // 댓글 버튼
                 cell.commentButton.rx.tap
                     .bind(with: self) { owner, _ in
-                        print("comment button tap")
                         let vc = CommentCreateViewController()
                         vc.completionHandler = { newComment in
                             owner.viewModel.postDataList[0].items.insert(newComment, at: 0)
@@ -240,7 +234,6 @@ extension PostDetailViewController {
                 cell.moreInfoButton.rx.tap
                     .observe(on: MainScheduler.instance)
                     .bind(with: self) { owner, _ in
-                        print("post detail view more button did tap")
                         
                         if elements.creator._id == UserDefaultsManager.userID {
                             let bottomSheetVC = PostListBottomSheetViewController()

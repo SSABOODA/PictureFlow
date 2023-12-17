@@ -39,7 +39,6 @@ final class LikeViewController: UIViewController {
     @objc func updateDataSource(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
-        print("like VC isupdate: \(isUpdate)")
         if isUpdate {
             self.viewModel.fetchUpdateDataSource()
         }
@@ -124,7 +123,6 @@ final class LikeViewController: UIViewController {
                 cell.profileImageView.addGestureRecognizer(tapGesture)
                 
                 tapGesture.rx.event.bind(with: self) { owner, tap in
-                    print("image view did tapppp")
                     if element.creator._id == UserDefaultsManager.userID {
                         let vc = ProfileViewController()
                         owner.transition(viewController: vc, style: .push)
@@ -154,7 +152,6 @@ final class LikeViewController: UIViewController {
                     .bind(with: self) { owner, result in
                         switch result {
                         case .success(let data):
-                            print("like network data: \(data)")
 
                             if data.likeStatus {
                                 owner.viewModel.likedPostList[row].likes.append(UserDefaultsManager.userID)
@@ -172,7 +169,7 @@ final class LikeViewController: UIViewController {
                             owner.viewModel.likedPostListObservable.onNext(owner.viewModel.likedPostList)
                             cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                         case .failure(let error):
-                            print(error)
+                            owner.showAlertAction1(message: error.message)
                         }
                     }
                     .disposed(by: cell.disposeBag)
@@ -180,7 +177,6 @@ final class LikeViewController: UIViewController {
                 // 댓글 버튼
                 cell.commentButton.rx.tap
                     .bind(with: self) { owner, _ in
-                        print("comment button tap")
                         let vc = CommentCreateViewController()
                         vc.completionHandler = { newComment in
                             let newCommetCount = element.comments.count + 1
@@ -198,7 +194,6 @@ final class LikeViewController: UIViewController {
                 cell.moreInfoButton.rx.tap
                     .observe(on: MainScheduler.instance)
                     .bind(with: self) { owner, _ in
-                        print("post list view more button did tap")
                         if element.creator._id == UserDefaultsManager.userID {
                             let bottomSheetVC = PostListBottomSheetViewController()
                             bottomSheetVC.completion = { isDeleted in
@@ -261,7 +256,6 @@ final class LikeViewController: UIViewController {
 
 extension LikeViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
-        print(#function)
         let vc = SearchViewController()
         vc.hashTagWord = hashTagWord
         self.transition(viewController: vc, style: .push)

@@ -36,8 +36,6 @@ final class OtherUserPostBottomSheetViewController: BottomSheetViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
-        
         configureHierarchy()
         configureLayout()
         bind()

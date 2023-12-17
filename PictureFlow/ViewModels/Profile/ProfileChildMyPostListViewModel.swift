@@ -62,7 +62,7 @@ final class ProfileChildMyPostListViewModel: ProfileChildMyPostListViewModelType
                     owner.postList = data.data
                     owner.myPostListObservable.onNext(owner.postList)
                 case .failure(let error):
-                    print(error)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)

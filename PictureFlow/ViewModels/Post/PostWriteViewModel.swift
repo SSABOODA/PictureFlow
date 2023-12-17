@@ -75,11 +75,10 @@ final class PostWriteViewModel: ViewModelType {
             }
             .subscribe(with: self) { owner, result in
                 switch result {
-                case .success(let data):
-                    print("======", data)
+                case .success(_):
                     owner.successPostCreate.accept(true)
                 case .failure(let error):
-                    print("======", error)
+                    print(error)
                 }
             }
             .disposed(by: disposeBag)

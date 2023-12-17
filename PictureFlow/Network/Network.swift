@@ -204,7 +204,6 @@ final class Network {
                     completion(.success(data))
                 case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
-                    print("statusCode: \(statusCode)")
                     let error = self.makeCustomErrorResponse(response: response, statusCode: statusCode)
                     completion(.failure(error))
                 }

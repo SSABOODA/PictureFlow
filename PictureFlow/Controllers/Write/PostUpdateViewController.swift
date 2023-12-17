@@ -68,7 +68,6 @@ final class PostUpdateViewController: NewPostWriteViewController {
         }
         
         group.notify(queue: .main) {
-            print("✏️ END", self.viewModel.photoImageList)
             self.viewModel.photoImageObservableList.onNext(self.viewModel.photoImageList)
         }
     }

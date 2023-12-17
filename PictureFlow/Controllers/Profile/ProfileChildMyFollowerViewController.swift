@@ -119,7 +119,6 @@ final class ProfileChildMyFollowerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, "ProfileChileMyFollowerViewController")
         bind()
     }
     
@@ -169,10 +168,8 @@ final class ProfileChildMyFollowerViewController: UIViewController {
                     .subscribe(with: self) { owner, response in
                         switch response {
                         case .success(let data):
-                            print(data)
                             cell.configureCell(element: element, isFollowingStatus: data.followingStatus)
                         case .failure(let error):
-                            print(error)
                             owner.showAlertAction1(message: error.message)
                         }
                     }

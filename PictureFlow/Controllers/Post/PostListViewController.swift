@@ -46,7 +46,6 @@ class PostListViewController: UIViewController {
     @objc func updateDataSource(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
-        print("post List isupdate: \(isUpdate)")
         if isUpdate {
             self.viewModel.updateDateSource()
         }
@@ -74,7 +73,6 @@ class PostListViewController: UIViewController {
         
         output.errorResponse
             .subscribe(with: self) { owner, error in
-                print("postListVC error: \(error.message) \(error.statusCode)")
                 owner.showAlertAction1(message: error.message)
             }
             .disposed(by: disposeBag)
@@ -142,8 +140,6 @@ class PostListViewController: UIViewController {
                         .bind(with: self) { owner, result in
                             switch result {
                             case .success(let data):
-                                print("like network data: \(data)")
-                                
                                 NotificationCenter.default.post(
                                     name: NSNotification.Name("likeVCUpdateData"),
                                     object: nil,
@@ -174,7 +170,6 @@ class PostListViewController: UIViewController {
                     // 댓글 버튼
                     cell.commentButton.rx.tap
                         .bind(with: self) { owner, _ in
-                            print("comment button tap")
                             let vc = CommentCreateViewController()
                             vc.completionHandler = { newComment in
                                 let newCommetCount = element.comments.count + 1
@@ -193,7 +188,6 @@ class PostListViewController: UIViewController {
                     cell.moreInfoButton.rx.tap
                         .observe(on: MainScheduler.instance)
                         .bind(with: self) { owner, _ in
-                            print("post list view more button did tap")
                             if element.creator._id == UserDefaultsManager.userID {
                                 let bottomSheetVC = PostListBottomSheetViewController()
                                 bottomSheetVC.completion = { isDeleted in
@@ -273,7 +267,6 @@ class PostListViewController: UIViewController {
 
 extension PostListViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
-        print(#function)
         let vc = SearchViewController()
         vc.hashTagWord = hashTagWord
         self.transition(viewController: vc, style: .push)

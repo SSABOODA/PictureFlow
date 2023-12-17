@@ -181,10 +181,7 @@ extension CommentCreateViewController {
     }
     
     @objc func cancelButtonClicked() {
-        print(#function)
-
         self.showAlertAction2(title: "답글 작성을 취소하시겠습니까?") {
-            print("")
         } _: {
             self.dismiss(animated: true)
         }

@@ -22,7 +22,9 @@ final class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavigationBar()
         configureDatePicker()
+        configureTextField()
         bind()
     }
     
@@ -43,7 +45,46 @@ final class SignUpViewController: UIViewController {
             for: .valueChanged
         )
     }
-
+    
+    private func configureTextField() {
+        mainView.emailTextField.rx.controlEvent([.editingDidEnd])
+            .asObservable()
+            .subscribe(with: self) { owner, _ in
+                owner.viewModel.checkEmailRexValidation.accept(true)
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.passwordTextField.rx.controlEvent([.editingDidEnd])
+            .asObservable()
+            .subscribe(with: self) { owner, _ in
+                owner.viewModel.checkPasswordValidation.accept(true)
+            }
+            .disposed(by: disposeBag)
+        
+        
+        mainView.nicknameTextField.rx.text.orEmpty
+            .scan("") { (previous, new) -> String in
+                if new.count <= 20 {
+                    return new
+                } else {
+                    return previous
+                }
+            }
+            .bind(to: mainView.nicknameTextField.rx.text)
+            .disposed(by: disposeBag)
+        
+        mainView.phoneNumberTextField.rx.text.orEmpty
+            .scan("") { (previous, new) -> String in
+                if new.count <= 13 {
+                    return new
+                } else {
+                    return previous
+                }
+            }
+            .bind(to: mainView.phoneNumberTextField.rx.text)
+            .disposed(by: disposeBag)
+    }
+    
     private func bind() {
         let input = SignUpViewModel.Input(
             email: mainView.emailTextField.rx.text.orEmpty,
@@ -73,10 +114,8 @@ final class SignUpViewController: UIViewController {
             .observe(on: MainScheduler.asyncInstance)
             .asDriver(onErrorJustReturn: false)
             .drive(with: self) { owner, value in
-                print("signUpSuccess next VC", value)
                 if value {
                     owner.showAlertAction1(message: "회원가입에 성공하셨습니다.😃") {
-                        print("회원가입 성공")
                         owner.dismiss(animated: true)
                     }
                 }
@@ -85,9 +124,62 @@ final class SignUpViewController: UIViewController {
         
         output.errorResponse
             .subscribe(with: self) { owner, errorResponse in
-                print("errorResponse: \(errorResponse)")
                 owner.showAlertAction1(message: errorResponse.message)
             }
             .disposed(by: disposeBag)
+        
+
+        output.isEmailRexValide
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, isValid in
+                if !isValid {
+                    owner.showAlertAction1(message: "이메일 양식을 확인해주세요")
+                    owner.mainView.emailView.layer.borderColor = UIColor.systemRed.cgColor
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        output.isEmailValide
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, isValid in
+                if isValid {
+                    owner.showAlertAction1(message: "사용 가능한 이메일입니다")
+                    owner.mainView.emailView.layer.borderColor = UIColor.lightGray.cgColor
+                } else {
+                    owner.mainView.emailView.layer.borderColor = UIColor.systemRed.cgColor
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        output.isPasswordValide
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, isValid in
+                if isValid {
+                    owner.mainView.passwordView.layer.borderColor = UIColor.lightGray.cgColor
+                } else {
+                    owner.showAlertAction1(message: "8자리 이상 입력해주세요")
+                    owner.mainView.passwordView.layer.borderColor = UIColor.systemRed.cgColor
+                }
+            }
+            .disposed(by: disposeBag)
+        
+    }
+}
+
+extension SignUpViewController {
+    private func configureNavigationBar() {
+        let cancelButton = UIBarButtonItem(
+            image: UIImage(systemName: "xmark"),
+            style: .plain,
+            target: self,
+            action: #selector(cancelButtonTapped)
+        )
+        
+        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.leftBarButtonItem?.tintColor = UIColor(resource: .tint)
+    }
+    
+    @objc func cancelButtonTapped() {
+        self.dismiss(animated: true)
     }
 }

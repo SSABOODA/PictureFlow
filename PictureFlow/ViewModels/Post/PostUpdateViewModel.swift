@@ -36,7 +36,6 @@ final class PostUpdateViewModel: NewPostWriteViewModel {
             input.image
         )
         .subscribe(with: self) { owner, postUpdateData in
-            print("postUpdateData: \(postUpdateData)" )
             let model = PostWriteRequest(
                 title: "",
                 content: postUpdateData.0,
@@ -70,7 +69,6 @@ final class PostUpdateViewModel: NewPostWriteViewModel {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let data):
-                    print("update data=======", data)
                     owner.successPostCreate.accept(true)
                     owner.postUpdateResponse.onNext(data)
                 case .failure(let error):

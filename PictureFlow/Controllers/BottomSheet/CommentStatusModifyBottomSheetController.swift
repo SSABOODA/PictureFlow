@@ -40,7 +40,6 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
         configureHierarchy()
         configureLayout()
         bind()
@@ -70,7 +69,6 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
     private func bind() {
         updateButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("comment update button did tap")
                 let vc = CommentUpdateViewController()
                 vc.commentUpdateViewModel.post = owner.post
                 vc.commentUpdateViewModel.comment = owner.comment
@@ -80,8 +78,6 @@ final class CommentStatusModifyBottomSheetController: BottomSheetViewController 
         
         deleteButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("deleteButton did tap")
-                
                 owner.showAlertAction2(
                     title: "작성하신 댓글을 삭제하시겠어요?",
                     message: "댓글을 삭제하면 복원할 수 없습니다.", cancelTitle: "취소", completeTitle: "삭제") {

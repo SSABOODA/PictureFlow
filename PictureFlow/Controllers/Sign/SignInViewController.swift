@@ -67,7 +67,6 @@ final class SignInViewController: UIViewController {
         
         isSecure
             .bind(with: self) { owner, value in
-                print(value)
                 let image = value ? "eye" : "eye.fill"
                 let color = value ? UIColor.lightGray : UIColor.black
                 owner.mainView.passwordSecureButton.setImage(UIImage(systemName: image), for: .normal)
@@ -79,7 +78,6 @@ final class SignInViewController: UIViewController {
             .bind(with: self) { owner, isSuccess in
                 if isSuccess {
                     owner.showAlertAction1(title: "로그인에 성공하셨습니다.😃") {
-                        print("login succeed")
                         owner.changeRootViewController(viewController: CustomTabBarController())
                     }
                 }
@@ -88,7 +86,6 @@ final class SignInViewController: UIViewController {
         
         output.errorResponse
             .subscribe(with: self) { owner, error in
-                print("message: \(error.message)")
                 owner.showAlertAction1(message: error.message)
             }
             .disposed(by: disposeBag)
@@ -97,9 +94,8 @@ final class SignInViewController: UIViewController {
         // SignUpButton
         mainView.signUpButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("signUpButton did tap")
                 let vc = SignUpViewController()
-                owner.transition(viewController: vc, style: .present)
+                owner.transition(viewController: vc, style: .presentNavigation)
             }
             .disposed(by: disposeBag)
     }

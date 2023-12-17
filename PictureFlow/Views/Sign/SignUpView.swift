@@ -18,7 +18,7 @@ final class SignUpView: UIView {
         return label
     }()
     
-    private let emailView = {
+    let emailView = {
         let view = LoginInputView()
         return view
     }()
@@ -29,7 +29,7 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    private let passwordView = {
+    let passwordView = {
         let view = LoginInputView()
         return view
     }()
@@ -41,7 +41,7 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    private let nicknameView = {
+    let nicknameView = {
         let view = LoginInputView()
         return view
     }()
@@ -52,7 +52,7 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    private let phoneNumberView = {
+    let phoneNumberView = {
         let view = LoginInputView()
         return view
     }()
@@ -64,7 +64,7 @@ final class SignUpView: UIView {
         return tf
     }()
     
-    private let birthdayView = {
+    let birthdayView = {
         let view = LoginInputView()
         return view
     }()

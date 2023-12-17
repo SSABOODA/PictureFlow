@@ -113,15 +113,7 @@ final class ProfileChildMyFollowingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, "ProfileChileMyFollowingViewController")
         bind()
-        
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(self.updateDataSource(_:)),
-//            name: Notification.Name.updateDataSource,
-//            object: nil
-//        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,13 +124,6 @@ final class ProfileChildMyFollowingViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
-    
-//    @objc func updateDataSource(_ notification: NSNotification) {
-//        guard let userInfo = notification.userInfo else { return }
-//        guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
-//        print("following isupdate: \(isUpdate)")
-//        if isUpdate { self.viewModel.fetchDataSource() }
-//    }
 
     deinit {
         self.removeNotificationCenterObserver(notificationName: Notification.Name.updateDataSource.rawValue)
@@ -181,7 +166,6 @@ final class ProfileChildMyFollowingViewController: UIViewController {
                     .subscribe(with: self) { owner, response in
                         switch response {
                         case .success(let data):
-                            print(data)
                             cell.configureCell(element: element, isFollowingStatus: data.followingStatus)
                             NotificationCenter.default.post(
                                 name: NSNotification.Name("updateDataSource"),

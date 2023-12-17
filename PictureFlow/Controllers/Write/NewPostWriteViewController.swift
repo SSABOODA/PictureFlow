@@ -62,7 +62,6 @@ class NewPostWriteViewController: UIViewController {
         
         mainView.addImageButton.rx.tap
             .bind(with: self) { owner, _ in
-                print("addImageButton did tap")
                 owner.addImageButtonClicked()
             }
             .disposed(by: disposeBag)
@@ -101,12 +100,9 @@ class NewPostWriteViewController: UIViewController {
             .bind(to: mainView.collectionView.rx.items(
                 cellIdentifier: PostListImageCancelCollectionViewCell.description(),
                 cellType: PostListImageCancelCollectionViewCell.self)) { (row, element, cell) in
-
-                    print("⭐️ rx element: \(element)")
                     cell.postImageView.image = element
                     cell.cancelButton.rx.tap
                         .bind(with: self) { owner, _ in
-                            print("cancel button did tap")
                             owner.viewModel.photoImageList.remove(at: row)
                             owner.viewModel.photoImageObservableList.onNext(owner.viewModel.photoImageList)
                         }
@@ -144,7 +140,6 @@ extension NewPostWriteViewController: PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
-        print(#function)
         
         if !results.isEmpty {
             viewModel.photoImageList.removeAll()
@@ -155,7 +150,6 @@ extension NewPostWriteViewController: PHPickerViewControllerDelegate {
                         guard let image = image as? UIImage else { return }
                         DispatchQueue.main.async {
                             self?.viewModel.photoImageList.append(image)
-//                            print("🔥 self?.viewModel.photoImageList: \(self?.viewModel.photoImageList)")
                             self?.viewModel.photoImageObservableList.onNext(self?.viewModel.photoImageList ?? [])
                         }
                     }
@@ -285,10 +279,8 @@ extension NewPostWriteViewController {
     }
     
     @objc func cancelButtonClicked() {
-        print(#function)
 
         self.showAlertAction2(title: "게시글 작성을 취소하시겠습니까?") {
-            print("")
         } _: {
             self.dismiss(animated: true)
         }

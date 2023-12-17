@@ -137,7 +137,6 @@ final class SearchViewController: UIViewController {
                 cell.profileImageView.addGestureRecognizer(tapGesture)
                 
                 tapGesture.rx.event.bind(with: self) { owner, tap in
-                    print("image view did tapppp")
                     if element.creator._id == UserDefaultsManager.userID {
                         let vc = ProfileViewController()
                         owner.transition(viewController: vc, style: .push)
@@ -167,8 +166,6 @@ final class SearchViewController: UIViewController {
                     .bind(with: self) { owner, result in
                         switch result {
                         case .success(let data):
-                            print("like network data: \(data)")
-
                             if data.likeStatus {
                                 owner.viewModel.hashTagPostList[row].likes.append(UserDefaultsManager.userID)
                                 cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -185,7 +182,7 @@ final class SearchViewController: UIViewController {
                             owner.viewModel.hashTagPostListObservable.onNext(owner.viewModel.hashTagPostList)
                             cell.likeCountButton.setTitle("\(likeCount) 좋아요", for: .normal)
                         case .failure(let error):
-                            print(error)
+                            owner.showAlertAction1(message: error.message)
                         }
                     }
                     .disposed(by: cell.disposeBag)
@@ -193,7 +190,6 @@ final class SearchViewController: UIViewController {
                 // 댓글 버튼
                 cell.commentButton.rx.tap
                     .bind(with: self) { owner, _ in
-                        print("comment button tap")
                         let vc = CommentCreateViewController()
                         vc.completionHandler = { newComment in
                             let newCommetCount = element.comments.count + 1
@@ -211,7 +207,6 @@ final class SearchViewController: UIViewController {
                 cell.moreInfoButton.rx.tap
                     .observe(on: MainScheduler.instance)
                     .bind(with: self) { owner, _ in
-                        print("post list view more button did tap")
                         if element.creator._id == UserDefaultsManager.userID {
                             let bottomSheetVC = PostListBottomSheetViewController()
                             bottomSheetVC.completion = { isDeleted in
