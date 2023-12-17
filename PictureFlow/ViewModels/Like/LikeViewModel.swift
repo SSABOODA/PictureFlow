@@ -11,6 +11,7 @@ import RxCocoa
 
 final class LikeViewModel: ViewModelType {
     struct Input {}
+    
     struct Output {
         let likedPostListObservable: PublishSubject<[PostList]>
         let errorResponse: PublishSubject<CustomErrorResponse>

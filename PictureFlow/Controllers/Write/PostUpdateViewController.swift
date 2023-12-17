@@ -29,7 +29,13 @@ final class PostUpdateViewController: NewPostWriteViewController {
             image: self.viewModel.photoImageObservableList
         )
         
-        _ = postUpdateViewModel.transform(input: PostUpdateViewModelInput)
+        let output = postUpdateViewModel.transform(input: PostUpdateViewModelInput)
+        
+        output.errorResponse
+            .subscribe(with: self) { owner, error in
+                owner.showAlertAction1(message: error.message)
+            }
+            .disposed(by: disposeBag)
         
         self.postUpdateViewModel.postUpdateResponse
             .subscribe(with: self) { owner, value in
@@ -49,6 +55,8 @@ final class PostUpdateViewController: NewPostWriteViewController {
                 owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
+        
+        
     }
     
     func configurePostData() {

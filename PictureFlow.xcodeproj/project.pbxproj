@@ -46,6 +46,7 @@
 		F72C690F2B1C3EC9007B1F8F /* CommentCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C690E2B1C3EC9007B1F8F /* CommentCreateViewModel.swift */; };
 		F72C69112B1C4146007B1F8F /* CommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C69102B1C4146007B1F8F /* CommentModel.swift */; };
 		F72C69132B1C7148007B1F8F /* Extension+CALyer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72C69122B1C7148007B1F8F /* Extension+CALyer.swift */; };
+		F76E422F2B2EECED00A00B27 /* Extension+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76E422E2B2EECED00A00B27 /* Extension+Rx.swift */; };
 		F76EE92B2B10A293005C6106 /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92A2B10A293005C6106 /* PostDetailView.swift */; };
 		F76EE92D2B10AE12005C6106 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92C2B10AE12005C6106 /* CommentHeaderView.swift */; };
 		F76EE92F2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */; };
@@ -152,6 +153,7 @@
 		F72C690E2B1C3EC9007B1F8F /* CommentCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCreateViewModel.swift; sourceTree = "<group>"; };
 		F72C69102B1C4146007B1F8F /* CommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModel.swift; sourceTree = "<group>"; };
 		F72C69122B1C7148007B1F8F /* Extension+CALyer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CALyer.swift"; sourceTree = "<group>"; };
+		F76E422E2B2EECED00A00B27 /* Extension+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Rx.swift"; sourceTree = "<group>"; };
 		F76EE92A2B10A293005C6106 /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		F76EE92C2B10AE12005C6106 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		F76EE92E2B11D9A6005C6106 /* PostWriteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWriteCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				F72C69122B1C7148007B1F8F /* Extension+CALyer.swift */,
 				F7B5796A2B2DDFD90095A432 /* Extension+ViewModel.swift */,
 				F7B5796C2B2EC76E0095A432 /* Extension+Notification.swift */,
+				F76E422E2B2EECED00A00B27 /* Extension+Rx.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -871,6 +874,7 @@
 				F76EE92D2B10AE12005C6106 /* CommentHeaderView.swift in Sources */,
 				F70959F92AFE191900F0218B /* AppDelegate.swift in Sources */,
 				F7B4093B2B0633EB006CD373 /* ErrorResponse.swift in Sources */,
+				F76E422F2B2EECED00A00B27 /* Extension+Rx.swift in Sources */,
 				F7B579672B2DD9FD0095A432 /* ProfileChildMyFollowingViewController.swift in Sources */,
 				F7D662882B0DC6B10039E40F /* PostWriteViewController.swift in Sources */,
 				F79D69FD2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift in Sources */,

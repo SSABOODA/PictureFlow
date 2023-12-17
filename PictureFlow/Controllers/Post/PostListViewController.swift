@@ -88,7 +88,13 @@ class PostListViewController: UIViewController {
         output.activityLoaing
             .observe(on: MainScheduler.instance)
             .bind(with: self) { owner, visible in
-                owner.setVisibleWithAnimation(owner.mainView.activityIndicator, visible)
+                let activityIndicator = owner.mainView.activityIndicator
+                owner.setVisibleWithAnimation(activityIndicator, visible)
+                if visible {
+                    activityIndicator.startAnimating()
+                } else {
+                    activityIndicator.stopAnimating()
+                }
             }
             .disposed(by: disposeBag)
         

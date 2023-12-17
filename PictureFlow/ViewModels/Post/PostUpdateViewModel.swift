@@ -74,7 +74,7 @@ final class PostUpdateViewModel: NewPostWriteViewModel {
                     owner.successPostCreate.accept(true)
                     owner.postUpdateResponse.onNext(data)
                 case .failure(let error):
-                    print(error.message, error.statusCode)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)
@@ -83,7 +83,8 @@ final class PostUpdateViewModel: NewPostWriteViewModel {
             photoImageObservableList: photoImageObservableList,
             postWriteRequestObservable: postWriteRequestObservable,
             successPostCreate: successPostCreate, 
-            userProfileObservable: userProfileObservable
+            userProfileObservable: userProfileObservable, 
+            errorResponse: errorResponse
         )
     }
    

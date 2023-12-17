@@ -7,13 +7,29 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
-final class ProfileChildMyPostListViewModel: ViewModelType {
+protocol ProfileChildMyPostListViewModelType: ViewModelType {
+    var nextCursor: String { get }
+    var initTokenObservable: PublishSubject<String> { get }
+    var postList: [PostList] { get }
+    var myPostListObservable: PublishSubject<[PostList]> { get }
+    var errorResponse: PublishSubject<CustomErrorResponse> { get }
+    var refreshLoading: PublishRelay<Bool> { get }
+    var activityLoaing: BehaviorRelay<Bool> { get }
+    
+    func fetchProfileMyPostListData()
+    func prefetchData(next: String)
+}
+
+final class ProfileChildMyPostListViewModel: ProfileChildMyPostListViewModelType {
     struct Input {}
     
     struct Output {
         let myPostListObservable: PublishSubject<[PostList]>
         let errorResponse: PublishSubject<CustomErrorResponse>
+        let refreshLoading: PublishRelay<Bool>
+        let activityLoaing: BehaviorRelay<Bool>
     }
     
     var nextCursor = ""
@@ -22,6 +38,8 @@ final class ProfileChildMyPostListViewModel: ViewModelType {
     var postList = [PostList]()
     var myPostListObservable = PublishSubject<[PostList]>()
     var errorResponse = PublishSubject<CustomErrorResponse>()
+    let refreshLoading = PublishRelay<Bool>()
+    let activityLoaing = BehaviorRelay(value: true)
     
     func transform(input: Input) -> Output {
         initTokenObservable
@@ -40,6 +58,7 @@ final class ProfileChildMyPostListViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
+                    owner.activityLoaing.accept(false)
                     owner.postList = data.data
                     owner.myPostListObservable.onNext(owner.postList)
                 case .failure(let error):
@@ -50,7 +69,9 @@ final class ProfileChildMyPostListViewModel: ViewModelType {
         
         return Output(
             myPostListObservable: myPostListObservable,
-            errorResponse: errorResponse
+            errorResponse: errorResponse,
+            refreshLoading: refreshLoading,
+            activityLoaing: activityLoaing
         )
     }
     

@@ -9,9 +9,19 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+protocol PostListViewModelType: ViewModelType {
+    var nextCursor: String { get }
+    var postListDataSource: [PostList] { get }
+    var postListItem: PublishSubject<[PostList]> { get }
+    
+    var tokenObservable: BehaviorSubject<String> { get }
+    var errorResponse: PublishSubject<CustomErrorResponse> { get }
+    var refreshLoading: PublishRelay<Bool> { get }
+    var activityLoaing: BehaviorRelay<Bool> { get }
+}
+
 final class PostListViewModel: ViewModelType {
-    struct Input {
-    }
+    struct Input {}
     
     struct Output {
         let postListItem: PublishSubject<[PostList]>

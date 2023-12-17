@@ -23,6 +23,7 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         configureSearchController()
+        bindingRefreshControl()
         bind()
         dataBinding()
 
@@ -54,12 +55,47 @@ final class SearchViewController: UIViewController {
         }
     }
     
+    private func bindingRefreshControl() {
+        mainView.refreshControl.endRefreshing()
+        mainView.tableView.refreshControl = mainView.refreshControl
+        
+        mainView.refreshControl.rx.controlEvent(.valueChanged)
+            .asObservable()
+            .bind(with: self) { owner, _ in
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
+                    owner.viewModel.updateDateSource()
+                    owner.mainView.refreshControl.endRefreshing()
+                }
+                owner.viewModel.refreshLoading.accept(true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
     private func bind() {
         let input = SearchViewModel.Input(
             searchBarSearchButtonTap: mainView.searchController.searchBar.rx.searchButtonClicked,
             searchText: mainView.searchController.searchBar.rx.text.orEmpty
         )
         let output = viewModel.transform(input: input)
+        
+        // pull to refresh
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+
+        // activityIndicator
+        output.activityLoaing
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, visible in
+                let activityIndicator = owner.mainView.activityIndicator
+                owner.setVisibleWithAnimation(activityIndicator, visible)
+                if visible {
+                    activityIndicator.startAnimating()
+                } else {
+                    activityIndicator.stopAnimating()
+                }
+            }
+            .disposed(by: disposeBag)
         
         // pagination
         mainView.tableView.rx.prefetchRows
@@ -238,10 +274,10 @@ final class SearchViewController: UIViewController {
 
 extension SearchViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
-        print(#function)
-        let vc = SearchViewController()
-        vc.hashTagWord = hashTagWord
-        self.transition(viewController: vc, style: .push)
+//        print(#function)
+//        let vc = SearchViewController()
+//        vc.hashTagWord = hashTagWord
+//        self.transition(viewController: vc, style: .push)
     }
     
     func didTapButton(in cell: PostListTableViewCell, image: UIImage) {
@@ -277,10 +313,6 @@ extension SearchViewController: UISearchControllerDelegate, UISearchBarDelegate 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
     }
-    
-    
-    
-    
 }
 
 

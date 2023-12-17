@@ -20,6 +20,7 @@ class NewPostWriteViewModel: ViewModelType {
         let postWriteRequestObservable: PublishSubject<PostWriteRequest>
         let successPostCreate: BehaviorRelay<Bool>
         let userProfileObservable: PublishSubject<UserInfo>
+        let errorResponse: PublishSubject<CustomErrorResponse>
     }
     
     var disposeBag = DisposeBag()
@@ -40,6 +41,7 @@ class NewPostWriteViewModel: ViewModelType {
     var photoImageObservableList = BehaviorSubject<[UIImage]>(value: [])
     var postWriteRequestObservable = PublishSubject<PostWriteRequest>()
     var successPostCreate = BehaviorRelay(value: false)
+    var errorResponse = PublishSubject<CustomErrorResponse>()
 
     func fetchProfilData() {
         let token = self.checkAccessToken()
@@ -104,11 +106,15 @@ class NewPostWriteViewModel: ViewModelType {
             }
             .subscribe(with: self) { owner, result in
                 switch result {
-                case .success(let data):
-                    print("======", data)
+                case .success(_):
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name.updateDataSource,
+                        object: nil,
+                        userInfo: ["isUpdate": true]
+                    )
                     owner.successPostCreate.accept(true)
                 case .failure(let error):
-                    print("======", error)
+                    owner.errorResponse.onNext(error)
                 }
             }
             .disposed(by: disposeBag)
@@ -117,7 +123,8 @@ class NewPostWriteViewModel: ViewModelType {
             photoImageObservableList: photoImageObservableList,
             postWriteRequestObservable: postWriteRequestObservable,
             successPostCreate: successPostCreate,
-            userProfileObservable: userProfileObservable
+            userProfileObservable: userProfileObservable,
+            errorResponse: errorResponse
         )
     }
 }

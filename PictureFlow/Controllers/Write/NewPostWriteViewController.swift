@@ -121,6 +121,12 @@ class NewPostWriteViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        output.errorResponse
+            .subscribe(with: self) { owner, error in
+                owner.showAlertAction1(message: error.message)
+            }
+            .disposed(by: disposeBag)
     
     }
 }

@@ -13,12 +13,15 @@ final class SearchViewModel: ViewModelType {
     struct Input {
         let searchBarSearchButtonTap: ControlEvent<Void>
         let searchText: ControlProperty<String>
+        
     }
     
     
     struct Output {
         let hashTagPostListObservable: PublishSubject<[PostList]>
         let errorResponse: PublishSubject<CustomErrorResponse>
+        let refreshLoading: PublishRelay<Bool>
+        let activityLoaing: BehaviorRelay<Bool>
     }
     
     var disposeBag = DisposeBag()
@@ -29,11 +32,14 @@ final class SearchViewModel: ViewModelType {
     var hashTagPostListObservable = PublishSubject<[PostList]>()
     var tokenObservable = PublishSubject<String>()
     var errorResponse = PublishSubject<CustomErrorResponse>()
+    let refreshLoading = PublishRelay<Bool>()
+    let activityLoaing = BehaviorRelay(value: false)
     
     func transform(input: Input) -> Output {
         input.searchBarSearchButtonTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(input.searchText, resultSelector: { _, query in
+                self.activityLoaing.accept(true)
                 return query
             })
             .flatMap {
@@ -51,6 +57,7 @@ final class SearchViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
+                    owner.activityLoaing.accept(false)
                     owner.hashTagPostList = data.data
                     owner.hashTagPostListObservable.onNext(owner.hashTagPostList)
                 case .failure(let error):
@@ -60,6 +67,10 @@ final class SearchViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         hashTagWord
+            .map {
+                self.activityLoaing.accept(true)
+                return $0
+            }
             .flatMap {
                 Network.shared.requestObservableConvertible(
                     type: HashTagPostResponse.self,
@@ -75,6 +86,7 @@ final class SearchViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 switch response {
                 case .success(let data):
+                    owner.activityLoaing.accept(false)
                     owner.hashTagPostList = data.data
                     owner.hashTagPostListObservable.onNext(owner.hashTagPostList)
                 case .failure(let error):
@@ -85,7 +97,9 @@ final class SearchViewModel: ViewModelType {
         
         return Output(
             hashTagPostListObservable: hashTagPostListObservable,
-            errorResponse: errorResponse
+            errorResponse: errorResponse,
+            refreshLoading: refreshLoading,
+            activityLoaing: activityLoaing
         )
     }
     

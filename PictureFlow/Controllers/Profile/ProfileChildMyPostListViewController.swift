@@ -22,6 +22,7 @@ final class ProfileChildMyPostListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("profile chile vc viewDidLoad")
+        bindingRefreshControl()
         bind()
         
         NotificationCenter.default.addObserver(
@@ -53,6 +54,22 @@ final class ProfileChildMyPostListViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func bindingRefreshControl() {
+        mainView.refreshControl.endRefreshing()
+        mainView.tableView.refreshControl = mainView.refreshControl
+        
+        mainView.refreshControl.rx.controlEvent(.valueChanged)
+            .asObservable()
+            .bind(with: self) { owner, _ in
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
+                    owner.viewModel.fetchProfileMyPostListData()
+                    owner.mainView.refreshControl.endRefreshing()
+                }
+                owner.viewModel.refreshLoading.accept(true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
     private func bind() {
         emptyViewBind()
         let input = ProfileChildMyPostListViewModel.Input()
@@ -68,6 +85,25 @@ final class ProfileChildMyPostListViewController: UIViewController {
                 let nextCursor = owner.viewModel.nextCursor
                 if nextCursor != "0" {
                     owner.viewModel.prefetchData(next: nextCursor)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        // pull to refresh
+        output.refreshLoading
+            .bind(to: mainView.refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+
+        // activityIndicator
+        output.activityLoaing
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, visible in
+                let activityIndicator = owner.mainView.activityIndicator
+                owner.setVisibleWithAnimation(activityIndicator, visible)
+                if visible {
+                    activityIndicator.startAnimating()
+                } else {
+                    activityIndicator.stopAnimating()
                 }
             }
             .disposed(by: disposeBag)
