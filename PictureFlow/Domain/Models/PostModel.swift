@@ -37,7 +37,7 @@ struct PostList: Decodable {
     let time: String
     let productID: String?
     let creator: Creator
-    let comments: [Comments]
+    var comments: [Comments]
     let hashTags: [String]
     
     enum CodingKeys: String, CodingKey {

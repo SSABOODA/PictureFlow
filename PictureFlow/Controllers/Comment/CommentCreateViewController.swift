@@ -64,11 +64,11 @@ class CommentCreateViewController: UIViewController {
         
         output.commentsObservableInfo
             .subscribe(with: self) { owner, newComment in
-                NotificationCenter.default.post(
-                    name: NSNotification.Name("updateDataSource"),
-                    object: nil,
-                    userInfo: ["isUpdate": true]
-                )
+//                NotificationCenter.default.post(
+//                    name: NSNotification.Name("updateDataSource"),
+//                    object: nil,
+//                    userInfo: ["isUpdate": true]
+//                )
                 owner.completionHandler?(newComment)
                 owner.dismiss(animated: true)
             }

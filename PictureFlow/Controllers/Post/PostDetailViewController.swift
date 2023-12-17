@@ -23,10 +23,9 @@ final class PostDetailViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        
         mainView.collectionView.rx
             .setDelegate(self)
-            .disposed(by: disposeBag)
+            .disposed(by: disposeBag)    
     }
     
     override func viewWillAppear(_ animated: Bool) {

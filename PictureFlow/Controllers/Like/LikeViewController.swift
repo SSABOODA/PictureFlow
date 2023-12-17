@@ -176,9 +176,10 @@ final class LikeViewController: UIViewController {
                     .bind(with: self) { owner, _ in
                         print("comment button tap")
                         let vc = CommentCreateViewController()
-                        vc.completionHandler = { _ in
+                        vc.completionHandler = { newComment in
                             let newCommetCount = element.comments.count + 1
                             cell.commentCountButton.setTitle("\(newCommetCount) 답글", for: .normal)
+                            owner.viewModel.likedPostList[row].comments.insert(newComment, at: 0)
                         }
                         let postList = owner.viewModel.likedPostList[row]
                         vc.viewModel.postId = postList._id
@@ -218,28 +219,29 @@ final class LikeViewController: UIViewController {
             mainView.tableView.rx.itemSelected,
             mainView.tableView.rx.modelSelected(PostList.self)
         )
-            .map {
-                let item = $0.1
-                return PostList(
-                    _id: item._id,
-                    likes: item.likes,
-                    image: item.image,
-                    title: item.title,
-                    content: item.content,
-                    time: item.time,
-                    productID: item.productID,
-                    creator: item.creator,
-                    comments: item.comments,
-                    hashTags: item.hashTags
-                )
-            }
-            .subscribe(with: self) { owner, value in
-                print("cell clicked")
-                let vc = PostDetailViewController()
-                vc.viewModel.postList = value
-                owner.transition(viewController: vc, style: .push)
-            }
-            .disposed(by: disposeBag)
+        .subscribe(with: self) { owner, modelSelectSet in
+            let indexPath = modelSelectSet.0
+            let item = modelSelectSet.1
+            
+            var model = PostList(
+                _id: item._id,
+                likes: item.likes,
+                image: item.image,
+                title: item.title,
+                content: item.content,
+                time: item.time,
+                productID: item.productID,
+                creator: item.creator,
+                comments: item.comments,
+                hashTags: item.hashTags
+            )
+            
+            model.comments = owner.viewModel.likedPostList[indexPath.row].comments
+            let vc = PostDetailViewController()
+            vc.viewModel.postList = model
+            owner.transition(viewController: vc, style: .push)
+        }
+        .disposed(by: disposeBag)
         
         viewModel.fetchUpdateDataSource()
     }

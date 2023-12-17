@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class ProfileChileMyPostListViewModel: ViewModelType {
+final class ProfileChildMyPostListViewModel: ViewModelType {
     struct Input {}
     
     struct Output {

@@ -62,7 +62,7 @@
 		F77A0E1F2B2CBCC2000404FE /* HashtagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77A0E1E2B2CBCC2000404FE /* HashtagTextView.swift */; };
 		F79D69E92B2821600059678E /* ProfileChileMyPostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69E82B2821600059678E /* ProfileChileMyPostListView.swift */; };
 		F79D69EC2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69EB2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift */; };
-		F79D69EE2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69ED2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift */; };
+		F79D69EE2B2821EF0059678E /* ProfileChildMyPostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69ED2B2821EF0059678E /* ProfileChildMyPostListViewModel.swift */; };
 		F79D69F02B28507C0059678E /* ProfileChileMyPostCommentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69EF2B28507C0059678E /* ProfileChileMyPostCommentListView.swift */; };
 		F79D69F22B2850C70059678E /* ProfileChileMaPostCommentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69F12B2850C70059678E /* ProfileChileMaPostCommentListViewModel.swift */; };
 		F79D69FD2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D69FC2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift */; };
@@ -168,7 +168,7 @@
 		F77A0E1E2B2CBCC2000404FE /* HashtagTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagTextView.swift; sourceTree = "<group>"; };
 		F79D69E82B2821600059678E /* ProfileChileMyPostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostListView.swift; sourceTree = "<group>"; };
 		F79D69EB2B28219F0059678E /* ProfileChileMyPostListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostListTableViewCell.swift; sourceTree = "<group>"; };
-		F79D69ED2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostListViewModel.swift; sourceTree = "<group>"; };
+		F79D69ED2B2821EF0059678E /* ProfileChildMyPostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChildMyPostListViewModel.swift; sourceTree = "<group>"; };
 		F79D69EF2B28507C0059678E /* ProfileChileMyPostCommentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMyPostCommentListView.swift; sourceTree = "<group>"; };
 		F79D69F12B2850C70059678E /* ProfileChileMaPostCommentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChileMaPostCommentListViewModel.swift; sourceTree = "<group>"; };
 		F79D69FC2B2997EB0059678E /* OtherUserPostBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserPostBottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -732,7 +732,7 @@
 			children = (
 				F7E33D672B2720EF00ACB8D9 /* ProfileViewModel.swift */,
 				F7E33D6B2B2738AF00ACB8D9 /* ProfileUpdateViewModel.swift */,
-				F79D69ED2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift */,
+				F79D69ED2B2821EF0059678E /* ProfileChildMyPostListViewModel.swift */,
 				F79D69F12B2850C70059678E /* ProfileChileMaPostCommentListViewModel.swift */,
 			);
 			path = Profile;
@@ -841,7 +841,7 @@
 				F7095A522B00BBA400F0218B /* AuthManager.swift in Sources */,
 				F72C69132B1C7148007B1F8F /* Extension+CALyer.swift in Sources */,
 				F7095A502B00A47600F0218B /* SignUpViewModel.swift in Sources */,
-				F79D69EE2B2821EF0059678E /* ProfileChileMyPostListViewModel.swift in Sources */,
+				F79D69EE2B2821EF0059678E /* ProfileChildMyPostListViewModel.swift in Sources */,
 				F7B4094D2B07715A006CD373 /* ProfileViewController.swift in Sources */,
 				F7E33D4D2B25CCB500ACB8D9 /* CommentUpdateViewController.swift in Sources */,
 				F7095A552B00BC3C00F0218B /* UserDefaultsManager.swift in Sources */,

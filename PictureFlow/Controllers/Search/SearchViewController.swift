@@ -41,7 +41,6 @@ final class SearchViewController: UIViewController {
     @objc func updateDataSource(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let isUpdate = userInfo["isUpdate"] as? Bool else { return }
-        print("post List isupdate: \(isUpdate)")
         guard let searchText = mainView.searchController.searchBar.text else { return }
         if isUpdate {
             self.viewModel.hashTagWord.onNext(searchText.removeHashTag())
@@ -160,9 +159,10 @@ final class SearchViewController: UIViewController {
                     .bind(with: self) { owner, _ in
                         print("comment button tap")
                         let vc = CommentCreateViewController()
-                        vc.completionHandler = { _ in
+                        vc.completionHandler = { newComment in
                             let newCommetCount = element.comments.count + 1
                             cell.commentCountButton.setTitle("\(newCommetCount) 답글", for: .normal)
+                            owner.viewModel.hashTagPostList[row].comments.insert(newComment, at: 0)
                         }
                         let postList = owner.viewModel.hashTagPostList[row]
                         vc.viewModel.postId = postList._id
@@ -204,28 +204,29 @@ final class SearchViewController: UIViewController {
             mainView.tableView.rx.itemSelected,
             mainView.tableView.rx.modelSelected(PostList.self)
         )
-            .map {
-                let item = $0.1
-                return PostList(
-                    _id: item._id,
-                    likes: item.likes,
-                    image: item.image,
-                    title: item.title,
-                    content: item.content,
-                    time: item.time,
-                    productID: item.productID,
-                    creator: item.creator,
-                    comments: item.comments,
-                    hashTags: item.hashTags
-                )
-            }
-            .subscribe(with: self) { owner, value in
-                print("cell clicked")
-                let vc = PostDetailViewController()
-                vc.viewModel.postList = value
-                owner.transition(viewController: vc, style: .push)
-            }
-            .disposed(by: disposeBag)
+        .subscribe(with: self) { owner, modelSelectSet in
+            let indexPath = modelSelectSet.0
+            let item = modelSelectSet.1
+            
+            var model = PostList(
+                _id: item._id,
+                likes: item.likes,
+                image: item.image,
+                title: item.title,
+                content: item.content,
+                time: item.time,
+                productID: item.productID,
+                creator: item.creator,
+                comments: item.comments,
+                hashTags: item.hashTags
+            )
+            
+            model.comments = owner.viewModel.hashTagPostList[indexPath.row].comments
+            let vc = PostDetailViewController()
+            vc.viewModel.postList = model
+            owner.transition(viewController: vc, style: .push)
+        }
+        .disposed(by: disposeBag)
         
         output.errorResponse
             .subscribe(with: self) { owner, error in

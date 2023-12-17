@@ -18,6 +18,7 @@ class PostListView: UIView {
         view.rowHeight = UITableView.automaticDimension
         view.estimatedRowHeight = 100
         view.backgroundColor = UIColor(resource: .background)
+        view.scrollsToTop = true
         return view
     }()
     
