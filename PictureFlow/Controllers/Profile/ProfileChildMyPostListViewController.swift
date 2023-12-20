@@ -30,6 +30,8 @@ final class ProfileChildMyPostListViewController: UIViewController {
             name: NSNotification.Name("updateDataSource"),
             object: nil
         )
+        
+        tabBarController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -253,5 +255,15 @@ extension ProfileChildMyPostListViewController: CustomTableViewCellDelegate {
         let vc = FullScreenImageViewController(image: image)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true, completion: nil)
+    }
+}
+
+extension ProfileChildMyPostListViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.mainView.tableView.setContentOffset(CGPoint.zero, animated: true)
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        return self.postViewControllerModalPresent(viewController: viewController)
     }
 }

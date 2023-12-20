@@ -34,7 +34,7 @@ class PostListViewController: UIViewController {
             object: nil
         )
 
-        
+        tabBarController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -222,7 +222,6 @@ class PostListViewController: UIViewController {
                                             owner.viewModel.postListItem.onNext(owner.viewModel.postListDataSource)
                                         }
                                     }
-
                                 }
                                 
                                 bottomSheetVC.post = owner.viewModel.postListDataSource[row]
@@ -283,8 +282,6 @@ class PostListViewController: UIViewController {
     }
 }
 
-
-
 extension PostListViewController: CustomTableViewCellDelegate {
     func didTapHashTag(in cell: PostListTableViewCell, hashTagWord: String) {
         let vc = SearchViewController()
@@ -309,4 +306,12 @@ extension PostListViewController {
     }
 }
 
-
+extension PostListViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.mainView.tableView.setContentOffset(CGPoint.zero, animated: true)
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        return self.postViewControllerModalPresent(viewController: viewController)
+    }
+}

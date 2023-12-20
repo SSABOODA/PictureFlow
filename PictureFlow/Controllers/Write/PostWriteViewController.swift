@@ -159,7 +159,6 @@ extension PostWriteViewController: PHPickerViewControllerDelegate {
                 }
             }
         }
-        
     }
 }
 

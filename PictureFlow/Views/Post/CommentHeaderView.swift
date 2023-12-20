@@ -179,8 +179,9 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10)
+            make.top.equalTo(profileImageView.snp.top)
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
+            make.width.equalToSuperview().multipliedBy(0.5)
         }
         
         postCreatedTimeLabel.snp.makeConstraints { make in
@@ -189,7 +190,7 @@ final class CommentCollectionReusableHeaderView: UICollectionReusableView {
         }
         
         moreInfoButton.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.top)
+            make.centerY.equalTo(postCreatedTimeLabel.snp.centerY)
             make.trailing.equalToSuperview().offset(-15)
             make.size.equalTo(25)
         }

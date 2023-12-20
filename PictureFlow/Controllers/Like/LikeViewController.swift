@@ -30,6 +30,8 @@ final class LikeViewController: UIViewController {
             name: NSNotification.Name("likeVCUpdateData"),
             object: nil
         )
+        
+        tabBarController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -281,5 +283,15 @@ extension LikeViewController {
     private func configureNavigationBar() {
         navigationItem.title = "좋아요"
         self.setNavigationBarBackButtonItem(title: "뒤로", color: UIColor(resource: .text))
+    }
+}
+
+extension LikeViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.mainView.tableView.setContentOffset(CGPoint.zero, animated: true)
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        return self.postViewControllerModalPresent(viewController: viewController)
     }
 }

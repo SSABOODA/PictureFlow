@@ -78,7 +78,6 @@ final class PostUpdateViewController: NewPostWriteViewController {
             .bind { [weak self] text in
                 let att = self?.processHashtags(in: text)
                 self?.mainView.postContentTextView.attributedText = att
-                
             }
             .disposed(by: disposeBag)
         

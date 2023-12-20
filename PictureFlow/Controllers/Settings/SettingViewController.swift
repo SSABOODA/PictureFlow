@@ -54,7 +54,6 @@ final class SettingViewController: UIViewController {
                         viewController: SignInViewController(),
                         isNav: false
                     )
-                    
                 })
             } else { // 회원 탈퇴
                 owner.showAlertAction2(message: "정말 회원탈퇴를 하시겠습니까? 회원 탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다.",  {

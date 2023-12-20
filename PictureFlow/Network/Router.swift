@@ -304,7 +304,31 @@ enum Router: URLRequestConvertible {
 }
 
 extension Router {
+    var exampleMultipart: MultipartFormData {
+        let multipartFormData = MultipartFormData()
+        switch self {
+        case .post:
+            guard let parameters = self.parameters else { return MultipartFormData() }
+            return makeMultipartFormdata(params: parameters, with: "file")
+        case .postUpdate:
+            guard let parameters = self.parameters else { return MultipartFormData() }
+            return makeMultipartFormdata(params: parameters, with: "file")
+            
+        case .userProfileUpdate(_, let model):
+            let params: [String: Any] = [
+                "nick": model.nick,
+                "phoneNum": model.phoneNum,
+                "birthDay": model.birthDay,
+                "profile": model.profile,
+            ]
+            return makeMultipartFormdata(params: params, with: "profile")
+            
+        default: return MultipartFormData()
+        }
+    }
+    
     var multipart: MultipartFormData {
+        
         switch self {
         case .post(_, let model):
             let params: [String: Any] = [
@@ -358,16 +382,16 @@ extension Router {
                 multipartFormData.append("\(temp)".data(using: .utf8)!, withName: key)
             }
             if let temp = value as? NSArray {
-                temp.forEach({ element in
-                    let keyObj = key + "[]"
+                temp.forEach { element in
+//                    let keyObj = key + "[]"
                     if let string = element as? String {
-                        multipartFormData.append(string.data(using: .utf8)!, withName: keyObj)
+                        multipartFormData.append(string.data(using: .utf8)!, withName: key)
                     } else
                     if let num = element as? Int {
                         let value = "\(num)"
-                        multipartFormData.append(value.data(using: .utf8)!, withName: keyObj)
+                        multipartFormData.append(value.data(using: .utf8)!, withName: key)
                     }
-                })
+                }
             }
             
             if let temp = value as? UIImage {

@@ -75,7 +75,6 @@ final class CustomTabBarController: UITabBarController {
 extension CustomTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewController.tabBarItem.tag == 2 {
-            
             let vc = NewPostWriteViewController()
             let nav = UINavigationController(rootViewController: vc)
             present(nav, animated: true)

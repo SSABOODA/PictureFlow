@@ -57,7 +57,7 @@ final class PostListTableViewCell: UITableViewCell {
     let nicknameLabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 18)
-        label.numberOfLines = 1
+        label.numberOfLines = 2
         label.textColor = UIColor(resource: .text)
         return label
     }()
@@ -245,15 +245,16 @@ final class PostListTableViewCell: UITableViewCell {
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.top)
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
+            make.width.equalToSuperview().multipliedBy(0.5)
         }
     
         postCreatedTimeLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(nicknameLabel.snp.centerY)
+            make.top.equalTo(profileImageView.snp.top)
             make.trailing.equalTo(moreInfoButton.snp.leading).offset(-10)
         }
 
         moreInfoButton.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.top)
+            make.centerY.equalTo(postCreatedTimeLabel.snp.centerY)
             make.trailing.equalToSuperview().offset(-15)
             make.size.equalTo(25)
         }

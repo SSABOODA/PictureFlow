@@ -224,9 +224,8 @@ final class Network {
                 switch response.result {
                 case .success(let data):
                     single(.success(.success(data)))
-                case .failure(let error):
+                case .failure(_):
                     let statusCode = response.response?.statusCode ?? 500
-                    print(statusCode, error.localizedDescription)
                     let error = self.makeCustomErrorResponse(
                         response: response,
                         statusCode: statusCode

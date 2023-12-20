@@ -96,7 +96,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.top)
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
-            make.trailing.equalToSuperview().offset(-15)
+            make.width.equalToSuperview().multipliedBy(0.5)
         }
         
         commentContentLabel.snp.makeConstraints { make in
@@ -118,4 +118,3 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         }
     }
 }
-

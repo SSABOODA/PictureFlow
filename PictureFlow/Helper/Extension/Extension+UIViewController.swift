@@ -273,3 +273,21 @@ extension UIViewController {
         )
     }
 }
+
+
+/*
+  tabbar
+ */
+
+extension UIViewController {
+    func postViewControllerModalPresent(viewController: UIViewController) -> Bool {
+        if viewController.tabBarItem.tag == 2 {
+            let vc = NewPostWriteViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            present(nav, animated: true)
+            return false
+        } else {
+            return true
+        }
+    }
+}
