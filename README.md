@@ -110,7 +110,8 @@ class HeaderView: UIView {
         label.bounds.height +
         button.bounds.height +
         labelTopDistance +
-        labelToButtonBetweenDistance
+        labelToButtonBetweenDistance +
+	10.0
         return height
     }
     
@@ -146,7 +147,7 @@ class HeaderView: UIView {
 ```swift
 class TableHeaderViewController: UIViewController {
     private func updateHederViewHeight() {
-        let calculatedHeight: CGFloat = headerView.contentHeight + 20
+        let calculatedHeight: CGFloat = headerView.contentHeight
         print("calculatedHeight: \(calculatedHeight)")
         headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: calculatedHeight)
         tableView.tableHeaderView = headerView
