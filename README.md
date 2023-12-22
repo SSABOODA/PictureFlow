@@ -51,8 +51,8 @@
 그래서 우선 Layout을 잡아줘야겠다는 생각을 했고 다음과 같이 Layout을 잡았습니다.
 ```swift
 headerView.snp.makeConstraints { make in
-	make.width.equalTo(view.bounds.width)
-	make.height.equalTo(150)
+    make.width.equalTo(view.bounds.width)
+    make.height.equalTo(150)
 }
 ```
 
