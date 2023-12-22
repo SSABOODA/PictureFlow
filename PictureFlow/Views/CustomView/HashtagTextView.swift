@@ -36,7 +36,7 @@ final class HashtagTextView: UITextView {
         attrString.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: attrString.length))
         attrString.addAttributes(regularTextAttributes, range: NSRange(location: 0, length: attrString.length))
 
-        hashtagArr = results?.map{ (self.text as NSString).substring(with: $0.range(at: 1)) }
+        hashtagArr = results?.map { (self.text as NSString).substring(with: $0.range(at: 1)) }
         if hashtagArr?.count != 0 {
             var i = 0
             for var word in hashtagArr! {
