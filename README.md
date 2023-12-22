@@ -92,7 +92,7 @@ func sizeHeaderToFit() {
 
 ```swift
 class HeaderView: UIView {
-	let label = {
+    let label = {
         let lb = UILabel()
         lb.numberOfLines = 0
         return lb
