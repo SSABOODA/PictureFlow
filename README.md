@@ -1,4 +1,4 @@
-# 앱 소개
+앱 소개
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
 - 게시글 작성 기능(이미지 포함)
 - 게시글 좋아요
@@ -57,8 +57,16 @@ headerView.snp.makeConstraints { make in
 ```
 
 Width같은 경우는 기기 Screen에 꽉차게 구성을 했고 높이는 우선 고정으로 잡고 Build하였습니다.
-그 결과 View에는 잘 표시되었지만 TableView
+그 결과 View에는 잘 표시되었지만 TableView Cell과 겹쳐서 View에 표시되는 상황이 되었습니다. 
 
+한참을 시도한 결과 애초에 Frame으로 높이를 잡아주는 방법을 사용했습니다.
+```swift
+headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 150)
+```
+
+frame을 잡아줬더니 cell과 겹치지 않고 View에 잘 나타나게 되었습니다. 그렇다면 인제 header view의 컨텐츠에 따라 유동적으로 높이를 잡아보려고 시도했습니다. 그럴려면 height를 고정적으로 주면 안되었기에 또 한번에 문제에 부딪히게 되었습니다.
+
+우선 가변 높이를 지정하기 위해 많은 방법을 찾던 중 다음 코드를 활용해 headerView의 높이를 가변적으로 잡아줄 수 있지 않을까? 해서 적용해보게되었습니다.
 
 ```swift
 func sizeHeaderToFit() {
@@ -68,8 +76,6 @@ func sizeHeaderToFit() {
 
         let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         var newFrame = headerView.frame
-
-        // Needed or we will stay in viewDidLayoutSubviews() forever
         if height != newFrame.size.height {
             newFrame.size.height = height
             headerView.frame = newFrame
@@ -80,7 +86,77 @@ func sizeHeaderToFit() {
 }
 ```
 
-   
+하지만 위 코드조차 Label의 높이가 지정되어 있지 않으면 headerView는 사라지고 Label만 남게 되어 원하는 View의 형태가 나오질 않았습니다. 
+ 
+마지막으로 시도했던 방법은 가변적인 컨텐츠의 높이를 일일이 계산하여 layoutIfNeeded 메서드를 활용해 HeaderView의 높이를 다시 잡아주는 방법을 활용했었습니다.
+
+```swift
+class HeaderView: UIView {
+	let label = {
+        let lb = UILabel()
+        lb.numberOfLines = 0
+        return lb
+    }()
+    
+    let button = {
+        let bt = UIButton()
+        bt.setTitle("클릭", for: .normal)
+        bt.backgroundColor = .darkGray
+        return bt
+    }()
+    
+    var contentHeight: CGFloat {
+        let height = 
+        label.bounds.height +
+        button.bounds.height +
+        labelTopDistance +
+        labelToButtonBetweenDistance
+        return height
+    }
+    
+    let labelTopDistance = 5.0
+    let labelToButtonBetweenDistance = 10.0
+
+	override init(frame: CGRect) {
+        super.init(frame: frame)
+        layout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+	func layout() {
+        addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalToSuperview().inset(labelTopDistance)
+        }
+        
+        addSubview(button)
+        button.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(labelToButtonBetweenDistance)
+            make.horizontalEdges.equalToSuperview().inset(5)
+        }
+    }
+}
+```
+
+위와 같이 일일히 모든 View 객체의 높이와 top과 bottom 사이의 거리를 모두 계산하는 `contentHeight` 라는 계산속성을 통해 계산한 뒤 ViewController에서 Layout을 잡을 때 Frame에 대입해주는 방식으로 해결했습니다.
+
+```swift
+class TableHeaderViewController: UIViewController {
+	private func updateHederViewHeight() {
+        let calculatedHeight: CGFloat = headerView.contentHeight + 20
+        print("calculatedHeight: \(calculatedHeight)")
+        headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: calculatedHeight)
+        tableView.tableHeaderView = headerView
+    }
+}
+```
+
+이렇게 되면 해당 컨텐츠에 따라 유동적인 높이를 가지는 tableHeaderView를 나타낼 수 있게 되었습니다.
+
+하지만 결론적으로 모든 객체의 높이를 계산해서 다시 Layout을 그린다는 방법 자체가 마음에 들지는 않아서 결국 RxDataSource를 사용했고 configureSupplementaryView에 HeaderView를 그려서 해결했습니다.
 
 2. hash tag
 3. rx button tap stream error handling
