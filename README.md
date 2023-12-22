@@ -19,16 +19,16 @@
 - Tabman
 - IQKeyboardManager
 # 🔍 구현 기능
-- 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. Refresh Token 관리 또한 Alamofire의 Interceptor를 통해 Refresh Token을 갱신하여 현재 유저의 로그인 상태를 유지하거나 Refresh Token이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
+- 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
 - 게시글을 관리하는 피드에서는 RxSwift 기반의 UITableView를 활용해서 구성하였고 셀안에 이미지 데이터 또한 dataSet을 tableView의 cell을 구성할 때 Observable로 Stream을 방출하여 Rx CollectionView로 구성하였습니다.
-- 게시글 목록에서 Rx기반의 PullToRefresh를 구현해 데이터를 Reload할 수 있도록 하였고, Cursor 기반 Pagination을 Rx PrefetchRows를 사용하여 구현하였습니다.
-- 게시글 상세 View에서는 RxDataSource를 활용해 Section의 HeaderView와 CollectionView를 통해 게시글 정보 아래에 댓글 정보를 표현하도록하였습니다.
+- 게시글 목록에서 Rx기반의 `PullToRefresh`를 구현해 데이터를 Reload할 수 있도록 하였고, `Cursor 기반 Pagination`을 `Rx PrefetchRows`를 사용하여 구현하였습니다.
+- 게시글 상세 View에서는 `RxDataSource`를 활용해 Section의 HeaderView와 CollectionView를 통해 게시글 정보 아래에 댓글 정보를 표현하도록하였습니다.
 - 게시글이나 앱 전체의 이미지들은 확대하여 확인할수 있도록 FullScreen View를 Custom하여 구현하였습니다.
 - 해시태그를 구현하기 위해 UITextView의 RxSwift를 Custom 함수를 정의하였고 UITapGestureRecognizer 클래스를 Custom하여 해시태그 단어에 대해 Link처럼 Click이 가능하도록 구현하였습니다.
 - 해시태그를 사용자가 쉽게 작성하도록 UITextView를 Custom하였고 정규식을 통해 `#`을 기준으로 사용자가 입력하는 단어에 대해서는 대비 색상 적용하도록 하였습니다.
-- 게시글 작성 View에서는 UITextView의 sizeThatFits 메서드를 사용해 줄바꿈을 하면 View가 늘어나도록 효과를 주었습니다. 
-- 게시글 작성에서 PHPickerViewController를 통해 이미지를 가져올 수 있도록 하였고 CollectionView를 활용해 선택한 이미지를 나타내고 삭제할 수 있도록 하였습니다.
-- 프로필에서는 TabMan, Pageboy 라이브러리를 활용해 내가 작성한 게시글, 팔로워, 팔로잉 목록을 확인할 수 있도록 구현하였습니다.
+- 게시글 작성 View에서는 UITextView의 `sizeThatFits` 메서드를 사용해 줄바꿈을 하면 View가 늘어나도록 효과를 주었습니다. 
+- 게시글 작성에서 `PHPickerViewController`를 통해 이미지를 가져올 수 있도록 하였고 CollectionView를 활용해 선택한 이미지를 나타내고 삭제할 수 있도록 하였습니다.
+- 프로필에서는 `TabMan`, `Pageboy` 라이브러리를 활용해 내가 작성한 게시글, 팔로워, 팔로잉 목록을 확인할 수 있도록 구현하였습니다.
 # 📖 프로젝트 기획 및 기록
 노션 링크 같은 거 있으면 고고
 # 🔥 이슈
