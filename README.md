@@ -117,7 +117,7 @@ class HeaderView: UIView {
     let labelTopDistance = 5.0
     let labelToButtonBetweenDistance = 10.0
 
-	override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
     }
@@ -126,7 +126,7 @@ class HeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-	func layout() {
+    func layout() {
         addSubview(label)
         label.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview().inset(labelTopDistance)
@@ -145,7 +145,7 @@ class HeaderView: UIView {
 
 ```swift
 class TableHeaderViewController: UIViewController {
-	private func updateHederViewHeight() {
+    private func updateHederViewHeight() {
         let calculatedHeight: CGFloat = headerView.contentHeight + 20
         print("calculatedHeight: \(calculatedHeight)")
         headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: calculatedHeight)
