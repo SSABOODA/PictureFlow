@@ -88,7 +88,7 @@ func sizeHeaderToFit() {
 
 하지만 위 코드조차 Label의 높이가 지정되어 있지 않으면 headerView는 사라지고 Label만 남게 되어 원하는 View의 형태가 나오질 않았습니다. 
  
-마지막으로 시도했던 방법은 가변적인 컨텐츠의 높이를 일일이 계산하여 layoutIfNeeded 메서드를 활용해 HeaderView의 높이를 다시 잡아주는 방법을 활용했었습니다.
+마지막으로 시도했던 방법은 가변적인 컨텐츠의 높이를 일일이 계산하여 `layoutIfNeeded` 메서드를 활용해 HeaderView의 높이를 다시 잡아주는 방법을 활용했었습니다.
 
 ```swift
 class HeaderView: UIView {
@@ -157,7 +157,7 @@ class TableHeaderViewController: UIViewController {
 
 이렇게 되면 해당 컨텐츠에 따라 유동적인 높이를 가지는 tableHeaderView를 나타낼 수 있게 되었습니다.
 
-하지만 결론적으로 모든 객체의 높이를 계산해서 다시 Layout을 그린다는 방법 자체가 마음에 들지는 않아서 결국 RxDataSource를 사용했고 configureSupplementaryView에 HeaderView를 그려서 해결했습니다.
+하지만 결론적으로 모든 객체의 높이를 계산해서 다시 Layout을 그린다는 방법 자체가 마음에 들지는 않아서 결국 `RxDataSource`를 사용했고 `configureSupplementaryView`에 HeaderView를 그려서 해결했습니다.
 
 ## 2. 게시글 컨텐츠에서 hash tag 클릭시 다른 View 이동
 ### 문제 상황
@@ -232,4 +232,6 @@ contentTextView.resolveHashTags()
 ```
 
 `NSMutableAttributedString` 를 통해 해당 문자열에 해시태그를 ‘#’ 과 붙어있는 문자를 추출하는 정규식을 사용하였고 추출한 문자들의 속성만 link 속성과 색상, font 크기를 변경시켜주었습니다.
-3. rx button tap stream error handling
+
+## 3. rx button tap stream error handling
+---
