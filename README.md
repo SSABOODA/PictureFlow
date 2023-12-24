@@ -246,8 +246,8 @@ contentTextView.resolveHashTags()
 - Network.swift
 ```swift
 func requestObservableConvertible<T: Decodable> (
-	type: T.Type,
-	router: Router
+    type: T.Type,
+    router: Router
 ) -> Observable<T> {
     return Observable.create { emitter -> Disposable in
 	let request = AF.request(
