@@ -1,14 +1,17 @@
-앱 소개
+# 앱 소개
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
 - 게시글 작성 기능(이미지 포함)
 - 게시글 좋아요
 - 게시글 해시태그 기능
 - 유저 팔로우 기능
 - 프로필 관리 기능
+
 # 🗓️ 프로젝트 기간
 2023/11/17 ~ 2023/12/17
+
 # 👥 프로젝트 참여 인원
 1명(개인)
+
 # 🛠️ 사용된 프레임워크, 라이브러리, 디자인 패턴
 - MVVM
 - UIKit
@@ -18,6 +21,7 @@
 - Kingfisher
 - Tabman
 - IQKeyboardManager
+
 # 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
 - 게시글을 관리하는 피드에서는 RxSwift 기반의 UITableView를 활용해서 구성하였고 셀안에 이미지 데이터 또한 dataSet을 tableView의 cell을 구성할 때 Observable로 Stream을 방출하여 Rx CollectionView로 구성하였습니다.
@@ -29,8 +33,10 @@
 - 게시글 작성 View에서는 UITextView의 `sizeThatFits` 메서드를 사용해 줄바꿈을 하면 View가 늘어나도록 효과를 주었습니다. 
 - 게시글 작성에서 `PHPickerViewController`를 통해 이미지를 가져올 수 있도록 하였고 CollectionView를 활용해 선택한 이미지를 나타내고 삭제할 수 있도록 하였습니다.
 - 프로필에서는 `TabMan`, `Pageboy` 라이브러리를 활용해 내가 작성한 게시글, 팔로워, 팔로잉 목록을 확인할 수 있도록 구현하였습니다.
+  
 # 📖 프로젝트 기획 및 기록
-노션 링크 같은 거 있으면 고고
+---
+
 # 🔥 이슈
 ## 1. tableHeaderView dynamic height
 게시글의 상세화면 View 밑에 해당 게시글에 대한 댓글들을 표시할 수 있도록 댓글 아이템들은 TableView로 표시하고 TableView위에는 게시글 상세 View가 위치하는 View를 구성할 필요가 있었습니다.
@@ -243,49 +249,48 @@ func requestObservableConvertible<T: Decodable> (
 	type: T.Type,
 	router: Router
 ) -> Observable<T> {
-	return Observable.create { emitter -> Disposable in
-
-		let request = AF.request(
-			router,
-			interceptor: AuthManager()
-		)
-			.validate()
-			.responseDecodable(of: T.self) { response in
-				switch response.result {
-				case .success(let success):
-					emitter.onNext(success)
-					emitter.onCompleted()
-				case .failure(let failure):
-					emitter.onError(failure)
-				}
-			}
-		return Disposables.create() {
-			request.cancel()
+    return Observable.create { emitter -> Disposable in
+	let request = AF.request(
+	    router,
+	    interceptor: AuthManager()
+	)
+            .validate()
+            .responseDecodable(of: T.self) { response in
+		switch response.result {
+		case .success(let success):
+		    emitter.onNext(success)
+                    emitter.onCompleted()
+		case .failure(let failure):
+                    emitter.onError(failure)
 		}
+	    }
+	return Disposables.create() {
+	    request.cancel()
 	}
+    }
 }
 ```
 
 - loginViewModel.swift
 ```swift
 input.loginButtonTap
-	.withLatestFrom(loginModelObservable)
-	.flatMap {
-		Network.shared.fetch(
-			type: LoginResponse.self,
-			router: .login(model: $0)
-		)
-	}
-	.subscribe(with: self) { owner, data in
-		print("data: \(data)")
-	} onError: { owner, error in
-		print("Rx login onError")
-	} onCompleted: { owner in
-		print("Rx login onCompleted")
-	} onDisposed: { owner in
-		print("Rx login onDisposed")
-	}
-	.disposed(by: disposeBag)
+    .withLatestFrom(loginModelObservable)
+    .flatMap {
+        Network.shared.fetch(
+            type: LoginResponse.self,
+            router: .login(model: $0)
+        )
+    }
+    .subscribe(with: self) { owner, data in
+	print("data: \(data)")
+    } onError: { owner, error in
+	print("Rx login onError")
+    } onCompleted: { owner in
+	print("Rx login onCompleted")
+    } onDisposed: { owner in
+	print("Rx login onDisposed")
+    }
+    .disposed(by: disposeBag)
 ```
 
 로그인 API 통신을 진행했고 로그인API 명세서의 요구사항에 맞게 데이터를 전달하지 않아 에러가 나는 상황이 생겼습니다. 여기서 로그인 button의 rx tap stream은 네트워크 통신의 에러와 함께 onError 이벤트를 방출하면서 dispose되게 되었습니다.
@@ -300,11 +305,11 @@ Rx login onDisposed
 1. 첫번째로 시도했던 방법은 `catchAndReturn`으로 에러 발생시 기본값을 return함으로써 `onError` 이벤트를 방출하지 못하게 하는 방법을 사용했습니다.
 ```swift
 .flatMap {
-	Network.shared.fetch(
-		type: LoginResponse.self,
-		router: .login(model: $0)
-	)
-	.catchAndReturn(LoginResponse(_id: "", token: "", refreshToken: ""))
+    Network.shared.fetch(
+	type: LoginResponse.self,
+	router: .login(model: $0)
+    )
+    .catchAndReturn(LoginResponse(_id: "", token: "", refreshToken: ""))
 }
 ```
 
@@ -316,56 +321,55 @@ Rx login onDisposed
 - Network.swift
 ```swift
 func fetchSingle<T: Decodable> (
-	type: T.Type,
-	router: Router
+    type: T.Type,
+    router: Router
 ) -> Single<Result<T, AFError>> {
-	return Single.create { emitter -> Disposable in
-		
-		let request = AF.request(
-			router,
-			interceptor: AuthManager()
-		)
-			.validate()
-			.responseDecodable(of: T.self) { response in
-				switch response.result {
-				case .success(let success):
-					emitter(.success(.success(success)))
-				case .failure(let failure):
-					emitter(.success(.failure(failure)))
-				}
-			}
-		return Disposables.create() {
-			request.cancel()
+    return Single.create { emitter -> Disposable in
+	let request = AF.request(
+	    router,
+	    interceptor: AuthManager()
+	)
+	    .validate()
+            .responseDecodable(of: T.self) { response in
+		switch response.result {
+		case .success(let success):
+			emitter(.success(.success(success)))
+		case .failure(let failure):
+			emitter(.success(.failure(failure)))
 		}
+	    }
+	return Disposables.create() {
+		request.cancel()
 	}
+    }
 }
 ```
 
 - loginViewModel.swift
 ```swift
 input.loginButtonTap
-	.withLatestFrom(loginModelObservable)
-	.flatMap {
-		Network.shared.fetchSingle(
-			type: LoginResponse.self,
-			router: .login(model: $0)
-		)
+    .withLatestFrom(loginModelObservable)
+    .flatMap {
+	Network.shared.fetchSingle(
+	    type: LoginResponse.self,
+	    router: .login(model: $0)
+	)
+    }
+    .subscribe(with: self) { owner, result in
+	switch result {
+	    case .success(let data):
+		print(data)
+	    case .failure(let error):
+		print(error)
 	}
-	.subscribe(with: self) { owner, result in
-		switch result {
-		case .success(let data):
-			print(data)
-		case .failure(let error):
-			print(error)
-		}
-	} onError: { owner, error in
-		print("Rx login onError")
-	} onCompleted: { owner in
-		print("Rx login onCompleted")
-	} onDisposed: { owner in
-		print("Rx login onDisposed")
-	}
-	.disposed(by: disposeBag)
+    } onError: { owner, error in
+	print("Rx login onError")
+    } onCompleted: { owner in
+	print("Rx login onCompleted")
+    } onDisposed: { owner in
+	print("Rx login onDisposed")
+    }
+    .disposed(by: disposeBag)
 ```
 
 `flatMap` 에서 네트워크 통신하는 메서드에서 Single Traite이 Observable을 방출할 때 에러시에도 Success case에 한번 래핑한 뒤 방출하게 되면 `flatMap` Operator를 통해 새로운 Observable을 방출하게 될 때 Result Type과 Single Traits이 래핑된 상태로 방출되기 때문에 subscribe에서 switch 문을 통해 래핑을 해제하고 서버에서 받아온 에러를 처리하면 됩니다. 이렇게 되면 로그인 button의 stream은 살아있게 되며 에러 핸들링까지 가능하게 되었습니다. 
