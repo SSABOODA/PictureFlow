@@ -32,7 +32,7 @@
 # 📖 프로젝트 기획 및 기록
 노션 링크 같은 거 있으면 고고
 # 🔥 이슈
-## tableHeaderView dynamic height
+## 1. tableHeaderView dynamic height
 게시글의 상세화면 View 밑에 해당 게시글에 대한 댓글들을 표시할 수 있도록 댓글 아이템들은 TableView로 표시하고 TableView위에는 게시글 상세 View가 위치하는 View를 구성할 필요가 있었습니다.
 
 상단 게시글 정보 View와 함께 댓글을 구성하던 Tableview 또한 같이 Scroll되길 원했기 때문에 HeaderView나 ScrollView로 구성을 해야했습니다. 
@@ -159,5 +159,77 @@ class TableHeaderViewController: UIViewController {
 
 하지만 결론적으로 모든 객체의 높이를 계산해서 다시 Layout을 그린다는 방법 자체가 마음에 들지는 않아서 결국 RxDataSource를 사용했고 configureSupplementaryView에 HeaderView를 그려서 해결했습니다.
 
-2. hash tag
+## 2. 게시글 컨텐츠에서 hash tag 클릭시 다른 View 이동
+### 문제 상황
+게시글의 텍스트 컨텐츠에서 해시태그를 설정하면 해당 해시 태그는 다른 텍스트와 색상이 대비되도록 설정하고 해당 해시태그는 클릭시 link가 되도록 설정해야했습니다.
+
+### 문제 해결
+1. 우선 텍스트가 link가 될 수 있도록 설정하려면 어떤 방법이 있는지 고민하던 중 스토리보드로 UITextView를 구성할 때 attributes를 설정할 때 `data detectors` 에 link를 체크하면 텍스트 안에 url이 있으면 자동으로 대비 색상과 함께 클릭 시 해당 url으로 이동할 수 있었던 기능을 활용하면 특정 단어에도 link 기능을 넣을 수 있지 않을까? 해서 해당 접근하게 되었습니다.
+
+문자열의 특정 문자의 Style을 변경할 수 있는 클래스인 `NSMutableAttributedString` 을 활용해 해시태그의 특정 문자의 Style과 기능을 추가할 수 있겠다라고 접근했습니다.
+
+`NSMutableAttributedString`은 `NSAttributedString` 를 상속받고 있으며 `NSAttributedString`에 속한 특정 범위에 문자의 시각적 스타일, 하이퍼링크 또는 접근성 데이터를 설정할 수 있는 타입이라고 나와있습니다.
+
+```swift
+final class HashtagTextView: UITextView {
+    var hashtagArr: [String]?
+    
+    func resolveHashTags() {
+        self.isEditable = false
+        self.isSelectable = true
+        
+        let nsText: NSString = self.text as NSString
+        let attrString = NSMutableAttributedString(string: nsText as String)
+        let hashtagDetector = try? NSRegularExpression(
+            pattern: "#(\\w+)",
+            options: NSRegularExpression.Options.caseInsensitive
+        )
+        
+        let results = hashtagDetector?.matches(
+            in: self.text,
+            options: NSRegularExpression.MatchingOptions.withoutAnchoringBounds,
+            range: NSMakeRange(0, self.text.utf16.count)
+        )
+        
+        let hashtagAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 18),
+            .foregroundColor: UIColor.systemBlue
+        ]
+        
+        let regularTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 18),
+            .foregroundColor: UIColor(resource: .text)
+        ]
+        
+        // 기존 속성 초기화
+        attrString.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: attrString.length))
+        attrString.addAttributes(regularTextAttributes, range: NSRange(location: 0, length: attrString.length))
+
+        hashtagArr = results?.map { (self.text as NSString).substring(with: $0.range(at: 1)) }
+        if hashtagArr?.count != 0 {
+            var i = 0
+            for var word in hashtagArr! {
+                word = "#" + word
+                if word.hasPrefix("#") {
+                    let matchRange:NSRange = nsText.range(of: word as String, options: [.caseInsensitive, .backwards])
+                                                                
+                    attrString.addAttribute(NSAttributedString.Key.link, value: "\(i)", range: matchRange)
+                    attrString.addAttributes(hashtagAttributes, range: matchRange)
+                    i += 1
+                }
+            }
+        }
+
+        self.attributedText = attrString
+    }
+}
+```
+
+```swift
+contentTextView.text = elements.content
+contentTextView.hashtagArr = elements.hashTags
+contentTextView.resolveHashTags()
+```
+
+`NSMutableAttributedString` 를 통해 해당 문자열에 해시태그를 ‘#’ 과 붙어있는 문자를 추출하는 정규식을 사용하였고 추출한 문자들의 속성만 link 속성과 색상, font 크기를 변경시켜주었습니다.
 3. rx button tap stream error handling
