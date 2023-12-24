@@ -168,7 +168,7 @@ class TableHeaderViewController: UIViewController {
 
 문자열의 특정 문자의 Style을 변경할 수 있는 클래스인 `NSMutableAttributedString` 을 활용해 해시태그의 특정 문자의 Style과 기능을 추가할 수 있겠다라고 접근했습니다.
 
-`NSMutableAttributedString`은 `NSAttributedString` 를 상속받고 있으며 `NSAttributedString`에 속한 특정 범위에 문자의 시각적 스타일, 하이퍼링크 또는 접근성 데이터를 설정할 수 있는 타입이라고 나와있습니다.
+`NSMutableAttributedString`은 `NSAttributedString` 를 상속받고 있으며 `NSAttributedString`에 속한 특정 범위에 문자의 시각적 스타일, 하이퍼링크 또는 접근성 데이터를 설정할 수 있는 타입이라고 나와있습니다.
 
 ```swift
 final class HashtagTextView: UITextView {
