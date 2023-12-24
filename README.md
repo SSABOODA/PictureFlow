@@ -233,5 +233,141 @@ contentTextView.resolveHashTags()
 
 `NSMutableAttributedString` 를 통해 해당 문자열에 해시태그를 ‘#’ 과 붙어있는 문자를 추출하는 정규식을 사용하였고 추출한 문자들의 속성만 link 속성과 색상, font 크기를 변경시켜주었습니다.
 
-## 3. rx button tap stream error handling
----
+## 3. Rxswift button tap stream error handling
+### 문제 상황
+해당 문제는 회원가입 기능을 구현하던 중 발생한 문제였습니다. 회원가입 시 필요한 정보(이메일, 비밀번호, 닉네임..) 등을 받고 마지막으로 로그인 버튼을 tap 한다면 해당 CombineLatest로 묶어놓았던 데이터들과 함께 Stream을 시작하여 네트워크 통신하는 Rx 로직을 구성하였습니다. 그 과정에서 flastMap을 통해 미리 싱글톤 패턴으로 구현해놓았던 NetWork 클래스 안의 로그인 API 통신 메서드를 호출하였습니다.
+
+- Network.swift
+```swift
+func requestObservableConvertible<T: Decodable> (
+	type: T.Type,
+	router: Router
+) -> Observable<T> {
+	return Observable.create { emitter -> Disposable in
+
+		let request = AF.request(
+			router,
+			interceptor: AuthManager()
+		)
+			.validate()
+			.responseDecodable(of: T.self) { response in
+				switch response.result {
+				case .success(let success):
+					emitter.onNext(success)
+					emitter.onCompleted()
+				case .failure(let failure):
+					emitter.onError(failure)
+				}
+			}
+		return Disposables.create() {
+			request.cancel()
+		}
+	}
+}
+```
+
+- loginViewModel.swift
+```swift
+input.loginButtonTap
+	.withLatestFrom(loginModelObservable)
+	.flatMap {
+		Network.shared.fetch(
+			type: LoginResponse.self,
+			router: .login(model: $0)
+		)
+	}
+	.subscribe(with: self) { owner, data in
+		print("data: \(data)")
+	} onError: { owner, error in
+		print("Rx login onError")
+	} onCompleted: { owner in
+		print("Rx login onCompleted")
+	} onDisposed: { owner in
+		print("Rx login onDisposed")
+	}
+	.disposed(by: disposeBag)
+```
+
+로그인 API 통신을 진행했고 로그인API 명세서의 요구사항에 맞게 데이터를 전달하지 않아 에러가 나는 상황이 생겼습니다. 여기서 로그인 button의 rx tap stream은 네트워크 통신의 에러와 함께 onError 이벤트를 방출하면서 dispose되게 되었습니다.
+
+```
+Rx login onError
+Rx login onDisposed
+```
+
+이렇게 되면 여기서부터 문제가 발생합니다. 유저는 로그인에 실패했더라도 로그인 정보를 수정한다면 다시 버튼을 누를수 있어야하지만 이미 로그인 버튼의 stream은 dispose된 상태이기 때문에 아무리 정보를 올바르게 수정한다 하더라도 버튼은 더 이상 동작하지 않게 됩니다.
+### 문제 해결
+1. 첫번째로 시도했던 방법은 `catchAndReturn`으로 에러 발생시 기본값을 return함으로써 `onError` 이벤트를 방출하지 못하게 하는 방법을 사용했습니다.
+```swift
+.flatMap {
+	Network.shared.fetch(
+		type: LoginResponse.self,
+		router: .login(model: $0)
+	)
+	.catchAndReturn(LoginResponse(_id: "", token: "", refreshToken: ""))
+}
+```
+
+하지만 이 방법은 에러 발생 시 미리 세팅해둔 기본 값만 방출하기 때문에 서버에서 오는 다양한 error handling하기 부적합하다는 것을 깨달았습니다.
+
+지금 해결해야하는 부분은 stream이 끊기지 않으면서 서버의 에러까지 핸들링 할 수 있어야하는 것입니다.
+2. 두번째 방법은 `Single` traits를 사용하여 `fetch` 메서드에서 방출하는 단일 Observable 이벤트를 래핑하여 error를 방출하지 않고 해당 버튼 stream에 에러를 처리하는 방법입니다.
+
+- Network.swift
+```swift
+func fetchSingle<T: Decodable> (
+	type: T.Type,
+	router: Router
+) -> Single<Result<T, AFError>> {
+	return Single.create { emitter -> Disposable in
+		
+		let request = AF.request(
+			router,
+			interceptor: AuthManager()
+		)
+			.validate()
+			.responseDecodable(of: T.self) { response in
+				switch response.result {
+				case .success(let success):
+					emitter(.success(.success(success)))
+				case .failure(let failure):
+					emitter(.success(.failure(failure)))
+				}
+			}
+		return Disposables.create() {
+			request.cancel()
+		}
+	}
+}
+```
+
+- loginViewModel.swift
+```swift
+input.loginButtonTap
+	.withLatestFrom(loginModelObservable)
+	.flatMap {
+		Network.shared.fetchSingle(
+			type: LoginResponse.self,
+			router: .login(model: $0)
+		)
+	}
+	.subscribe(with: self) { owner, result in
+		switch result {
+		case .success(let data):
+			print(data)
+		case .failure(let error):
+			print(error)
+		}
+	} onError: { owner, error in
+		print("Rx login onError")
+	} onCompleted: { owner in
+		print("Rx login onCompleted")
+	} onDisposed: { owner in
+		print("Rx login onDisposed")
+	}
+	.disposed(by: disposeBag)
+```
+
+`flatMap` 에서 네트워크 통신하는 메서드에서 Single Traite이 Observable을 방출할 때 에러시에도 Success case에 한번 래핑한 뒤 방출하게 되면 `flatMap` Operator를 통해 새로운 Observable을 방출하게 될 때 Result Type과 Single Traits이 래핑된 상태로 방출되기 때문에 subscribe에서 switch 문을 통해 래핑을 해제하고 서버에서 받아온 에러를 처리하면 됩니다. 이렇게 되면 로그인 button의 stream은 살아있게 되며 에러 핸들링까지 가능하게 되었습니다. 
+
+button tap stream에서 한번 더 래핑을 해제하기 때문에 switch case를 한번 더 사용하게 되는 단점이 있긴 하지만 원하는 방향으로 기능할 수 있게 되어 문제해결을 할 수 있었습니다.
