@@ -241,7 +241,7 @@ contentTextView.resolveHashTags()
 
 ## 3. Rxswift button tap stream error handling
 ### 문제 상황
-해당 문제는 회원가입 기능을 구현하던 중 발생한 문제였습니다. 회원가입 시 필요한 정보(이메일, 비밀번호, 닉네임..) 등을 받고 마지막으로 로그인 버튼을 tap 한다면 해당 CombineLatest로 묶어놓았던 데이터들과 함께 Stream을 시작하여 네트워크 통신하는 Rx 로직을 구성하였습니다. 그 과정에서 flastMap을 통해 미리 싱글톤 패턴으로 구현해놓았던 NetWork 클래스 안의 로그인 API 통신 메서드를 호출하였습니다.
+해당 문제는 회원가입 기능을 구현하던 중 발생한 문제였습니다. 회원가입 시 필요한 정보(이메일, 비밀번호, 닉네임..) 등을 받고 마지막으로 로그인 버튼을 tap 한다면 해당 CombineLatest로 묶어놓았던 데이터들과 함께 Stream을 시작하여 네트워크 통신하는 Rx 로직을 구성하였습니다. 그 과정에서 flatMap을 통해 미리 싱글톤 패턴으로 구현해놓았던 NetWork 클래스 안의 로그인 API 통신 메서드를 호출하였습니다.
 
 - Network.swift
 ```swift
