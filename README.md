@@ -23,8 +23,12 @@
 - IQKeyboardManager
 
 # ⭐️ 중요 기능
+## 회원가입 & 로그인: 회원가입을 통해 자신의 게시글을 관리하고 타인의 게시글을 확인할 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/44ad5fae-4164-4b99-8084-61b3e64155a9" width="100%">
+</p>
+## 게시글: 모든 유저의 게시글을 확인하고 좋아요 및 댓글, 게시글 상세 정보를 확인할 수 있어요
+<p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/5916df0b-e93d-4552-9313-19a652204fd9" width="100%">
 </p>
 
