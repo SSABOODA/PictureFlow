@@ -1,4 +1,4 @@
-![mockup-회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/0ac265d8-42e5-4d7b-a60a-8fbe7b5e79de)# 앱 소개
+# 앱 소개
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
 - 게시글 작성 기능(이미지 포함)
 - 게시글 좋아요
@@ -24,8 +24,8 @@
 
 # ⭐️ 중요 기능
 <p align="center" width="100%">
-    ![mockup-회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/44ad5fae-4164-4b99-8084-61b3e64155a9)
-    ![mockup-게시글](https://github.com/SSABOODA/PictureFlow/assets/69753846/5916df0b-e93d-4552-9313-19a652204fd9)
+    <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/44ad5fae-4164-4b99-8084-61b3e64155a9" width="100%">
+    <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/5916df0b-e93d-4552-9313-19a652204fd9" width="100%">
 </p>
 
 # 🔍 구현 기능
