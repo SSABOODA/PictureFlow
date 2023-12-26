@@ -1,5 +1,5 @@
 # 앱 소개 - FLOW
-<img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/b63db0ff-9b89-4180-a53f-a9f6b4f7e86a" height="1024" width="1024">
+<img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/b63db0ff-9b89-4180-a53f-a9f6b4f7e86a" height="200" width="200">
 
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
 - 게시글 작성 기능(이미지 포함)
