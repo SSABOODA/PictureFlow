@@ -1,4 +1,6 @@
-# 앱 소개
+# 앱 소개 - FLOW
+![FLOW-icon](https://github.com/SSABOODA/PictureFlow/assets/69753846/b63db0ff-9b89-4180-a53f-a9f6b4f7e86a)
+
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
 - 게시글 작성 기능(이미지 포함)
 - 게시글 좋아요
@@ -31,6 +33,16 @@
 ## 게시글: 모든 유저의 게시글을 확인하고 좋아요 할 수 있고, 댓글을 남길 수 있어요, 여러 장의 사진 및 해시태그가 담긴 게시글도 남겨볼 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/932c9744-336f-4e5a-923e-3c2507237b13" width="100%">
+</p>
+
+## 좋아요 & 해시태그: 좋아요한 게시글과 해시태그 검색을 통해 게시글을 확인해볼 수 있어요
+<p align="center" width="100%">
+    <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/01ef441d-5747-4cd9-a8e0-46532d36c636" width="100%">
+</p>
+
+## 프로필 & 팔로우: 다른 유저를 팔로우할 수 있고, 자신의 프로필에서 게시글, 팔로워, 팔로잉 목록, 프로필 수정등을 해볼 수 있어요
+<p align="center" width="100%">
+    <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/174a0cca-68a0-4e6c-9fef-4586960c2cf8" width="100%">
 </p>
 
 # 🔍 구현 기능
