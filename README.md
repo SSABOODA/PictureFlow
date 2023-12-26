@@ -1,4 +1,4 @@
-# 앱 소개
+![mockup-회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/0ac265d8-42e5-4d7b-a60a-8fbe7b5e79de)# 앱 소개
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
 - 게시글 작성 기능(이미지 포함)
 - 게시글 좋아요
@@ -21,6 +21,12 @@
 - Kingfisher
 - Tabman
 - IQKeyboardManager
+
+# ⭐️ 중요 기능
+<p align="center" width="100%">
+    ![mockup-회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/44ad5fae-4164-4b99-8084-61b3e64155a9)
+    ![mockup-게시글](https://github.com/SSABOODA/PictureFlow/assets/69753846/5916df0b-e93d-4552-9313-19a652204fd9)
+</p>
 
 # 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
