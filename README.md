@@ -46,9 +46,7 @@
 </p>
 
 # 📱 작동 화면
-<p align="center" width="100%">
-    ![작동화면-resize](https://github.com/SSABOODA/PictureFlow/assets/69753846/85598f36-c57b-4c93-a046-4c564e24375f)
-</p>
+![작동화면-resize](https://github.com/SSABOODA/PictureFlow/assets/69753846/85598f36-c57b-4c93-a046-4c564e24375f)
 
 # 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
