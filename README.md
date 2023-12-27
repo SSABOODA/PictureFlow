@@ -45,6 +45,10 @@
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/174a0cca-68a0-4e6c-9fef-4586960c2cf8" width="100%">
 </p>
 
+# 📱 작동 화면
+|:-:|:-:|:-:|:-:|
+|![회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/4f7c3428-e0a7-42cf-afa3-01404946d356)|![게시글](https://github.com/SSABOODA/PictureFlow/assets/69753846/2b6f8c05-98a1-4267-8faf-2fabb5ebaf9b)|![해시태그 좋아요](https://github.com/SSABOODA/PictureFlow/assets/69753846/90ac150a-22c1-4205-befa-fade9d68122e)|![프로필 팔로잉](https://github.com/SSABOODA/PictureFlow/assets/69753846/7ef372f2-a9f5-4353-ba5b-16ebdefc791a)|
+
 # 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
 - 게시글을 관리하는 피드에서는 RxSwift 기반의 UITableView를 활용해서 구성하였고 셀안에 이미지 데이터 또한 dataSet을 tableView의 cell을 구성할 때 Observable로 Stream을 방출하여 Rx CollectionView로 구성하였습니다.
