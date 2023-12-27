@@ -51,6 +51,9 @@
 # 작동화면 2
 ![작동화면-resize2](https://github.com/SSABOODA/PictureFlow/assets/69753846/218b5e60-7ecf-4082-afcf-997396fcc572)
 
+# 작동화면 3
+|:-:|:-:|:-:|:-:|
+|![회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/233c6f0b-e03c-4c44-8d50-a2ffb559341e)|![게시글](https://github.com/SSABOODA/PictureFlow/assets/69753846/6ebc94ec-f5ed-4a48-851f-f6274fe18740)|![해시태그 좋아요](https://github.com/SSABOODA/PictureFlow/assets/69753846/5b6e2510-2bf4-4915-a586-64965ec583a5)|![프로필 팔로잉](https://github.com/SSABOODA/PictureFlow/assets/69753846/9d80dc1f-e609-4b0f-96f1-cf615ff3f3b4)|
 
 # 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
