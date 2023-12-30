@@ -2,12 +2,13 @@
 <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/d1c941cf-ab81-450b-9bc4-eceaed7438a8" height="200" width="200">
 
 ## 프로젝트 소개
-일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
-- 게시글 작성 기능(이미지 포함)
+일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다.
+- 회원가입, 로그인
+- 게시글 작성(이미지 포함)
 - 게시글 좋아요
-- 게시글 해시태그 기능
-- 유저 팔로우 기능
-- 프로필 관리 기능
+- 게시글 해시태그
+- 유저 팔로우
+- 프로필 관리
 
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/fdf26979-fd5e-4121-8500-5bc2d2b2adba" width="100%">
