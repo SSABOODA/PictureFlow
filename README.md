@@ -52,17 +52,14 @@
 1명(개인)
 
 ## 🛠️ 사용된 기술 스택
-### Framework
-- UIKit
-### Library
-- RxSwift
-- RxDatasource
-- Snapkit
-- Kingfisher
-- Tabman
-- IQKeyboardManager
-### Design Pattern
-- MVVM
+- **Framework**
+`UIKit`
+- **Library**
+`RxSwift`, `RxDatasource`,  `Snapkit`,  `Kingfisher`
+`Tabman`, `IQKeyboardManager`⠀
+- **Design Pattern**
+`MVVM`, `Router`, `Singleton`, `Input/Output`
+
 
 ## 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
