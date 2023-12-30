@@ -72,9 +72,6 @@
 - 게시글 작성에서 `PHPickerViewController`를 통해 이미지를 가져올 수 있도록 하였고 CollectionView를 활용해 선택한 이미지를 나타내고 삭제할 수 있도록 하였습니다.
 - 프로필에서는 `TabMan`, `Pageboy` 라이브러리를 활용해 내가 작성한 게시글, 팔로워, 팔로잉 목록을 확인할 수 있도록 구현하였습니다.
   
-# 📖 프로젝트 기획 및 기록
----
-
 ## 🔥 Trouble Shooting
 ### 1. tableHeaderView dynamic height
 게시글의 상세화면 View 밑에 해당 게시글에 대한 댓글들을 표시할 수 있도록 댓글 아이템들은 TableView로 표시하고 TableView위에는 게시글 상세 View가 위치하는 View를 구성할 필요가 있었습니다.
