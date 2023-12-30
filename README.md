@@ -2,6 +2,7 @@
 <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/d1c941cf-ab81-450b-9bc4-eceaed7438a8" height="200" width="200">
 
 <br>
+<br>
 
 ## 프로젝트 소개
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다.
