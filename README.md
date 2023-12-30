@@ -13,18 +13,20 @@
 - 유저 팔로우
 - 프로필 관리
 
-<br>
-
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/fdf26979-fd5e-4121-8500-5bc2d2b2adba" width="100%">
 </p>
 
+<br>
+<br>
 
 ## 작동화면
 |회원가입 & 로그인|게시글 & 댓글|해시태그 & 좋아요|프로필 & 팔로우|
 |:-:|:-:|:-:|:-:|
 |![회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/233c6f0b-e03c-4c44-8d50-a2ffb559341e)|![게시글](https://github.com/SSABOODA/PictureFlow/assets/69753846/6ebc94ec-f5ed-4a48-851f-f6274fe18740)|![해시태그 좋아요](https://github.com/SSABOODA/PictureFlow/assets/69753846/5b6e2510-2bf4-4915-a586-64965ec583a5)|![프로필 팔로잉](https://github.com/SSABOODA/PictureFlow/assets/69753846/9d80dc1f-e609-4b0f-96f1-cf615ff3f3b4)|
 
+<br>
+<br>
 
 <details>
 	<summary> 
@@ -52,14 +54,21 @@
 </p>
 </details>
 
+<br>
+<br>
+
 
 ## 🗓️ 프로젝트 기간
 2023.11.17 ~ 2023.12.17
 
+<br>
+<br>
 
 ## 👥 프로젝트 참여 인원
 1명(개인)
 
+<br>
+<br>
 
 ## 🛠️ 사용된 기술 스택
 - **Framework**
@@ -70,6 +79,8 @@
 - **Design Pattern**
 `MVVM`, `Router`, `Singleton`, `Input/Output`
 
+<br>
+<br>
 
 ## 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
@@ -83,6 +94,8 @@
 - 게시글 작성에서 `PHPickerViewController`를 통해 이미지를 가져올 수 있도록 하였고 CollectionView를 활용해 선택한 이미지를 나타내고 삭제할 수 있도록 하였습니다.
 - 프로필에서는 `TabMan`, `Pageboy` 라이브러리를 활용해 내가 작성한 게시글, 팔로워, 팔로잉 목록을 확인할 수 있도록 구현하였습니다.
 
+<br>
+<br>
   
 ## 🔥 Trouble Shooting
 ### 1. tableHeaderView dynamic height
