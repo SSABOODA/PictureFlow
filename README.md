@@ -24,7 +24,7 @@
 - Tabman
 - IQKeyboardManager
 
-# ⭐️ 중요 기능
+# ⭐️ 주요 기능
 ## 회원가입 & 로그인: 회원가입을 통해 자신의 게시글을 관리하고 타인의 게시글을 확인할 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/44ad5fae-4164-4b99-8084-61b3e64155a9" width="100%">
