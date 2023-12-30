@@ -1,7 +1,7 @@
 # FLOW
 <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/d1c941cf-ab81-450b-9bc4-eceaed7438a8" height="200" width="200">
 
-# 프로젝트 설명
+## 프로젝트 소개
 일상의 이야기를 공유하고 자신의 게시글을 관리하고 추적해볼 수 있는 앱입니다. 
 - 게시글 작성 기능(이미지 포함)
 - 게시글 좋아요
@@ -9,24 +9,16 @@
 - 유저 팔로우 기능
 - 프로필 관리 기능
 
-# 🗓️ 프로젝트 기간
-2023/11/17 ~ 2023/12/17
+<p align="center" width="100%">
+    <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/fdf26979-fd5e-4121-8500-5bc2d2b2adba" width="100%">
+</p>
 
-# 👥 프로젝트 참여 인원
-1명(개인)
+<details>
+	<summary> 
+		<h2>⭐️ 주요 기능</h2>
+	</summary>
 
-# 🛠️ 사용된 프레임워크, 라이브러리, 디자인 패턴
-- MVVM
-- UIKit
-- RxSwift
-- RxDatasource
-- Snapkit
-- Kingfisher
-- Tabman
-- IQKeyboardManager
-
-# ⭐️ 주요 기능
-## 회원가입 & 로그인: 회원가입을 통해 자신의 게시글을 관리하고 타인의 게시글을 확인할 수 있어요
+ ## 회원가입 & 로그인: 회원가입을 통해 자신의 게시글을 관리하고 타인의 게시글을 확인할 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/44ad5fae-4164-4b99-8084-61b3e64155a9" width="100%">
 </p>
@@ -45,13 +37,30 @@
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/174a0cca-68a0-4e6c-9fef-4586960c2cf8" width="100%">
 </p>
+</details>
 
-# 작동화면
+## 작동화면
 |회원가입 & 로그인|게시글 & 댓글|해시태그 & 좋아요|프로필 & 팔로우|
 |:-:|:-:|:-:|:-:|
 |![회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/233c6f0b-e03c-4c44-8d50-a2ffb559341e)|![게시글](https://github.com/SSABOODA/PictureFlow/assets/69753846/6ebc94ec-f5ed-4a48-851f-f6274fe18740)|![해시태그 좋아요](https://github.com/SSABOODA/PictureFlow/assets/69753846/5b6e2510-2bf4-4915-a586-64965ec583a5)|![프로필 팔로잉](https://github.com/SSABOODA/PictureFlow/assets/69753846/9d80dc1f-e609-4b0f-96f1-cf615ff3f3b4)|
 
-# 🔍 구현 기능
+# 🗓️ 프로젝트 기간
+2023/11/17 ~ 2023/12/17
+
+## 👥 프로젝트 참여 인원
+1명(개인)
+
+## 🛠️ 사용된 프레임워크, 라이브러리, 디자인 패턴
+- MVVM
+- UIKit
+- RxSwift
+- RxDatasource
+- Snapkit
+- Kingfisher
+- Tabman
+- IQKeyboardManager
+
+## 🔍 구현 기능
 - 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
 - 게시글을 관리하는 피드에서는 RxSwift 기반의 UITableView를 활용해서 구성하였고 셀안에 이미지 데이터 또한 dataSet을 tableView의 cell을 구성할 때 Observable로 Stream을 방출하여 Rx CollectionView로 구성하였습니다.
 - 게시글 목록에서 Rx기반의 `PullToRefresh`를 구현해 데이터를 Reload할 수 있도록 하였고, `Cursor 기반 Pagination`을 `Rx PrefetchRows`를 사용하여 구현하였습니다.
@@ -66,20 +75,20 @@
 # 📖 프로젝트 기획 및 기록
 ---
 
-# 🔥 이슈
-## 1. tableHeaderView dynamic height
+## 🔥 Trouble Shooting
+### 1. tableHeaderView dynamic height
 게시글의 상세화면 View 밑에 해당 게시글에 대한 댓글들을 표시할 수 있도록 댓글 아이템들은 TableView로 표시하고 TableView위에는 게시글 상세 View가 위치하는 View를 구성할 필요가 있었습니다.
 
 상단 게시글 정보 View와 함께 댓글을 구성하던 Tableview 또한 같이 Scroll되길 원했기 때문에 HeaderView나 ScrollView로 구성을 해야했습니다. 
 
-### 문제 상황
+#### 문제 상황
 그렇다면 UITableView가 가지고 있는 tableHeaderView 속성에 UIView를 넣어줄 수 있는 속성을 사용했었을 때 발생했습니다. 게시글의 컨텐츠 양에 따라(Content, Image 여부 등…) 유동적인 높이를 잡아줬어야했는데 tableHeaderView에서는 유동적인 높이를 잡기가 않았습니다. 
 
 물론 구글링을 통해 다음과 같이 유동적인 높이를 다시 계산해서 잡아주는 코드를 작성해봤지만 UILabel같은 경우 높이를 컨텐츠의 양에 맞게 잡아 주지 않아서 딱 알맞게 들어가지 않는 문제가 발생했습니다. 
 
 우선 왜 굳이 가변 높이의 HeaderView를 사용하기 위해 Layout잡기 까다로운 tableHeaderView를 사용하려 했나? 에 대한 답변은 게시글 상세 View에는 섹션이 없기 때문에 tableHeaderView만으로 해결하기 위해 노력했던 것 같습니다.
 
-### **문제 해결**
+#### 문제 해결
 1. Layout 잡기
 우선 문제 해결을 위해 시도했던 방법은 tableHeaderView 자체를 View에서 확인해야했고, Build 결과 tableHeaderView가 보이지 않았습니다. 그래서 우선 `Debug View Hierarchy` 를 통해 확인 결과 headerView의 Layout이 잡히지 않았기 때문에 시뮬레이터에서 보지지 않았던 겁니다.
 
@@ -194,11 +203,11 @@ class TableHeaderViewController: UIViewController {
 
 하지만 결론적으로 모든 객체의 높이를 계산해서 다시 Layout을 그린다는 방법 자체가 마음에 들지는 않아서 결국 `RxDataSource`를 사용했고 `configureSupplementaryView`에 HeaderView를 그려서 해결했습니다.
 
-## 2. 게시글 컨텐츠에서 hash tag 클릭시 다른 View 이동
-### 문제 상황
+### 2. 게시글 컨텐츠에서 hash tag 클릭시 다른 View 이동
+#### 문제 상황
 게시글의 텍스트 컨텐츠에서 해시태그를 설정하면 해당 해시 태그는 다른 텍스트와 색상이 대비되도록 설정하고 해당 해시태그는 클릭시 link가 되도록 설정해야했습니다.
 
-### 문제 해결
+#### 문제 해결
 1. 우선 텍스트가 link가 될 수 있도록 설정하려면 어떤 방법이 있는지 고민하던 중 스토리보드로 UITextView를 구성할 때 attributes를 설정할 때 `data detectors` 에 link를 체크하면 텍스트 안에 url이 있으면 자동으로 대비 색상과 함께 클릭 시 해당 url으로 이동할 수 있었던 기능을 활용하면 특정 단어에도 link 기능을 넣을 수 있지 않을까? 해서 해당 접근하게 되었습니다.
 
 문자열의 특정 문자의 Style을 변경할 수 있는 클래스인 `NSMutableAttributedString` 을 활용해 해시태그의 특정 문자의 Style과 기능을 추가할 수 있겠다라고 접근했습니다.
@@ -268,8 +277,8 @@ contentTextView.resolveHashTags()
 
 `NSMutableAttributedString` 를 통해 해당 문자열에 해시태그를 ‘#’ 과 붙어있는 문자를 추출하는 정규식을 사용하였고 추출한 문자들의 속성만 link 속성과 색상, font 크기를 변경시켜주었습니다.
 
-## 3. Rxswift button tap stream error handling
-### 문제 상황
+### 3. Rxswift button tap stream error handling
+#### 문제 상황
 해당 문제는 회원가입 기능을 구현하던 중 발생한 문제였습니다. 회원가입 시 필요한 정보(이메일, 비밀번호, 닉네임..) 등을 받고 마지막으로 로그인 버튼을 tap 한다면 해당 CombineLatest로 묶어놓았던 데이터들과 함께 Stream을 시작하여 네트워크 통신하는 Rx 로직을 구성하였습니다. 그 과정에서 flatMap을 통해 미리 싱글톤 패턴으로 구현해놓았던 NetWork 클래스 안의 로그인 API 통신 메서드를 호출하였습니다.
 
 - Network.swift
@@ -330,7 +339,7 @@ Rx login onDisposed
 ```
 
 이렇게 되면 여기서부터 문제가 발생합니다. 유저는 로그인에 실패했더라도 로그인 정보를 수정한다면 다시 버튼을 누를수 있어야하지만 이미 로그인 버튼의 stream은 dispose된 상태이기 때문에 아무리 정보를 올바르게 수정한다 하더라도 버튼은 더 이상 동작하지 않게 됩니다.
-### 문제 해결
+#### 문제 해결
 1. 첫번째로 시도했던 방법은 `catchAndReturn`으로 에러 발생시 기본값을 return함으로써 `onError` 이벤트를 방출하지 못하게 하는 방법을 사용했습니다.
 ```swift
 .flatMap {
