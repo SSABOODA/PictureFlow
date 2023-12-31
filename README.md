@@ -58,7 +58,7 @@
 <br>
 <br>
 
-## 🛠️ 사용된 기술 스택
+## 사용된 기술 스택
 - **Framework**
 `UIKit`
 - **Library**
@@ -73,7 +73,7 @@
 ## 구현 기능
 ### 회원가입, 로그인
 - **JWT Token** 기반의 로그인 구현, **Alamofire RequestInterceptor**를 통한 **AccessToken** 갱신과  **RefeshToken** 만료 로직 처리
-- **정규표현식**을 활용한 회원가입 인증 로직 구현
+- **정규표현식**을 사용하여 사용자 정보에 대해 **유효성 검증**과 회원가입 인증 로직 구현
 ### 게시글
 - **RxSwift**기반 TableView, CollectionView UI 구현
 - **RxCollectionViewSectionedReloadDataSource**를 활용한 게시글 상세 View UI구현
