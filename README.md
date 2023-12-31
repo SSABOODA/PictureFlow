@@ -214,15 +214,15 @@ func fetchSingle<T: Decodable> (
 	)
 	    .validate()
             .responseDecodable(of: T.self) { response in
-		switch response.result {
-		case .success(let success):
-			emitter(.success(.success(success)))
-		case .failure(let failure):
-			emitter(.success(.failure(failure)))
-		}
-	    }
+            switch response.result {
+            case .success(let success):
+                emitter(.success(.success(success)))
+            case .failure(let failure):
+                emitter(.success(.failure(failure)))
+            }
+        }
 	return Disposables.create() {
-		request.cancel()
+            request.cancel()
 	}
     }
 }
@@ -239,12 +239,12 @@ input.loginButtonTap
 	)
     }
     .subscribe(with: self) { owner, result in
-	switch result {
-	    case .success(let data):
-		print(data)
-	    case .failure(let error):
-		print(error)
-	}
+        switch result {
+        case .success(let data):
+            print(data)
+        case .failure(let error):
+            print(error)
+    }
     } onError: { owner, error in
 	print("Rx login onError")
     } onCompleted: { owner in
