@@ -1,5 +1,5 @@
 # FLOW
-<img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/d1c941cf-ab81-450b-9bc4-eceaed7438a8" height="200" width="200">
+<img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/d1c941cf-ab81-450b-9bc4-eceaed7438a8" height="100" width="100">
 
 <br>
 <br>
