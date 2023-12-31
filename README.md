@@ -135,6 +135,7 @@ final class TableHeaderViewController: UIViewController {
     }
 }
 ```
+<br>
 
 ### 2. 게시글 컨텐츠에서 hash tag 클릭시 Link 기능 구현
 #### 문제 상황
@@ -196,6 +197,7 @@ final class HashtagTextView: UITextView {
     }
 }
 ```
+<br>
 
 ### 3. Rxswift button tap stream error handling
 #### 문제 상황
