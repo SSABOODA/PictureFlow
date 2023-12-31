@@ -203,7 +203,7 @@ final class HashtagTextView: UITextView {
 #### 문제 상황
 RxSwift로 로그인 버튼 클릭 시 로그인 API에 Request를 보내는 로직을 구현하였는데 네트워크 통신이 실패하면 해당 Rx Stream이 dispose 되어버리고 더 이상 해당 로그인 버튼을 누를 수 없는 문제가 발생했습니다.
 #### 문제 해결
-`Single` traits를 사용하여 **fetch** 메서드에서 방출하는 단일 **Observable** 이벤트를 래핑하여 error를 방출하지 않고 해당 버튼 stream에 에러를 처리하는 방법을 사용하였습니다.
+`Single` traits를 사용하여 **fetch** 메서드에서 방출하는 단일 **Observable** 이벤트를 래핑하여 error를 방출하지 않고 해당 버튼 stream에서 에러를 처리하는 방법을 사용하였습니다.
 - Network.swift
 ```swift
 func fetchSingle<T: Decodable> (
