@@ -98,7 +98,7 @@
 final class HeaderView: UIView {
     private let titleLabel = UILabel()
     private let likeButton = UIButton()
-    private var contentHeight: CGFloat {
+    var contentHeight: CGFloat {
         let height = 
         titleLabel.bounds.height +
         likeButton.bounds.height +
