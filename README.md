@@ -140,7 +140,7 @@ final class TableHeaderViewController: UIViewController {
 #### 문제 상황
 게시글의 Text 중 특정 URL이 아닌 일반 텍스트에 **Link** 기능을 통해 해시태그를 구현해야했습니다.
 #### 문제 해결
-게시글의 컨텐츠는 UILabel의 Text로 구현되어 있었지만, Link 기능 사용하려면 UITextView의 Link기능 즉, attributes를 설정할 때 `data detectors` 와 특정 문자의 style을 변경할 수 있는 `NSMutableAttributedString` 를 활용해 해시태의 특정 문자의 색상 변경과 link기능을 추가하였습니다.
+게시글의 컨텐츠는 UILabel의 Text로 구현되어 있었지만, Link 기능 사용하려면 UITextView의 Link기능 즉, attributes를 설정할 때 `data detectors` 와 특정 문자의 style을 변경할 수 있는 `NSMutableAttributedString` 를 활용해 해시태의 특정 문자의 색상 변경과 link기능을 추가하였습니다.
 
 ```swift
 final class HashtagTextView: UITextView {
