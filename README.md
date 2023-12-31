@@ -119,9 +119,9 @@ final class HeaderView: UIView {
 final class TableHeaderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-            headerView.layoutIfNeeded()
-            updateHederViewHeight()
-        }
+        headerView.layoutIfNeeded()
+        updateHederViewHeight()
+    }
 	
     private func updateHederViewHeight() {
         let calculatedHeight: CGFloat = headerView.contentHeight
