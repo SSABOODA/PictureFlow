@@ -6,32 +6,32 @@
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/fdf26979-fd5e-4121-8500-5bc2d2b2adba" width="100%">
 </p>
 
-## 작동화면
+### 작동화면
 |회원가입 & 로그인|게시글 & 댓글|해시태그 & 좋아요|프로필 & 팔로우|
 |:-:|:-:|:-:|:-:|
 |![회원가입 로그인](https://github.com/SSABOODA/PictureFlow/assets/69753846/233c6f0b-e03c-4c44-8d50-a2ffb559341e)|![게시글](https://github.com/SSABOODA/PictureFlow/assets/69753846/6ebc94ec-f5ed-4a48-851f-f6274fe18740)|![해시태그 좋아요](https://github.com/SSABOODA/PictureFlow/assets/69753846/5b6e2510-2bf4-4915-a586-64965ec583a5)|![프로필 팔로잉](https://github.com/SSABOODA/PictureFlow/assets/69753846/9d80dc1f-e609-4b0f-96f1-cf615ff3f3b4)|
 
 <details>
 	<summary> 
-		<h2>주요 기능 Screenshot</h2>
+		<h3>주요 기능 Screenshot</h3>
 	</summary>
 
- ## 회원가입 & 로그인: 회원가입을 통해 자신의 게시글을 관리하고 타인의 게시글을 확인할 수 있어요
+### 회원가입 & 로그인: 회원가입을 통해 자신의 게시글을 관리하고 타인의 게시글을 확인할 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/44ad5fae-4164-4b99-8084-61b3e64155a9" width="100%">
 </p>
 
-## 게시글: 모든 유저의 게시글을 확인하고 좋아요 할 수 있고, 댓글을 남길 수 있어요, 여러 장의 사진 및 해시태그가 담긴 게시글도 남겨볼 수 있어요
+### 게시글: 모든 유저의 게시글을 확인하고 좋아요 할 수 있고, 댓글을 남길 수 있어요, 여러 장의 사진 및 해시태그가 담긴 게시글도 남겨볼 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/932c9744-336f-4e5a-923e-3c2507237b13" width="100%">
 </p>
 
-## 좋아요 & 해시태그: 좋아요한 게시글과 해시태그 검색을 통해 게시글을 확인해볼 수 있어요
+### 좋아요 & 해시태그: 좋아요한 게시글과 해시태그 검색을 통해 게시글을 확인해볼 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/01ef441d-5747-4cd9-a8e0-46532d36c636" width="100%">
 </p>
 
-## 프로필 & 팔로우: 다른 유저를 팔로우할 수 있고, 자신의 프로필에서 게시글, 팔로워, 팔로잉 목록, 프로필 수정등을 해볼 수 있어요
+### 프로필 & 팔로우: 다른 유저를 팔로우할 수 있고, 자신의 프로필에서 게시글, 팔로워, 팔로잉 목록, 프로필 수정등을 해볼 수 있어요
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/174a0cca-68a0-4e6c-9fef-4586960c2cf8" width="100%">
 </p>
