@@ -88,144 +88,60 @@
 <br>
 <br>
   
-## 🔥 Trouble Shooting
+## Trouble Shooting
 ### 1. tableHeaderView dynamic height
-게시글의 상세화면 View 밑에 해당 게시글에 대한 댓글들을 표시할 수 있도록 댓글 아이템들은 TableView로 표시하고 TableView위에는 게시글 상세 View가 위치하는 View를 구성할 필요가 있었습니다.
-
-상단 게시글 정보 View와 함께 댓글을 구성하던 Tableview 또한 같이 Scroll되길 원했기 때문에 HeaderView나 ScrollView로 구성을 해야했습니다. 
-
 #### 문제 상황
-그렇다면 UITableView가 가지고 있는 tableHeaderView 속성에 UIView를 넣어줄 수 있는 속성을 사용했었을 때 발생했습니다. 게시글의 컨텐츠 양에 따라(Content, Image 여부 등…) 유동적인 높이를 잡아줬어야했는데 tableHeaderView에서는 유동적인 높이를 잡기가 않았습니다. 
-
-물론 구글링을 통해 다음과 같이 유동적인 높이를 다시 계산해서 잡아주는 코드를 작성해봤지만 UILabel같은 경우 높이를 컨텐츠의 양에 맞게 잡아 주지 않아서 딱 알맞게 들어가지 않는 문제가 발생했습니다. 
-
-우선 왜 굳이 가변 높이의 HeaderView를 사용하기 위해 Layout잡기 까다로운 tableHeaderView를 사용하려 했나? 에 대한 답변은 게시글 상세 View에는 섹션이 없기 때문에 tableHeaderView만으로 해결하기 위해 노력했던 것 같습니다.
+상단 HeaderView에 유동적인 높이를 가진 게시글 데이터와 하단에 게시글에 대한 댓글 리스트를 tableView 형식으로 가진 UI를 만들 때 유동적인 높이를 가지는 **Dynamic Height** HeaderView를 만들 때 문제가 발생하였습니다.
 
 #### 문제 해결
-1. Layout 잡기
-우선 문제 해결을 위해 시도했던 방법은 tableHeaderView 자체를 View에서 확인해야했고, Build 결과 tableHeaderView가 보이지 않았습니다. 그래서 우선 `Debug View Hierarchy` 를 통해 확인 결과 headerView의 Layout이 잡히지 않았기 때문에 시뮬레이터에서 보지지 않았던 겁니다.
-
-그래서 우선 Layout을 잡아줘야겠다는 생각을 했고 다음과 같이 Layout을 잡았습니다.
-```swift
-headerView.snp.makeConstraints { make in
-    make.width.equalTo(view.bounds.width)
-    make.height.equalTo(150)
-}
-```
-
-Width같은 경우는 기기 Screen에 꽉차게 구성을 했고 높이는 우선 고정으로 잡고 Build하였습니다.
-그 결과 View에는 잘 표시되었지만 TableView Cell과 겹쳐서 View에 표시되는 상황이 되었습니다. 
-
-한참을 시도한 결과 애초에 Frame으로 높이를 잡아주는 방법을 사용했습니다.
-```swift
-headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 150)
-```
-
-frame을 잡아줬더니 cell과 겹치지 않고 View에 잘 나타나게 되었습니다. 그렇다면 인제 header view의 컨텐츠에 따라 유동적으로 높이를 잡아보려고 시도했습니다. 그럴려면 height를 고정적으로 주면 안되었기에 또 한번에 문제에 부딪히게 되었습니다.
-
-우선 가변 높이를 지정하기 위해 많은 방법을 찾던 중 다음 코드를 활용해 headerView의 높이를 가변적으로 잡아줄 수 있지 않을까? 해서 적용해보게되었습니다.
+게시글 상세 View에서는 섹션이 없었기 때문에 UITableView의 **tableHeaderView** property에 custom view를 할당하는 방식으로 해결했습니다. 
+**tableHeaderView** 는 UILabel 컨텐츠에 따라 자동으로 높이를 조절해주지 않아 모든 객체의 Height를 직접 계산하여 Layout을 다시 그리는 방식으로 해결했습니다.
 
 ```swift
-func sizeHeaderToFit() {
-    if let headerView = mainView.tableView.tableHeaderView {
-        headerView.setNeedsLayout()
-        headerView.layoutIfNeeded()
-
-        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        var newFrame = headerView.frame
-        if height != newFrame.size.height {
-            newFrame.size.height = height
-            headerView.frame = newFrame
-
-            mainView.tableView.tableHeaderView = headerView
-        }
-    }
-}
-```
-
-하지만 위 코드조차 Label의 높이가 지정되어 있지 않으면 headerView는 사라지고 Label만 남게 되어 원하는 View의 형태가 나오질 않았습니다. 
- 
-마지막으로 시도했던 방법은 가변적인 컨텐츠의 높이를 일일이 계산하여 `layoutIfNeeded` 메서드를 활용해 HeaderView의 높이를 다시 잡아주는 방법을 활용했었습니다.
-
-```swift
-class HeaderView: UIView {
-    let label = {
-        let lb = UILabel()
-        lb.numberOfLines = 0
-        return lb
-    }()
-    
-    let button = {
-        let bt = UIButton()
-        bt.setTitle("클릭", for: .normal)
-        bt.backgroundColor = .darkGray
-        return bt
-    }()
-    
-    var contentHeight: CGFloat {
+final class HeaderView: UIView {
+	private let titleLabel = UILabel()
+	private	let likeButton = UIButton()
+	private	var contentHeight: CGFloat {
         let height = 
-        label.bounds.height +
-        button.bounds.height +
+        titleLabel.bounds.height +
+        likeButton.bounds.height +
         labelTopDistance +
         labelToButtonBetweenDistance +
-	10.0
+		10.0
         return height
     }
-    
-    let labelTopDistance = 5.0
-    let labelToButtonBetweenDistance = 10.0
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        layout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func layout() {
-        addSubview(label)
-        label.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview().inset(labelTopDistance)
-        }
-        
-        addSubview(button)
-        button.snp.makeConstraints { make in
-            make.top.equalTo(label.snp.bottom).offset(labelToButtonBetweenDistance)
-            make.horizontalEdges.equalToSuperview().inset(5)
-        }
-    }
+	private	let labelTopDistance = 5.0
+	private let labelToButtonBetweenDistance = 10.0
 }
 ```
 
-위와 같이 일일히 모든 View 객체의 높이와 top과 bottom 사이의 거리를 모두 계산하는 `contentHeight` 라는 계산속성을 통해 계산한 뒤 ViewController에서 Layout을 잡을 때 Frame에 대입해주는 방식으로 해결했습니다.
-
 ```swift
-class TableHeaderViewController: UIViewController {
+final class TableHeaderViewController: UIViewController {
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		headerView.layoutIfNeeded()
+		updateHederViewHeight()
+	}
+	
     private func updateHederViewHeight() {
         let calculatedHeight: CGFloat = headerView.contentHeight
-        print("calculatedHeight: \(calculatedHeight)")
-        headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: calculatedHeight)
+        headerView.frame = CGRect(
+			x: 0, 
+			y: 0, 
+			width: view.bounds.width, 
+			height: calculatedHeight
+		)
         tableView.tableHeaderView = headerView
     }
 }
 ```
 
-이렇게 되면 해당 컨텐츠에 따라 유동적인 높이를 가지는 tableHeaderView를 나타낼 수 있게 되었습니다.
-
-하지만 결론적으로 모든 객체의 높이를 계산해서 다시 Layout을 그린다는 방법 자체가 마음에 들지는 않아서 결국 `RxDataSource`를 사용했고 `configureSupplementaryView`에 HeaderView를 그려서 해결했습니다.
-
-### 2. 게시글 컨텐츠에서 hash tag 클릭시 다른 View 이동
+### 2. 게시글 컨텐츠에서 hash tag 클릭시 Link 기능 구현
 #### 문제 상황
-게시글의 텍스트 컨텐츠에서 해시태그를 설정하면 해당 해시 태그는 다른 텍스트와 색상이 대비되도록 설정하고 해당 해시태그는 클릭시 link가 되도록 설정해야했습니다.
-
+게시글의 Text 중 특정 URL이 아닌 일반 텍스트에 **Link** 기능을 통해 해시태그를 구현해야했습니다.
 #### 문제 해결
-1. 우선 텍스트가 link가 될 수 있도록 설정하려면 어떤 방법이 있는지 고민하던 중 스토리보드로 UITextView를 구성할 때 attributes를 설정할 때 `data detectors` 에 link를 체크하면 텍스트 안에 url이 있으면 자동으로 대비 색상과 함께 클릭 시 해당 url으로 이동할 수 있었던 기능을 활용하면 특정 단어에도 link 기능을 넣을 수 있지 않을까? 해서 해당 접근하게 되었습니다.
-
-문자열의 특정 문자의 Style을 변경할 수 있는 클래스인 `NSMutableAttributedString` 을 활용해 해시태그의 특정 문자의 Style과 기능을 추가할 수 있겠다라고 접근했습니다.
-
-`NSMutableAttributedString`은 `NSAttributedString` 를 상속받고 있으며 `NSAttributedString`에 속한 특정 범위에 문자의 시각적 스타일, 하이퍼링크 또는 접근성 데이터를 설정할 수 있는 타입이라고 나와있습니다.
+게시글의 컨텐츠는 UILabel의 Text로 구현되어 있었지만, Link 기능 사용하려면 UITextView의 Link기능 즉, attributes를 설정할 때 `data detectors` 와 특정 문자의 style을 변경할 수 있는 `NSMutableAttributedString` 를 활용해 해시태의 특정 문자의 색상 변경과 link기능을 추가하였습니다.
 
 ```swift
 final class HashtagTextView: UITextView {
@@ -276,99 +192,17 @@ final class HashtagTextView: UITextView {
                 }
             }
         }
-
+        
         self.attributedText = attrString
     }
 }
 ```
 
-```swift
-contentTextView.text = elements.content
-contentTextView.hashtagArr = elements.hashTags
-contentTextView.resolveHashTags()
-```
-
-`NSMutableAttributedString` 를 통해 해당 문자열에 해시태그를 ‘#’ 과 붙어있는 문자를 추출하는 정규식을 사용하였고 추출한 문자들의 속성만 link 속성과 색상, font 크기를 변경시켜주었습니다.
-
 ### 3. Rxswift button tap stream error handling
 #### 문제 상황
-해당 문제는 회원가입 기능을 구현하던 중 발생한 문제였습니다. 회원가입 시 필요한 정보(이메일, 비밀번호, 닉네임..) 등을 받고 마지막으로 로그인 버튼을 tap 한다면 해당 CombineLatest로 묶어놓았던 데이터들과 함께 Stream을 시작하여 네트워크 통신하는 Rx 로직을 구성하였습니다. 그 과정에서 flatMap을 통해 미리 싱글톤 패턴으로 구현해놓았던 NetWork 클래스 안의 로그인 API 통신 메서드를 호출하였습니다.
-
-- Network.swift
-```swift
-func requestObservableConvertible<T: Decodable> (
-    type: T.Type,
-    router: Router
-) -> Observable<T> {
-    return Observable.create { emitter -> Disposable in
-	let request = AF.request(
-	    router,
-	    interceptor: AuthManager()
-	)
-            .validate()
-            .responseDecodable(of: T.self) { response in
-		switch response.result {
-		case .success(let success):
-		    emitter.onNext(success)
-                    emitter.onCompleted()
-		case .failure(let failure):
-                    emitter.onError(failure)
-		}
-	    }
-	return Disposables.create() {
-	    request.cancel()
-	}
-    }
-}
-```
-
-- loginViewModel.swift
-```swift
-input.loginButtonTap
-    .withLatestFrom(loginModelObservable)
-    .flatMap {
-        Network.shared.fetch(
-            type: LoginResponse.self,
-            router: .login(model: $0)
-        )
-    }
-    .subscribe(with: self) { owner, data in
-	print("data: \(data)")
-    } onError: { owner, error in
-	print("Rx login onError")
-    } onCompleted: { owner in
-	print("Rx login onCompleted")
-    } onDisposed: { owner in
-	print("Rx login onDisposed")
-    }
-    .disposed(by: disposeBag)
-```
-
-로그인 API 통신을 진행했고 로그인API 명세서의 요구사항에 맞게 데이터를 전달하지 않아 에러가 나는 상황이 생겼습니다. 여기서 로그인 button의 rx tap stream은 네트워크 통신의 에러와 함께 onError 이벤트를 방출하면서 dispose되게 되었습니다.
-
-```
-Rx login onError
-Rx login onDisposed
-```
-
-이렇게 되면 여기서부터 문제가 발생합니다. 유저는 로그인에 실패했더라도 로그인 정보를 수정한다면 다시 버튼을 누를수 있어야하지만 이미 로그인 버튼의 stream은 dispose된 상태이기 때문에 아무리 정보를 올바르게 수정한다 하더라도 버튼은 더 이상 동작하지 않게 됩니다.
+RxSwift로 로그인 버튼 클릭 시 로그인 API에 Request를 보내는 로직을 구현하였는데 네트워크 통신이 실패하면 해당 Rx Stream이 dispose 되어버리고 더 이상 해당 로그인 버튼을 누를 수 없는 문제가 발생했습니다.
 #### 문제 해결
-1. 첫번째로 시도했던 방법은 `catchAndReturn`으로 에러 발생시 기본값을 return함으로써 `onError` 이벤트를 방출하지 못하게 하는 방법을 사용했습니다.
-```swift
-.flatMap {
-    Network.shared.fetch(
-	type: LoginResponse.self,
-	router: .login(model: $0)
-    )
-    .catchAndReturn(LoginResponse(_id: "", token: "", refreshToken: ""))
-}
-```
-
-하지만 이 방법은 에러 발생 시 미리 세팅해둔 기본 값만 방출하기 때문에 서버에서 오는 다양한 error handling하기 부적합하다는 것을 깨달았습니다.
-
-지금 해결해야하는 부분은 stream이 끊기지 않으면서 서버의 에러까지 핸들링 할 수 있어야하는 것입니다.
-2. 두번째 방법은 `Single` traits를 사용하여 `fetch` 메서드에서 방출하는 단일 Observable 이벤트를 래핑하여 error를 방출하지 않고 해당 버튼 stream에 에러를 처리하는 방법입니다.
-
+`Single` traits를 사용하여 **fetch** 메서드에서 방출하는 단일 **Observable** 이벤트를 래핑하여 error를 방출하지 않고 해당 버튼 stream에 에러를 처리하는 방법을 사용하였습니다.
 - Network.swift
 ```swift
 func fetchSingle<T: Decodable> (
@@ -422,7 +256,3 @@ input.loginButtonTap
     }
     .disposed(by: disposeBag)
 ```
-
-`flatMap` 에서 네트워크 통신하는 메서드에서 Single Traite이 Observable을 방출할 때 에러시에도 Success case에 한번 래핑한 뒤 방출하게 되면 `flatMap` Operator를 통해 새로운 Observable을 방출하게 될 때 Result Type과 Single Traits이 래핑된 상태로 방출되기 때문에 subscribe에서 switch 문을 통해 래핑을 해제하고 서버에서 받아온 에러를 처리하면 됩니다. 이렇게 되면 로그인 button의 stream은 살아있게 되며 에러 핸들링까지 가능하게 되었습니다. 
-
-button tap stream에서 한번 더 래핑을 해제하기 때문에 switch case를 한번 더 사용하게 되는 단점이 있긴 하지만 원하는 방향으로 기능할 수 있게 되어 문제해결을 할 수 있었습니다.
