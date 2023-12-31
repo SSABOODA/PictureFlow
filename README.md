@@ -4,7 +4,7 @@
 <br>
 <br>
 
-## • 프로젝트 소개
+## 프로젝트 소개
 <p align="center" width="100%">
     <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/fdf26979-fd5e-4121-8500-5bc2d2b2adba" width="100%">
 </p>
@@ -16,7 +16,7 @@
 
 <details>
 	<summary> 
-		<h2>⭐️ 주요 기능 Scrennshot</h2>
+		<h2>주요 기능 Screenshot</h2>
 	</summary>
 
  ## 회원가입 & 로그인: 회원가입을 통해 자신의 게시글을 관리하고 타인의 게시글을 확인할 수 있어요
