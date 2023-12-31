@@ -89,7 +89,7 @@
 <br>
   
 ## Trouble Shooting
-### 1. tableHeaderView dynamic height
+### 1. 유동적인 높이(dynamic height)를 가진 tableHeaderView
 #### 문제 상황
 상단 HeaderView에 유동적인 높이를 가진 게시글 데이터와 하단에 게시글에 대한 댓글 리스트를 tableView 형식으로 가진 UI를 만들 때 유동적인 높이를 가지는 **Dynamic Height** HeaderView를 만들 때 문제가 발생하였습니다.
 
@@ -99,39 +99,38 @@
 
 ```swift
 final class HeaderView: UIView {
-	private let titleLabel = UILabel()
-	private	let likeButton = UIButton()
-	private	var contentHeight: CGFloat {
+    private let titleLabel = UILabel()
+    private let likeButton = UIButton()
+    private var contentHeight: CGFloat {
         let height = 
         titleLabel.bounds.height +
         likeButton.bounds.height +
         labelTopDistance +
         labelToButtonBetweenDistance +
-		10.0
+         10.0
         return height
     }
-
-	private	let labelTopDistance = 5.0
-	private let labelToButtonBetweenDistance = 10.0
+    private let labelTopDistance = 5.0
+    private let labelToButtonBetweenDistance = 10.0
 }
 ```
 
 ```swift
 final class TableHeaderViewController: UIViewController {
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		headerView.layoutIfNeeded()
-		updateHederViewHeight()
-	}
+    override func viewDidLoad() {
+        super.viewDidLoad()
+            headerView.layoutIfNeeded()
+            updateHederViewHeight()
+        }
 	
     private func updateHederViewHeight() {
         let calculatedHeight: CGFloat = headerView.contentHeight
         headerView.frame = CGRect(
-			x: 0, 
-			y: 0, 
-			width: view.bounds.width, 
-			height: calculatedHeight
-		)
+            x: 0,
+            y: 0,
+            width: view.bounds.width,
+            height: calculatedHeight
+        )
         tableView.tableHeaderView = headerView
     }
 }
