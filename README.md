@@ -244,7 +244,7 @@ input.loginButtonTap
             print(data)
         case .failure(let error):
             print(error)
-    }
+        }
     } onError: { owner, error in
 	print("Rx login onError")
     } onCompleted: { owner in
