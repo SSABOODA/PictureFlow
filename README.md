@@ -73,17 +73,17 @@
 <br>
 <br>
 
-## 🔍 구현 기능
-- 회원가입, 로그인 기능을 구현하였고 로그인 같은 경우 JWT Token기반으로 구현하였습니다. `Refresh Token` 관리 또한 `Alamofire`의 `Interceptor`를 통해 `Refresh Token`을 갱신하여 현재 유저의 로그인 상태를 유지하거나 `Refresh Token`이 만료되었다면 재로그인 하는 방식으로 구현하였습니다.
-- 게시글을 관리하는 피드에서는 RxSwift 기반의 UITableView를 활용해서 구성하였고 셀안에 이미지 데이터 또한 dataSet을 tableView의 cell을 구성할 때 Observable로 Stream을 방출하여 Rx CollectionView로 구성하였습니다.
-- 게시글 목록에서 Rx기반의 `PullToRefresh`를 구현해 데이터를 Reload할 수 있도록 하였고, `Cursor 기반 Pagination`을 `Rx PrefetchRows`를 사용하여 구현하였습니다.
-- 게시글 상세 View에서는 `RxDataSource`를 활용해 Section의 HeaderView와 CollectionView를 통해 게시글 정보 아래에 댓글 정보를 표현하도록하였습니다.
-- 게시글이나 앱 전체의 이미지들은 확대하여 확인할수 있도록 FullScreen View를 Custom하여 구현하였습니다.
-- 해시태그를 구현하기 위해 UITextView의 RxSwift를 Custom 함수를 정의하였고 UITapGestureRecognizer 클래스를 Custom하여 해시태그 단어에 대해 Link처럼 Click이 가능하도록 구현하였습니다.
-- 해시태그를 사용자가 쉽게 작성하도록 UITextView를 Custom하였고 정규식을 통해 `#`을 기준으로 사용자가 입력하는 단어에 대해서는 대비 색상 적용하도록 하였습니다.
-- 게시글 작성 View에서는 UITextView의 `sizeThatFits` 메서드를 사용해 줄바꿈을 하면 View가 늘어나도록 효과를 주었습니다. 
-- 게시글 작성에서 `PHPickerViewController`를 통해 이미지를 가져올 수 있도록 하였고 CollectionView를 활용해 선택한 이미지를 나타내고 삭제할 수 있도록 하였습니다.
-- 프로필에서는 `TabMan`, `Pageboy` 라이브러리를 활용해 내가 작성한 게시글, 팔로워, 팔로잉 목록을 확인할 수 있도록 구현하였습니다.
+## 구현 기능
+### 회원가입, 로그인
+- **JWT Token** 기반의 로그인 구현, **Alamofire RequestInterceptor**를 통한 **AccessToken** 갱신과  **RefeshToken** 만료 로직 처리
+- **정규표현식**을 활용한 회원가입 인증 로직 구현
+### 게시글
+- **RxSwift**기반 TableView, CollectionView UI 구현
+- **RxCollectionViewSectionedReloadDataSource**를 활용한 게시글 상세 View UI구현
+- **RxSwift**기반 **UIRefreshControl**를 활용해 **PullToRefresh** 를 구현하여 게시글 데이터 갱신
+- **Rx prefetchRows** 를 사용하여 **Cursor** 기반 **Pagination** 구현
+### 네트워크
+- **Router Pattern**을 활용해 네트워크 계층의 가독성 증가 및 코드 재사용성을 올렸습니다.
 
 <br>
 <br>
