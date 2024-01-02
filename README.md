@@ -2,8 +2,9 @@
 <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/d1c941cf-ab81-450b-9bc4-eceaed7438a8" height="100" width="100">
 
 ## 프로젝트 소개
+
 <p align="center" width="100%">
-    <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/fdf26979-fd5e-4121-8500-5bc2d2b2adba" width="100%">
+    <img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/c2b26e4f-b906-4e61-836e-e3e56bfec3c5" width="100%">
 </p>
 
 ### 작동화면
