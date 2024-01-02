@@ -79,7 +79,7 @@
 - **RxSwift**기반 TableView, CollectionView UI 구현
 - **RxCollectionViewSectionedReloadDataSource**를 활용한 게시글 상세 View UI구현
 - **RxSwift**기반 **UIRefreshControl**를 활용해 **PullToRefresh** 를 구현하여 게시글 데이터 갱신
-- **Rx prefetchRows** 를 사용하여 **Cursor** 기반 **Pagination** 구현
+- **Rx prefetchRows** operator를 사용하여 **Cursor** 기반 **Pagination** 구현
 ### 네트워크
 - **Router Pattern**을 활용해 네트워크 계층의 가독성 증가 및 코드 재사용성을 올렸습니다.
 
