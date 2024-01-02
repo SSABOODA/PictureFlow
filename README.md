@@ -67,6 +67,8 @@
 `Tabman`, `IQKeyboardManager`
 - **Design Pattern**
 `MVVM`, `Router`, `Singleton`, `Input/Output`
+- **Etc**
+`Code Base UI`, `CompositionalLayout`
 
 <br>
 <br>
