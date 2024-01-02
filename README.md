@@ -84,6 +84,8 @@
 - **Rx prefetchRows** operator를 사용하여 **Cursor** 기반 **Pagination** 구현
 ### 네트워크
 - **Router Pattern**을 활용해 네트워크 계층의 가독성 증가 및 코드 재사용성을 올렸습니다.
+### 기타
+- **@propertyWrapper**를 활용한 **UserDefaults** Manager Repository Pattern 재사용성 증가 
 
 <br>
 <br>
