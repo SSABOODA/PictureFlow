@@ -6,7 +6,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/SSABOODA/PictureFlow/assets/69753846/c2b26e4f-b906-4e61-836e-e3e56bfec3c5">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/SSABOODA/PictureFlow/assets/69753846/a22496b4-dc11-428c-a8c5-2819a113c56d">
-  <img alt="IMAGE" src="http://LIGHT_IMAGE_URL.png">
+  <img alt="IMAGE" src="https://github.com/SSABOODA/PictureFlow/assets/69753846/c2b26e4f-b906-4e61-836e-e3e56bfec3c5">
 </picture>
 
 ### 작동화면
