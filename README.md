@@ -3,8 +3,11 @@
 
 ## 프로젝트 소개
 
-<img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/c2b26e4f-b906-4e61-836e-e3e56bfec3c5#gh-light-mode-only">
-<img src="https://github.com/SSABOODA/PictureFlow/assets/69753846/a22496b4-dc11-428c-a8c5-2819a113c56d#gh-dark-mode-only">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/SSABOODA/PictureFlow/assets/69753846/c2b26e4f-b906-4e61-836e-e3e56bfec3c5">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/SSABOODA/PictureFlow/assets/69753846/a22496b4-dc11-428c-a8c5-2819a113c56d">
+  <img alt="IMAGE" src="http://LIGHT_IMAGE_URL.png">
+</picture>
 
 ### 작동화면
 |회원가입 & 로그인|게시글 & 댓글|해시태그 & 좋아요|프로필 & 팔로우|
